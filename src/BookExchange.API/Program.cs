@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Microsoft.EntityFrameworkCore;
 using BookExchange.Services;
-using Newtonsoft.Json;
 using BookExchange.Domain.DTOs;
 using BookExchange.Domain.Models;
 using BookExchange.Infrastructure.Persistance;
@@ -209,9 +208,17 @@ namespace BookExchange.API
 
 
           public static IHostBuilder CreateHostBuilder(string[] args) =>
-              Host.CreateDefaultBuilder(args)
-                  .ConfigureWebHostDefaults(webBuilder => {
-                       webBuilder.UseStartup<Startup>();
-          });
+               Host.CreateDefaultBuilder(args)
+                    .ConfigureWebHostDefaults(webBuilder => {
+                         webBuilder.UseStartup<Startup>();
+                    })
+                    .ConfigureLogging((hostingContext, logging) => {
+                         logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                         logging.AddConsole();
+                         logging.AddDebug();
+                         logging.AddEventSourceLogger();
+                    });
+          
+
      }
 }

@@ -4,6 +4,7 @@ using BookExchange.Infrastructure.Persistance;
 using BookExchange.Infrastructure.Persistance.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Buffers;
+using BookExchange.API.Configuration;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System.Configuration;
+using Newtonsoft.Json;
 
 namespace BookExchange.API
 {
@@ -35,7 +39,6 @@ namespace BookExchange.API
           // This method gets called by the runtime. Use this method to add services to the container.
           public void ConfigureServices(IServiceCollection services)
           {
-
                services.AddControllers().AddNewtonsoftJson(options =>
                {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -49,7 +52,8 @@ namespace BookExchange.API
                     options.UseSqlServer(Configuration.GetConnectionString("BookExchangaDatabase"),
                     x => x.MigrationsAssembly(typeof(BookExchangeDbContext).Assembly.FullName)));
 
-               // add DI
+               services.AddSingleton<ILogger>(svc => svc.GetRequiredService<ILogger<RequestTimeMiddleware>>());
+
                services.AddScoped<DbContext, BookExchangeDbContext>();
                services.AddScoped<IBookRepository, BookRepository>();
                services.AddScoped<IUserRepository, UserRepository>();
@@ -67,12 +71,15 @@ namespace BookExchange.API
           // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
           public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
           {
+
                if (env.IsDevelopment())
                {
                     app.UseDeveloperExceptionPage();
                     app.UseSwagger();
                     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookExchange v1"));
                }
+
+               app.UseRequestTime();
 
                app.UseHttpsRedirection();
 
