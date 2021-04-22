@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BookExchange.Application.Common.Exceptions
 {
-     class ValidationException
+     public class ValidationException
      {
      }
 }

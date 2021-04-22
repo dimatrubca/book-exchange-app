@@ -1,5 +1,6 @@
 ﻿using BookExchange.Domain.Interfaces;
 using BookExchange.Domain.Models;
+using BookExchange.Application.Common.Exceptions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace BookExchange.Application.Books.Commands
 
                if (book == null)
                {
-                    return Task.FromResult<Book>(null);
+                     throw new NotFoundException(nameof(Book), command.Id);
                }
 
                if (!string.IsNullOrWhiteSpace(command.Title))

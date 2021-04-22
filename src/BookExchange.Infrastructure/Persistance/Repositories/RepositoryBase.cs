@@ -67,7 +67,7 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
 
                if (entity == null)
                {
-                    throw new Exception($"No Object {typeof(T)} with id = {id}");
+                    return null;
                }
 
                _entitites.Remove(entity);
@@ -88,5 +88,11 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
           {
                return _context.SaveChanges() >= 0;
           }
+
+          public void SaveAllWithIdentityInsert()
+          {
+               _context.SaveChangesWithIdentityInsert<T>();
+          }
+
      }
 }

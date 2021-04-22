@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using BookExchange.Application.Books.Commands;
+using BookExchange.Application.Common.Exceptions;
 using BookExchange.Domain.Commands;
 using BookExchange.Domain.DTOs;
 using BookExchange.Domain.Models;
 using BookExchange.Domain.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -27,13 +29,8 @@ namespace BookExchange.API.Controllers
           }
 
           [HttpGet("{id}")]
-          public async Task<IActionResult> GetById(int id, bool includeDetails) {
+          public async Task<IActionResult> Get(int id, bool includeDetails) {
                var book = await _mediator.Send(new GetBookQuery { Id=id, IncludeDetails=includeDetails });
-
-               if (book == null) {
-                    return NotFound();
-               }
-
                var bookDto = _mapper.Map<BookDto>(book);
 
                return Ok(bookDto);
@@ -43,22 +40,17 @@ namespace BookExchange.API.Controllers
           [HttpGet]
           public async Task<IActionResult> GetAll([FromQuery] GetBooksQuery query) {
                List<Book> books = await _mediator.Send(query);
-
                var result = books.Select(b => _mapper.Map<BookDto>(b));
 
                return Ok(result);
           }
 
           [HttpPost]
-          public async Task<IActionResult> Post([FromBody] CreateBookCommand command) {
+          public async Task<IActionResult> Post([FromForm] CreateBookCommand command) {
                var book = await _mediator.Send(command);
-
-               if (book == null)
-                    return BadRequest("Book with such ISBN already exists");
-
                var result = _mapper.Map<Book>(book);
 
-               return CreatedAtAction(nameof(GetById), new { id = book.Id }, result);
+               return CreatedAtAction(nameof(Get), new { id = book.Id }, result);
           }
 
 
@@ -76,7 +68,7 @@ namespace BookExchange.API.Controllers
           }
 
           [HttpPut("{id}")]
-          public async Task<IActionResult> Put(int id, [FromBody] UpdateBookCommand command)
+          public async Task<IActionResult> Put(int id, [FromBody] ReplaceBookCommand command)
           {
                if (id != command.Id)
                {
@@ -92,8 +84,7 @@ namespace BookExchange.API.Controllers
           [HttpDelete("{id}")]
           public async Task<IActionResult> Delete(int id)
           {
-               bool isDeleted = await _mediator.Send(new DeleteBookByIdCommand { Id = id });
-
+               await _mediator.Send(new DeleteBookByIdCommand { Id = id });
                return NoContent();
           }
      }

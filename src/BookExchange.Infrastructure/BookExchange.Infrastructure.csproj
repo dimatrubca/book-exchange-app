@@ -19,4 +19,8 @@
     <ProjectReference Include="..\BookExchange.Domain\BookExchange.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistance\Migrations\" />
+  </ItemGroup>
+
 </Project>

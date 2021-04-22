@@ -5,9 +5,10 @@ using System.Text;
 
 namespace BookExchange.Application.Common.Exceptions
 {
-     class NotFoundException : ApiException
+     public class NotFoundException : ApiException
      {
-          public NotFoundException(HttpStatusCode code, string message) : base(code, message)
+          public NotFoundException(string name, object key)
+               : base(HttpStatusCode.NotFound, $"Entity \"{name}\" ({key}) was not found")
           {
           }
      }

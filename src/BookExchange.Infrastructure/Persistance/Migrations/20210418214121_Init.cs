@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BookExchange.Infrastructure.Persistance.Migrations
+namespace BookExchange.Infrastructure.persistance.migrations
 {
     public partial class Init : Migration
     {
@@ -145,7 +145,7 @@ namespace BookExchange.Infrastructure.Persistance.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Publisher = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    PublishedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PublishedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PageCount = table.Column<int>(type: "int", nullable: true),
                     BookId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -170,7 +170,6 @@ namespace BookExchange.Infrastructure.Persistance.Migrations
                     PostedById = table.Column<int>(type: "int", nullable: true),
                     ConditionId = table.Column<int>(type: "int", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    Type = table.Column<int>(type: "int", nullable: false),
                     MaxLendingPeriod = table.Column<int>(type: "int", nullable: true),
                     TimeAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },

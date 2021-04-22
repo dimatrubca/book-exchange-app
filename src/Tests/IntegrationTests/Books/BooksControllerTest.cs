@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 namespace Tests.IntegrationTests.Books
 {
      [TestClass]
-     class BooksTests
+     class BooksControllerTest
      {
           private readonly HttpClient _client;
 
-          public BooksTests()
+          public BooksControllerTest()
           {
                var server = new TestServer(new WebHostBuilder()
                     .UseEnvironment("Development")

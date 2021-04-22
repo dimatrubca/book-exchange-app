@@ -5,9 +5,10 @@ using System.Text;
 
 namespace BookExchange.Application.Common.Exceptions
 {
-     class DeleteFailureException : ApiException
+     public class DeleteFailureException : ApiException
      {
-          public DeleteFailureException(HttpStatusCode code, string message) : base(code, message)
+          public DeleteFailureException(string name, object key)
+               : base(HttpStatusCode.BadRequest, $"Entity \"{name}\" ({key}) was not found")
           {
           }
      }

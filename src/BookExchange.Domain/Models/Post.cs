@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Domain.Models
 {
+     /*
      public enum PostType { 
           Lend = 1, 
           GiveAway = 3,
      } // points value
-
+     */
      public enum PostStatus { 
           Enabled, 
           Disabled
@@ -21,8 +22,6 @@ namespace BookExchange.Domain.Models
           public int? PostedById { get; set; }
           public int? ConditionId { get; set; }
           public PostStatus Status { get; set; }
-          public PostType Type { get; set; }
-          public int? MaxLendingPeriod { get; set; }
           public DateTime TimeAdded { get; set; }
 
           public virtual Book Book { get; set; }

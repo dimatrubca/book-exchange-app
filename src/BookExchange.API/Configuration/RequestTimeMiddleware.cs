@@ -18,6 +18,8 @@ namespace BookExchange.API.Configuration
                _logger = logger;
           }
 
+          // only for lesson 2 
+          // TODO: delete after presenting
           public async Task Invoke(HttpContext context)
           {
                context.Items["RequestTime"] = DateTime.Now;

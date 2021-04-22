@@ -17,6 +17,7 @@ namespace BookExchange.Domain.Interfaces
           List<T> GetAllByConditionWithInclude(Expression<Func<T, bool>> predicate,
                params Expression<Func<T, object>>[] includeProperties);
           bool SaveAll();
+          void SaveAllWithIdentityInsert();
           void Add(T entity); // insert the item into the dbSet
           void Update(T entity);
           T Delete(int id);   // remove item from the DbSet

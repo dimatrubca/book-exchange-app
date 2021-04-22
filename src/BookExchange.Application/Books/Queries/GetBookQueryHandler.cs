@@ -1,4 +1,5 @@
 ﻿using BookExchange.Domain.DTOs;
+using BookExchange.Application.Common.Exceptions;
 using BookExchange.Domain.Interfaces;
 using BookExchange.Domain.Models;
 using BookExchange.Domain.Queries;
@@ -28,6 +29,11 @@ namespace BookExchange.Service.Services
                     book = _bookRepository.GetById(request.Id);
                } else {
                     book = _bookRepository.GetByIdWithInclude(request.Id, b => b.Details);
+               }
+
+               if (book == null)
+               {
+                    throw new NotFoundException(nameof(Book), request.Id);
                }
 
                return Task.FromResult(book);

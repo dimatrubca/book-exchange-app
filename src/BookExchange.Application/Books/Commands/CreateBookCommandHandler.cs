@@ -1,8 +1,14 @@
-﻿using BookExchange.Domain.Interfaces;
+﻿using BookExchange.Application.Books.Events;
+using BookExchange.Application.Common.Exceptions;
+using BookExchange.Application.Common;
+using BookExchange.Domain.Interfaces;
 using BookExchange.Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,50 +18,68 @@ namespace BookExchange.Application.Books.Commands
 {
      class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, Book>
      {
+          private readonly IMediator _mediator;
+          private readonly IHostingEnvironment _environment;
           private readonly IBookRepository _bookRepository;
-          private readonly IRepositoryBase<BookDetails> _bookDetailsRepository;
           private readonly IRepositoryBase<Author> _bookAuthorsRepository;
           private readonly IRepositoryBase<BookCategory> _bookCategoriesRepository;
 
-          public CreateBookCommandHandler(IBookRepository bookRepository, IRepositoryBase<BookDetails> bookDetailsRepository,
-               IRepositoryBase<Author> bookAuthorsRepository, IRepositoryBase<BookCategory> bookCategoriesRepository)
+          public CreateBookCommandHandler(IBookRepository bookRepository, 
+               IRepositoryBase<Author> bookAuthorsRepository, IRepositoryBase<BookCategory> bookCategoriesRepository, 
+               IHostingEnvironment environment, IMediator mediator)
           {
                _bookRepository = bookRepository;
-               _bookDetailsRepository = bookDetailsRepository;
                _bookAuthorsRepository = bookAuthorsRepository;
                _bookCategoriesRepository = bookCategoriesRepository;
+               _environment = environment;
+               _mediator = mediator;
           }
 
-          public Task<Book> Handle(CreateBookCommand request, CancellationToken cancellationToken)
+
+
+          public async Task<Book> Handle(CreateBookCommand request, CancellationToken cancellationToken)
           {
-               if (CheckBookWithIsbnExists(request.ISBN)) {
-                    return Task.FromResult<Book>(null);
+               if (Utils.CheckBookWithIsbnExists(_bookRepository, request.ISBN)) {
+                    throw new BadRequestException($"Book with ISBN = {request.ISBN} already exists");
                }
+
+               var uploadDirectory = Path.Combine(_environment.WebRootPath, "uploads", "books");
+               var thumbnailPath = await Utils.SaveFile(request.Thumbnail, uploadDirectory);
+               var imagePath = await Utils.SaveFile(request.Image, uploadDirectory);
 
                var book = new Book
                {
                     Title = request.Title,
                     ISBN = request.ISBN,
                     ShortDescription = request.ShortDescription,
-                    Authors = request.AuthorsIds.Select(id => _bookAuthorsRepository.GetById(id)).ToList(),
-                    Categories = request.CategoriesIds.Select(id => _bookCategoriesRepository.GetById(id)).ToList(),
+                    ThumbnailPath = thumbnailPath,
+                    Authors = request.AuthorsIds?.Select(id => _bookAuthorsRepository.GetById(id)).ToList(),
+                    Categories = request.CategoriesIds?.Select(id => _bookCategoriesRepository.GetById(id)).ToList(),
                     Details = new BookDetails
                     {
                          Description = request.Description,
                          Publisher = request.Publisher,
                          PublishedOn = request.PublishedOn,
-                         PageCount = request.PageCount
+                         PageCount = request.PageCount,
+                         ImagePath = imagePath
                     }
                };
 
                _bookRepository.Add(book);
                _bookRepository.SaveAll();
-               return Task.FromResult(book);
+
+               await _mediator.Publish(new BookCreatedEvent {
+                                        Id = book.Id,
+                                        Title = book.Title,
+                                        ShortDescription = book.ShortDescription,
+                                        Description = book.Details.Description,
+                                        Authors = book.Authors?.Select(a => a.Name).ToList() }, cancellationToken); 
+
+               return await Task.FromResult(book);
           }
 
-          public bool CheckBookWithIsbnExists(string ISBN) 
-          {
-               return _bookRepository.GetBooksByCondition(b => b.ISBN == ISBN).Any();
-          }
+
+
+
      }
 }

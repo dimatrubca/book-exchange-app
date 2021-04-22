@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace BookExchange.Infrastructure.Persistance.Migrations
+namespace BookExchange.Infrastructure.persistance.migrations
 {
     [DbContext(typeof(BookExchangeDbContext))]
-    [Migration("20210417033854_Init")]
+    [Migration("20210418214121_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -137,7 +137,7 @@ namespace BookExchange.Infrastructure.Persistance.Migrations
                     b.Property<int?>("PageCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("PublishedOn")
+                    b.Property<DateTime?>("PublishedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Publisher")
@@ -240,9 +240,6 @@ namespace BookExchange.Infrastructure.Persistance.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getdate()");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

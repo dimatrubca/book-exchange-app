@@ -13,7 +13,7 @@ namespace Tests.UnitTests.Books
      {
           private readonly BookController bookController;
           private readonly Mock<IMediator> mediator = new Mock<IMediator>();
-
+          /*
           public BooksControllerTest()
           {
                _bookController = bookController;
@@ -23,6 +23,6 @@ namespace Tests.UnitTests.Books
           public void ShouldReturn_GetAllBooks()
           {
                var books = 
-          }
+          }*/
      }
 }

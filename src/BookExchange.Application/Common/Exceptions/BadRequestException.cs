@@ -5,9 +5,10 @@ using System.Text;
 
 namespace BookExchange.Application.Common.Exceptions
 {
-     class BadRequestException : ApiException
+     public class BadRequestException : ApiException
      {
-          public BadRequestException(HttpStatusCode code, string message) : base(code, message)
+          public BadRequestException(string message) 
+               : base(HttpStatusCode.BadRequest, message)
           {
           }
      }

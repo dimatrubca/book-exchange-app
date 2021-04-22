@@ -6,8 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Common\Interfaces\" />
-    <Folder Include="Posts\Commands\" />
-    <Folder Include="Posts\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

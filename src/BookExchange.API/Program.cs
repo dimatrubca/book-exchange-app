@@ -149,13 +149,13 @@ namespace BookExchange.API
 
                     if (!context.Posts.Any())
                     {
-                         context.Posts.Add(new Post { PostedById=1, BookId=1, ConditionId=1, Type=PostType.Lend, MaxLendingPeriod=30 });
-                         context.Posts.Add(new Post { PostedById=1, BookId=2, ConditionId=2, Type=PostType.Lend, MaxLendingPeriod=50 });
-                         context.Posts.Add(new Post { PostedById=2, BookId=1, ConditionId=1, Type=PostType.Lend, MaxLendingPeriod=25 });
+                         context.Posts.Add(new Post { PostedById=1, BookId=1, ConditionId=1 });
+                         context.Posts.Add(new Post { PostedById=1, BookId=2, ConditionId=2 });
+                         context.Posts.Add(new Post { PostedById=2, BookId=1, ConditionId=1 });
 
-                         context.Posts.Add(new Post { PostedById=1, BookId=2, ConditionId=3, Type=PostType.GiveAway });
-                         context.Posts.Add(new Post { PostedById=2, BookId=2, ConditionId=2, Type=PostType.GiveAway });
-                         context.Posts.Add(new Post { PostedById=2, BookId=1, ConditionId=2, Type=PostType.GiveAway });
+                         context.Posts.Add(new Post { PostedById=1, BookId=2, ConditionId=3 });
+                         context.Posts.Add(new Post { PostedById=2, BookId=2, ConditionId=2 });
+                         context.Posts.Add(new Post { PostedById=2, BookId=1, ConditionId=2 });
                     }
 
                     context.SaveChanges();

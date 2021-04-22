@@ -24,6 +24,7 @@ using BookExchange.API.Configuration;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.Configuration;
 using Newtonsoft.Json;
+using BookExchange.Application.Common.Exceptions;
 
 namespace BookExchange.API
 {
@@ -39,14 +40,19 @@ namespace BookExchange.API
           // This method gets called by the runtime. Use this method to add services to the container.
           public void ConfigureServices(IServiceCollection services)
           {
-               services.AddControllers().AddNewtonsoftJson(options =>
-               {
+               services.AddControllers().AddNewtonsoftJson(options => {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                });
 
                services.AddSwaggerGen(c => {
                     c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookExchange", Version = "v1" });
                });
+
+               services.AddMvc(
+                    config => {
+                         config.Filters.Add(typeof(ApiExceptionFilter));
+                    }
+               );
 
                services.AddDbContext<BookExchangeDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("BookExchangaDatabase"),
@@ -57,6 +63,8 @@ namespace BookExchange.API
                services.AddScoped<DbContext, BookExchangeDbContext>();
                services.AddScoped<IBookRepository, BookRepository>();
                services.AddScoped<IUserRepository, UserRepository>();
+               services.AddScoped<IPostRepository, PostRepository>();
+
                services.AddScoped<IRepositoryBase<Author>, RepositoryBase<Author>>();
                services.AddScoped<IRepositoryBase<BookDetails>, RepositoryBase<BookDetails>>();
                services.AddScoped<IRepositoryBase<BookCategory>, RepositoryBase<BookCategory>>();
@@ -79,13 +87,17 @@ namespace BookExchange.API
                     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookExchange v1"));
                }
 
+
                app.UseRequestTime();
 
                app.UseHttpsRedirection();
 
+
                app.UseRouting();
 
                app.UseAuthorization();
+               app.UseStaticFiles();
+
 
                app.UseEndpoints(endpoints => {
                     endpoints.MapControllers();

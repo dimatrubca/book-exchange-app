@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BookExchange.Application.Common.Exceptions
 {
-     class ApiException : Exception
+     public class ApiException : Exception
      {
           public HttpStatusCode Code { get; }
 

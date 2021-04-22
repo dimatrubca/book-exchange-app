@@ -23,4 +23,8 @@
     <ProjectReference Include="..\BookExchange.Infrastructure\BookExchange.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\books\" />
+  </ItemGroup>
+
 </Project>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace BookExchange.Infrastructure.Persistance.Migrations
+namespace BookExchange.Infrastructure.persistance.migrations
 {
     [DbContext(typeof(BookExchangeDbContext))]
     partial class BookExchangeDbContextModelSnapshot : ModelSnapshot
@@ -47,6 +47,9 @@ namespace BookExchange.Infrastructure.Persistance.Migrations
                         .HasColumnType("varchar(13)");
 
                     b.Property<string>("ShortDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ThumbnailPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -132,10 +135,13 @@ namespace BookExchange.Infrastructure.Persistance.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("PageCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("PublishedOn")
+                    b.Property<DateTime?>("PublishedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Publisher")
@@ -223,9 +229,6 @@ namespace BookExchange.Infrastructure.Persistance.Migrations
                     b.Property<int?>("ConditionId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MaxLendingPeriod")
-                        .HasColumnType("int");
-
                     b.Property<int?>("PostedById")
                         .HasColumnType("int");
 
@@ -238,9 +241,6 @@ namespace BookExchange.Infrastructure.Persistance.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getdate()");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
