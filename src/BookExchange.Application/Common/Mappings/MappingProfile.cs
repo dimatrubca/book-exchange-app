@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BookExchange.Application.Books.Commands;
 using BookExchange.Application.Posts.Commands;
+using BookExchange.Application.Users.Commands;
+using BookExchange.Domain.Auth;
 using BookExchange.Domain.DTOs;
 using BookExchange.Domain.Models;
 using System;
@@ -21,6 +23,9 @@ namespace BookExchange.Application.Common.Mappings
                CreateMap<PostDto, Post>();
                CreateMap<CreatePostCommand, Post>();
                CreateMap<ReplacePostCommand, Post>();
+
+               CreateMap<CreateUserCommand, ApplicationUser>();
+               CreateMap<ApplicationUser, UserDto>();
           }
      }
 }

@@ -25,6 +25,11 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.Configuration;
 using Newtonsoft.Json;
 using BookExchange.Application.Common.Exceptions;
+using BookExchange.Domain.Auth;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BookExchange.API
 {
@@ -57,6 +62,31 @@ namespace BookExchange.API
                services.AddDbContext<BookExchangeDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("BookExchangaDatabase"),
                     x => x.MigrationsAssembly(typeof(BookExchangeDbContext).Assembly.FullName)));
+
+               services.AddIdentity<ApplicationUser, Role>(options => {
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequiredLength = 5;
+               }).AddEntityFrameworkStores<BookExchangeDbContext>()
+                    .AddDefaultTokenProviders();
+
+
+               // configure jwt authentication
+               services.AddAuthentication(auth => {
+                    auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+               }).AddJwtBearer(options => {
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                         ValidateIssuer = true,
+                         ValidateAudience = true,
+                         ValidAudience = "http://example.com",
+                         ValidIssuer = "http://example.com",
+                         RequireExpirationTime = true,
+                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is the key")),
+                         ValidateIssuerSigningKey = true
+                    };
+               });
 
                services.AddSingleton<ILogger>(svc => svc.GetRequiredService<ILogger<RequestTimeMiddleware>>());
 
@@ -95,6 +125,7 @@ namespace BookExchange.API
 
                app.UseRouting();
 
+               app.UseAuthentication();
                app.UseAuthorization();
                app.UseStaticFiles();
 

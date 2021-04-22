@@ -1,15 +1,13 @@
 ﻿using BookExchange.Domain.Models;
 using BookExchange.Infrastructure.Persistance.Configurations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using BookExchange.Domain.Auth;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Data.Common;     
 
 namespace BookExchange.Infrastructure.Persistance
 {
-     public class BookExchangeDbContext : DbContext
+     public class BookExchangeDbContext : IdentityDbContext<ApplicationUser, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
      {
           private readonly string _connectionString;
           private DbConnection _connection;
