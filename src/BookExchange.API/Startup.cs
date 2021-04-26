@@ -27,9 +27,11 @@ using Newtonsoft.Json;
 using BookExchange.Application.Common.Exceptions;
 using BookExchange.Domain.Auth;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using BookExchange.Application.Common.Extensions;
+using System.Security.Claims;
 
 namespace BookExchange.API
 {
@@ -51,6 +53,27 @@ namespace BookExchange.API
 
                services.AddSwaggerGen(c => {
                     c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookExchange", Version = "v1" });
+
+                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                    {
+                         In = ParameterLocation.Header,
+                         Description = "Please insert JWT with Bearer into field",
+                         Name = "Authorization",
+                         Type = SecuritySchemeType.ApiKey
+                    });
+                    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                       {
+                         new OpenApiSecurityScheme
+                         {
+                           Reference = new OpenApiReference
+                           {
+                             Type = ReferenceType.SecurityScheme,
+                             Id = "Bearer"
+                           }
+                          },
+                          new string[] { }
+                        }
+                      });
                });
 
                services.AddMvc(
@@ -63,6 +86,16 @@ namespace BookExchange.API
                     options.UseSqlServer(Configuration.GetConnectionString("BookExchangaDatabase"),
                     x => x.MigrationsAssembly(typeof(BookExchangeDbContext).Assembly.FullName)));
 
+               services.AddIdentity<ApplicationUser, Role>(options => {
+                    options.Password.RequiredLength = 8;
+               }).AddEntityFrameworkStores<BookExchangeDbContext>();
+
+               var authOptions = services.ConfigureAuthOptions(Configuration);
+               services.AddJwtAuthentication(authOptions);
+               services.AddControllers(options => {
+                    options.Filters.Add(new AuthorizeFilter());
+               });
+               /*
                services.AddIdentity<ApplicationUser, Role>(options => {
                     options.Password.RequireDigit = true;
                     options.Password.RequireLowercase = true;
@@ -86,7 +119,7 @@ namespace BookExchange.API
                          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is the key")),
                          ValidateIssuerSigningKey = true
                     };
-               });
+               });*/
 
                services.AddSingleton<ILogger>(svc => svc.GetRequiredService<ILogger<RequestTimeMiddleware>>());
 
@@ -101,9 +134,6 @@ namespace BookExchange.API
 
                services.AddMediatR(typeof(Application.Class1));
                services.AddAutoMapper(typeof(Application.Common.Mappings.MappingProfile).Assembly);
-               /*var mappingConfig = new MapperConfiguration(mc => { });
-               IMapper mapper = mappingConfig.CreateMapper();
-               services.AddSingleton(mapper);*/
           }
 
           // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -26,6 +26,8 @@ namespace BookExchange.Application.Common.Mappings
 
                CreateMap<CreateUserCommand, ApplicationUser>();
                CreateMap<ApplicationUser, UserDto>();
+
+               CreateMap<ApplicationUser, CreateUserCommand>();
           }
      }
 }

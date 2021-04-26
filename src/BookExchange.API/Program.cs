@@ -66,14 +66,14 @@ namespace BookExchange.API
                using (var context = new BookExchangeDbContextFactory().CreateDbContext(new string[] { }))
                {
                     context.Database.EnsureCreated();
-
+                    return;
                     // create 3 users
-                    if (!context.Users.Any())
+                    /*if (!context.Users.Any())
                     {
                          context.Users.Add(new User { Username = "admin", FirstName = "Dima", LastName = "Trubca", Password = "secret" });
                          context.Users.Add(new User { Username = "tourist", FirstName = "Genady", LastName = "Korotkevichi", Password = "secret", Points = 1 });
                          context.Users.Add(new User { Username = "jiangly", FirstName = "Petru", LastName = "Mitrivich", Password = "secret", Points = 2 });
-                    }
+                    }*/
                     context.SaveChanges();
 
                     // create user contacts

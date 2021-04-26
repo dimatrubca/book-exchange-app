@@ -12,7 +12,7 @@ namespace BookExchange.Infrastructure.Persistance
           private readonly string _connectionString;
           private DbConnection _connection;
 
-          public DbSet<User> Users { get; set; }
+          // public DbSet<User> Users { get; set; }
           public DbSet<Post> Posts { get; set; }
           public DbSet<Review> Reviews { get; set; }
           public DbSet<Deal> Deals { get; set; }
@@ -52,6 +52,8 @@ namespace BookExchange.Infrastructure.Persistance
 
           protected override void OnModelCreating(ModelBuilder modelBuilder)
           {
+               base.OnModelCreating(modelBuilder);
+
                modelBuilder.ApplyConfiguration(new UserConfig());
                modelBuilder.ApplyConfiguration(new UserContactConfig());
                modelBuilder.ApplyConfiguration(new PostConfig());
