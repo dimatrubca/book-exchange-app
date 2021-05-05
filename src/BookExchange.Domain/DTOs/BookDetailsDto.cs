@@ -8,5 +8,6 @@ namespace BookExchange.Domain.DTOs
      {
           public string Description { get; set; }
           public string Publisher { get; set; }
+          public string ImagePath { get; set; }
      }
 }

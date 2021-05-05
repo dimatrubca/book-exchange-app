@@ -11,6 +11,7 @@ namespace BookExchange.Domain.DTOs
           public string Title { get; set; }
           public string ISBN { get; set; }
           public string ShortDescription { get; set; }
+          public string ThumbnailPath { get; set; }
           public BookDetailsDto Details { get; set; }
 
           //public string Authors { get; set; }

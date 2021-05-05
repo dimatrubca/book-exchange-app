@@ -1,0 +1,3 @@
+const PostService = {};
+
+export { PostService };

@@ -6,6 +6,7 @@ using BookExchange.Domain.DTOs;
 using BookExchange.Domain.Models;
 using BookExchange.Domain.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,6 +18,7 @@ namespace BookExchange.API.Controllers
 {
      [Route("api/[controller]")]
      [ApiController]
+     [AllowAnonymous]
      public class BookController : ControllerBase
      {
           private readonly IMediator _mediator;
@@ -48,7 +50,7 @@ namespace BookExchange.API.Controllers
           [HttpPost]
           public async Task<IActionResult> Post([FromForm] CreateBookCommand command) {
                var book = await _mediator.Send(command);
-               var result = _mapper.Map<Book>(book);
+               var result = _mapper.Map<BookDto>(book);
 
                return CreatedAtAction(nameof(Get), new { id = book.Id }, result);
           }
@@ -62,7 +64,7 @@ namespace BookExchange.API.Controllers
                }
 
                var book = await _mediator.Send(command);
-               var result = _mapper.Map<Book>(book);
+               var result = _mapper.Map<BookDto>(book);
 
                return Ok(result);
           }

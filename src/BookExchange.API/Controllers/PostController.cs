@@ -11,11 +11,13 @@ using System.Threading.Tasks;
 using BookExchange.Application.Posts.Queries;
 using BookExchange.Application.Posts.Commands;
 using BookExchange.Application.Common.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookExchange.API.Controllers
 {
      [Route("api/[controller]")]
      [ApiController]
+     [AllowAnonymous]
      public class PostController : ControllerBase
      {
           private readonly IMediator _mediator;

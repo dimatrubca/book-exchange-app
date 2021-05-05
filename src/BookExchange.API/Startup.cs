@@ -32,6 +32,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using BookExchange.Application.Common.Extensions;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace BookExchange.API
 {
@@ -95,31 +96,6 @@ namespace BookExchange.API
                services.AddControllers(options => {
                     options.Filters.Add(new AuthorizeFilter());
                });
-               /*
-               services.AddIdentity<ApplicationUser, Role>(options => {
-                    options.Password.RequireDigit = true;
-                    options.Password.RequireLowercase = true;
-                    options.Password.RequiredLength = 5;
-               }).AddEntityFrameworkStores<BookExchangeDbContext>()
-                    .AddDefaultTokenProviders();
-
-
-               // configure jwt authentication
-               services.AddAuthentication(auth => {
-                    auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-               }).AddJwtBearer(options => {
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                    {
-                         ValidateIssuer = true,
-                         ValidateAudience = true,
-                         ValidAudience = "http://example.com",
-                         ValidIssuer = "http://example.com",
-                         RequireExpirationTime = true,
-                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is the key")),
-                         ValidateIssuerSigningKey = true
-                    };
-               });*/
 
                services.AddSingleton<ILogger>(svc => svc.GetRequiredService<ILogger<RequestTimeMiddleware>>());
 
@@ -146,19 +122,19 @@ namespace BookExchange.API
                     app.UseSwagger();
                     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookExchange v1"));
                }
+               
 
-
-               app.UseRequestTime();
 
                app.UseHttpsRedirection();
 
+               app.UseStaticFiles();
 
                app.UseRouting();
 
                app.UseAuthentication();
                app.UseAuthorization();
-               app.UseStaticFiles();
 
+               app.UseCors(configurePolicy => configurePolicy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
                app.UseEndpoints(endpoints => {
                     endpoints.MapControllers();
