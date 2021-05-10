@@ -33,6 +33,7 @@ type BookDetailsProps = {
 export interface PostsDialogProps {
   open: boolean;
   selectedValue: string;
+  posts: any;
   onClose: (value: string) => void;
 }
 
@@ -56,23 +57,27 @@ const PostsDialog = (props: PostsDialogProps) => {
       aria-labelledby="simple-dialog-title"
       open={open}
     >
-      <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
+      <DialogTitle id="simple-dialog-title">Book offers:</DialogTitle>
       <List>
-        {emails.map((email) => (
-          <ListItem
-            button
-            onClick={() => handleListItemClick(email)}
-            key={email}
-          >
-            <ListItemAvatar>
-              <Avatar className={classes.avatar}>
-                <PersonIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={email} />
-          </ListItem>
-        ))}
-        <ListItem
+        {props.posts &&
+          props.posts.length &&
+          props.posts.map((post: any) => (
+            <ListItem
+              button
+              onClick={() => handleListItemClick(post)}
+              key={post.id}
+            >
+              <ListItemAvatar>
+                <Avatar className={classes.avatar}>
+                  <PersonIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={post.id + " username"} />
+              <ListItemText primary={"book condition"} />
+              <Button>Send Request</Button>
+            </ListItem>
+          ))}
+        {/* <ListItem
           autoFocus
           button
           onClick={() => handleListItemClick("addAccount")}
@@ -83,7 +88,7 @@ const PostsDialog = (props: PostsDialogProps) => {
             </Avatar>
           </ListItemAvatar>
           <ListItemText primary="Add account" />
-        </ListItem>
+        </ListItem> */}
       </List>
     </Dialog>
   );
@@ -97,18 +102,32 @@ const BookDetails = (props: any) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(emails[1]);
-  const [books, setBooks] = useState([]);
+  const [posts, setPosts] = useState([]);
+
   const { id } = useParams<RouteParams>();
   console.log(id);
 
   useEffect(() => {
     let mounted = true;
-    BookService.GetBooks().then((items) => {
-      console.log("inside");
-      if (mounted) {
-        setBooks(items);
-      }
-    });
+
+    fetch(
+      "https://localhost:44348/api/post?" +
+        new URLSearchParams({
+          bookId: id,
+        })
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((posts) => {
+        if (mounted) {
+          setPosts(posts);
+        }
+      })
+      .catch((error) => console.log(error));
 
     return () => {
       mounted = false;
@@ -126,8 +145,7 @@ const BookDetails = (props: any) => {
 
   return (
     <Container>
-      {console.log(books)}
-      {console.log("...")}
+      {console.log(posts)}
       <div>
         <Grid container spacing={10}>
           <Grid item md={3}>
@@ -161,6 +179,7 @@ const BookDetails = (props: any) => {
               Post
             </Button>
             <PostsDialog
+              posts={posts}
               selectedValue={selectedValue}
               open={open}
               onClose={handleClose}

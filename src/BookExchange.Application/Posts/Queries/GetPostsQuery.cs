@@ -10,6 +10,7 @@ namespace BookExchange.Application.Posts.Queries
      {
           public int? PostedById { get; set; }
           public int? ConditionId { get; set; }
+          public int? BookId { get; set; }
           public PostStatus? Status { get; set; } = PostStatus.Enabled;
 
      }

@@ -87,12 +87,14 @@ namespace BookExchange.API
                     options.UseSqlServer(Configuration.GetConnectionString("BookExchangaDatabase"),
                     x => x.MigrationsAssembly(typeof(BookExchangeDbContext).Assembly.FullName)));
 
+
+
+               var authOptions = services.ConfigureAuthOptions(Configuration);
+               services.AddJwtAuthentication(authOptions);
                services.AddIdentity<ApplicationUser, Role>(options => {
                     options.Password.RequiredLength = 8;
                }).AddEntityFrameworkStores<BookExchangeDbContext>();
 
-               var authOptions = services.ConfigureAuthOptions(Configuration);
-               services.AddJwtAuthentication(authOptions);
                services.AddControllers(options => {
                     options.Filters.Add(new AuthorizeFilter());
                });

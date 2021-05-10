@@ -33,6 +33,9 @@ namespace BookExchange.Application.Posts.Queries
                if (request.Status != null)
                     predicate = predicate.AndAlso(p => p.Status == request.Status);
 
+               if (request.BookId != null)
+                    predicate = predicate.AndAlso(p => p.BookId == request.BookId);
+
                var posts = _postRepository.GetAllByCondition(predicate);
 
                return Task.FromResult(posts);

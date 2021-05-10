@@ -24,16 +24,16 @@ const headersData = [
     href: "/",
   },
   {
-    label: "Add Book",
+    label: "Request Book",
     href: "/search",
   },
   {
-    label: "Request Book",
+    label: "Post Book",
     href: "/post-book",
   },
   {
-    label: "Contact",
-    href: "/about",
+    label: "Add book",
+    href: "/add-book",
   },
 ];
 
@@ -153,7 +153,7 @@ const Navbar = () => {
     return (
       <>
         {buttons}
-        {signUpButton}
+        {/* {signUpButton} */}
       </>
     );
   };
