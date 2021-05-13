@@ -33,6 +33,8 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using BookExchange.Application.Common.Extensions;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using BookExchange.API.Identity;
+using IdentityUser = BookExchange.API.Identity.IdentityUser;
 
 namespace BookExchange.API
 {
@@ -87,13 +89,19 @@ namespace BookExchange.API
                     options.UseSqlServer(Configuration.GetConnectionString("BookExchangaDatabase"),
                     x => x.MigrationsAssembly(typeof(BookExchangeDbContext).Assembly.FullName)));
 
+               services.AddDbContext<IdentityContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("IdentityDatabase"),
+                    x => x.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)));
 
+               services.AddIdentity<IdentityUser, IdentityRole>(options => {
+                    options.Password.RequiredLength = 5;
+               }).AddEntityFrameworkStores<IdentityContext>()
+                 .AddDefaultTokenProviders();
 
                var authOptions = services.ConfigureAuthOptions(Configuration);
                services.AddJwtAuthentication(authOptions);
-               services.AddIdentity<ApplicationUser, Role>(options => {
-                    options.Password.RequiredLength = 8;
-               }).AddEntityFrameworkStores<BookExchangeDbContext>();
+
+               services.AddHttpContextAccessor();
 
                services.AddControllers(options => {
                     options.Filters.Add(new AuthorizeFilter());
@@ -125,8 +133,6 @@ namespace BookExchange.API
                     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookExchange v1"));
                }
                
-
-
                app.UseHttpsRedirection();
 
                app.UseStaticFiles();

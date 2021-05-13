@@ -7,19 +7,77 @@ import RemoveIcon from "@material-ui/icons/Remove";
 import SendIcon from "@material-ui/icons/Send";
 import AddIcon from "@material-ui/icons/Add";
 
-import { Container, TextField } from "@material-ui/core";
+import {
+  Box,
+  Container,
+  Divider,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 
 import { v4 as uuidv4 } from "uuid";
 
 import { useStyles } from "./post-books.styles";
+import { BookCard, BookCardProps } from "../../components/book-card";
+import { BookService } from "../../services";
+
+const books: BookCardProps[] = [
+  {
+    id: 1,
+    title: "Essentialism",
+    authors: ["Greg McKeown"],
+    categories: ["Self-help"],
+    isbn: "9381723333123",
+    thumbnailPath:
+      "https://images-na.ssl-images-amazon.com/images/I/41TVwg27ujL._SX331_BO1,204,203,200_.jpg",
+  },
+  {
+    id: 2,
+    title: "War and Peace",
+    authors: ["Leo Tolstoy"],
+    categories: ["Novel"],
+    isbn: "9780786112517",
+    thumbnailPath: "https://images.penguinrandomhouse.com/cover/9781400079988",
+  },
+  {
+    id: 3,
+    title: "A Confession",
+    authors: ["Leo Tolstoy"],
+    categories: ["Novel", "Fiction"],
+    isbn: "9788807900501",
+    thumbnailPath:
+      "https://images-na.ssl-images-amazon.com/images/I/51ZyeQWzSPL._SX331_BO1,204,203,200_.jpg",
+  },
+  {
+    id: 4,
+    title: "The Cossacks",
+    authors: ["Greg McKeown"],
+    categories: ["Novel", "Fiction", "Novella"],
+    isbn: "9780786105236",
+    thumbnailPath:
+      "https://m.media-amazon.com/images/I/51zJRaQ-0ML._SL500_.jpg",
+  },
+];
 
 const PostBooks = () => {
   const classes = useStyles();
   const [inputFields, setInputFields] = useState([{ id: uuidv4(), isbn: "" }]);
+  const [booksToAdd, setBooksToAdd] = useState([]);
+  const [notFoundBooks, setNotFoundBooks] = useState([]);
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     console.log("ISBNs", inputFields);
+
+    try {
+      var books = BookService.GetBooksByISBN(
+        inputFields.map((field) => field.isbn)
+      );
+
+      // setBooksToAdd(books);
+    } catch (e) {
+      console.log("error while fetching books");
+    }
   };
 
   const handleChangeInput = (
@@ -51,7 +109,13 @@ const PostBooks = () => {
 
   return (
     <Container>
-      <h2>Post books</h2>
+      <Typography className={classes.pageTitle} variant="h2">
+        Add Books To Your Bookshelf
+      </Typography>
+      <Typography className={classes.subTitle}>
+        Enter below the ISBN of the books you want to add to your bookshelf. You
+        can find it on the back of the cover .
+      </Typography>
       <form className={classes.root} onSubmit={handleSubmit}>
         {inputFields.map((inputField) => (
           <div key={inputField.id}>
@@ -84,28 +148,29 @@ const PostBooks = () => {
           onClick={handleSubmit}
           endIcon={<SendIcon />}
         >
-          Send
+          Submit
         </Button>
       </form>
 
-      {/* <BookCard
-        id={1}
-        title="Essentialism"
-        authors={["Greg McKeown"]}
-        categories={["Self development"]}
-        isbn="1012223312345"
-      /> */}
+      {books.map((book) => (
+        <Box my={3} key={book.id}>
+          <BookCard {...book} />
+        </Box>
+      ))}
 
-      {/* <List dense className={classes.root}>
-                {[0, 1, 2, 3].map((value) => {
-                    const labelId = 1;
-                    return (
-                        <ListItem key={value} button>
-                            <ListItemAvatar
-                        </ListItem>
-                    );
-                })}
-            </List> */}
+      {notFoundBooks && (
+        <div>
+          <Typography variant="h2">Add Manually</Typography>
+          <Typography component="p">
+            {notFoundBooks.length} of your books weren't found in our Database.
+            You can still add them manually
+          </Typography>
+
+          <Button variant="contained" color="primary" component="span">
+            Add Book Manually
+          </Button>
+        </div>
+      )}
     </Container>
   );
 };

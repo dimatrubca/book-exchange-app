@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Application.Users.Commands
 {
-     class LogginUserCommandHandler : IRequestHandler<LogginUserCommand, string>
+    /* class LogginUserCommandHandler : IRequestHandler<LogginUserCommand, string>
      {
           private readonly SignInManager<ApplicationUser> _signInManager;
           private readonly AuthOptions _authenticationOptions;
@@ -48,5 +48,5 @@ namespace BookExchange.Application.Users.Commands
 
                return await Task.FromResult(encodedToken);
           }
-     }
+     }*/
 }

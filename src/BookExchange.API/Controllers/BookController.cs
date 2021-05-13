@@ -18,7 +18,7 @@ namespace BookExchange.API.Controllers
 {
      [Route("api/[controller]")]
      [ApiController]
-     [AllowAnonymous]
+     [Authorize]
      public class BookController : ControllerBase
      {
           private readonly IMediator _mediator;
@@ -31,20 +31,22 @@ namespace BookExchange.API.Controllers
           }
 
           [HttpGet("{id}")]
+          [AllowAnonymous]
           public async Task<IActionResult> Get(int id, bool includeDetails) {
                var book = await _mediator.Send(new GetBookQuery { Id=id, IncludeDetails=includeDetails });
                var bookDto = _mapper.Map<BookDto>(book);
-
+              
                return Ok(bookDto);
           } 
 
 
           [HttpGet]
+          [Authorize]
           public async Task<IActionResult> GetAll([FromQuery] GetBooksQuery query) {
-               List<Book> books = await _mediator.Send(query);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           List<Book> books = await _mediator.Send(query);
                var result = books.Select(b => _mapper.Map<BookDto>(b));
 
-               return Ok(result);
+               return Ok(result);                
           }
 
           [HttpPost]

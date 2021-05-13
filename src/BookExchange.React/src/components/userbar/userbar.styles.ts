@@ -4,6 +4,7 @@ const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     justifyContent: "flex-end",
+    marginBottom: "20px",
   },
 
   linkItem: {

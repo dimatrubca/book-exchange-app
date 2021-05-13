@@ -1,5 +1,5 @@
 import { Button, TextField } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useStyles } from "./sign-in-form.styles";
 import { Account } from "../../types";
 import { AccountService } from "../../services";
+import { AuthContext } from "../../context";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username is required"),
@@ -15,6 +16,7 @@ const schema = yup.object().shape({
 
 const SignInForm = ({ handleClose }: any) => {
   const classes = useStyles();
+  const authContext = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -25,8 +27,19 @@ const SignInForm = ({ handleClose }: any) => {
 
   const onSubmit = async (data: Account.SignInData) => {
     console.log(data);
-    const token = await AccountService.SignIn(data);
-    console.log("Token: ", token);
+
+    try {
+      console.log("starting");
+      const token = await AccountService.SignIn(data);
+      console.log(token);
+      authContext.login(token.accessToken);
+      console.log("Token: ", token, token.accessToken);
+      console.log(authContext.login);
+      console.log(authContext.isLoggedIn);
+      console.log(authContext.token);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

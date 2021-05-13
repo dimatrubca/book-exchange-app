@@ -1,1 +1,3 @@
-export * from "./userContext";
+export * from "./authContext";
+
+export { AuthContext } from "./authContext";

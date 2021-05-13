@@ -1,10 +1,15 @@
-import { Container, useMediaQuery, useTheme } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import { Link as RouterLink } from "@material-ui/core";
-import React from "react";
-import { userContext } from "../../context";
+import React, { useContext } from "react";
+import { AuthContext } from "../../context";
 import { useStyles } from "./userbar.styles";
 
-const headersData = [
+interface NavData {
+  label: string;
+  href: string;
+}
+
+const navData: NavData[] = [
   {
     label: "Sign In",
     href: "/sign-in",
@@ -15,7 +20,7 @@ const headersData = [
   },
 ];
 
-const headersDataLoggedIn = [
+const navDataLoggedIn: NavData[] = [
   {
     label: "Wishlist",
     href: "/wishlist",
@@ -24,24 +29,14 @@ const headersDataLoggedIn = [
     label: "Post",
     href: "/add-book",
   },
-  {
-    label: "Sign Out",
-    href: "/sign-out",
-  },
 ];
-
-//     key = 'label'
-//     color = "inherit"
-//     href = {href}
-//     component = {RouterLink}
 
 const Userbar = () => {
   const classes = useStyles();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const authContext = useContext(AuthContext);
 
-  const getMenuItems = () => {
-    return headersData.map(({ label, href }) => {
+  const getNavItems = (data: NavData[]) => {
+    return data.map(({ label, href }) => {
       return (
         <RouterLink key={label} href={href} className={classes.linkItem}>
           {label}
@@ -52,11 +47,21 @@ const Userbar = () => {
 
   return (
     <>
-      <userContext.Consumer>
-        {({ user }) => JSON.stringify(user)}
-      </userContext.Consumer>
       <Container className={classes.root}>
-        {!isMobile && getMenuItems()}
+        {!authContext.isLoggedIn ? (
+          getNavItems(navData)
+        ) : (
+          <>
+            {getNavItems(navDataLoggedIn)}
+            <RouterLink
+              href="#"
+              className={classes.linkItem}
+              onClick={authContext.logout}
+            >
+              Sign Out
+            </RouterLink>
+          </>
+        )}
       </Container>
     </>
   );

@@ -1,15 +1,21 @@
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        '& .MuiTextField-root': {
-            margin: theme.spacing(1),
-        },
+  root: {
+    "& .MuiTextField-root": {
+      marginBottom: theme.spacing(1),
     },
-    button: {
-        margin: theme.spacing(1)
-    }
-}))
+  },
+  pageTitle: {
+    marginBottom: theme.spacing(2),
+  },
+  subTitle: {
+    marginBottom: theme.spacing(1),
+  },
 
+  button: {
+    marginBottom: theme.spacing(5),
+  },
+}));
 
-export { useStyles }
+export { useStyles };

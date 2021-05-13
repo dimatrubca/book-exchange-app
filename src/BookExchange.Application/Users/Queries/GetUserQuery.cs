@@ -7,7 +7,7 @@ using System.Text;
 
 namespace BookExchange.Application.Users.Queries
 {
-     public class GetUserQuery : IRequest<ApplicationUser>
+     public class GetUserQuery : IRequest<User>
      {
           public int Id { get; set; }
      }

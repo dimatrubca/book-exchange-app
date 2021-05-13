@@ -10,6 +10,9 @@ import {
   ListItemAvatar,
   Typography,
 } from "@material-ui/core";
+import { DataGrid } from "@material-ui/data-grid";
+import { useDemoData } from "@material-ui/x-grid-data-generator";
+
 import React, { useEffect, useState } from "react";
 import PersonIcon from "@material-ui/icons/Person";
 import AddIcon from "@material-ui/icons/Add";
@@ -104,6 +107,11 @@ const BookDetails = (props: any) => {
   const [selectedValue, setSelectedValue] = useState(emails[1]);
   const [posts, setPosts] = useState([]);
 
+  const { data } = useDemoData({
+    dataSet: "Commodity",
+    rowLength: 100,
+    maxColumns: 6,
+  });
   const { id } = useParams<RouteParams>();
   console.log(id);
 
@@ -187,6 +195,21 @@ const BookDetails = (props: any) => {
           </Grid>
         </Grid>
       </div>
+      <div style={{ height: 400, width: "100%" }}>
+        <DataGrid
+          {...data}
+          filterModel={{
+            items: [
+              {
+                columnField: "commodity",
+                operatorValue: "contains",
+                value: "rice",
+              },
+            ],
+          }}
+        />
+      </div>
+      );
     </Container>
   );
 };

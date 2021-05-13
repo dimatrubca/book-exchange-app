@@ -18,6 +18,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityUser = BookExchange.API.Identity.IdentityUser;
 
 namespace BookExchange.API.Controllers
 {
@@ -28,50 +29,71 @@ namespace BookExchange.API.Controllers
 
           private readonly IMediator _mediator;
           private readonly IMapper _mapper;
-          private readonly UserManager<ApplicationUser> _userManager;
 
-          public UserController(IMediator mediator, IMapper mapper, UserManager<ApplicationUser> userManager)
+          public UserController(IMediator mediator, IMapper mapper, UserManager<IdentityUser> userManager)
           {
                _mediator = mediator;
                _mapper = mapper;
-               _userManager = userManager;
           }
 
-          [AllowAnonymous]
-          [HttpPost("login")]
-          public async Task<IActionResult> Login(LogginUserCommand command)
+          [HttpGet("current-user")]
+          public async Task<IActionResult> GetCurrentUser()
           {
-               var encodedToken = await _mediator.Send(command);
+               var user = await _mediator.Send(new GetCurrentUserQuery());
+               var result = _mapper.Map<UserDto>(user); // TODO: check user dto
 
-               if (encodedToken == null) {
-                    return Unauthorized();
-               }
-               return Ok(new { AccessToken = encodedToken });
-               }
+               return Ok(result);
+          }
 
-          [AllowAnonymous]
-          [HttpPost("register")]
-          public async Task<ActionResult> Register(CreateUserCommand command)
+
+          [HttpPost()]
+          public async Task<IActionResult> CreateUser()
           {
-               var user = await _mediator.Send(command);
+               var user = await _mediator.Send(new CreateUserCommand());
 
                return Ok();
           }
 
-          
           [HttpGet("id")]
-          [Authorize]
-          public async Task<IActionResult> Get(int id)
+          public async Task<IActionResult> GetUser()
           {
-               Console.WriteLine(id);
+               var user = await _mediator.Send(new GetUserQuery());
+               var result = _mapper.Map<UserDto>(user); // TODO: check user dto
+
+               return Ok(result);
+          }
+
+          [HttpGet]
+          public async Task<IActionResult> GetAllUsers()
+          {
+               var users = await _mediator.Send(new GetUsersQuery());
+               var result = _mapper.Map<ICollection<UserDto>>(users); // TODO: check syntax
+
+               return Ok(result);
+          }
+               
+
+          [HttpDelete]
+          public async Task<IActionResult> DeleteUser()
+          {
+               await _mediator.Send(new DeleteUserCommand());
+
+               return NoContent();
+          }
+          
+         /* [HttpGet("id1")]
+          [Authorize]
+          public async Task<IActionResult> Get(int id)*/
+          //{
+              /* Console.WriteLine(id);
                string myId = _userManager.GetUserId(HttpContext.User);
                var userID = User.Claims.Where(a => a.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
 
-               return Ok(new { Id = myId });
+               return Ok(new { Id = myId });*/
                //var user = await _mediator.Send(new GetUserQuery { Id = id });
                //var result = _mapper.Map<UserDto>(user);
 
                //return Ok(result);
-          }
+          /*}*/
      }
 };

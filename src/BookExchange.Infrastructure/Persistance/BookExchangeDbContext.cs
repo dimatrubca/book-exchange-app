@@ -7,12 +7,12 @@ using System.Data.Common;
 
 namespace BookExchange.Infrastructure.Persistance
 {
-     public class BookExchangeDbContext : IdentityDbContext<ApplicationUser, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
+     public class BookExchangeDbContext : DbContext
      {
           private readonly string _connectionString;
           private DbConnection _connection;
 
-          // public DbSet<User> Users { get; set; }
+          public DbSet<User> Users { get; set; }
           public DbSet<Post> Posts { get; set; }
           public DbSet<Review> Reviews { get; set; }
           public DbSet<Deal> Deals { get; set; }

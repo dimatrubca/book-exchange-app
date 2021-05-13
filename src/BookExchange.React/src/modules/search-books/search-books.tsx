@@ -1,6 +1,13 @@
-import React from "react";
-import { Container, Typography, Link, Box } from "@material-ui/core";
+import React, { useState } from "react";
+import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from "@material-ui/icons/Search";
+
+import { Container, Typography, Link, Box, TextField } from "@material-ui/core";
 import { BookCard, BookCardProps } from "../../components/book-card";
+import { useStyles } from "./search-books.styles";
+import { AdvancedSearchOptions } from "./components";
+import { BookService } from "services";
 
 const books: BookCardProps[] = [
   {
@@ -41,17 +48,40 @@ const books: BookCardProps[] = [
 ];
 
 const SearchBooks = () => {
-  const preventDefault = (event: React.SyntheticEvent) =>
-    event.preventDefault();
+  const classes = useStyles();
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const handleSearch = async () => {
+    try {
+      console.log("searching books: " + searchTerm);
+      var books = await BookService.GetBooksBySearch(searchTerm);
+      console.log(books);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <Container>
-      Search
-      <Typography variant="body2">
-        <Link href="#" onClick={preventDefault}>
-          Advanced Search
-        </Link>
-      </Typography>
+      <TextField
+        className={classes.mainSearchbar}
+        fullWidth={true}
+        variant="outlined"
+        label="Search"
+        onChange={(e) => setSearchTerm(e.target.value)}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={handleSearch}>
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+
+      <AdvancedSearchOptions />
+
       {books.map((book) => (
         <Box my={3} key={book.id}>
           <BookCard {...book} />

@@ -10,4 +10,13 @@ export declare module Account {
     password: string;
     confirmPassword: string;
   };
+
+  export type UserInfo = {
+    username: string | null;
+    fistName: string | null;
+    lastName: string | null;
+    email: string | null;
+    points: number | null;
+    address: string | null;
+  };
 }

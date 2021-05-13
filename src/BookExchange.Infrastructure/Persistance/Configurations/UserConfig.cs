@@ -23,9 +23,6 @@ namespace BookExchange.Infrastructure.Persistance.Configurations
                     .IsRequired()
                     .HasMaxLength(100);
 
-               builder.Property(x => x.Password)
-                    .IsRequired()
-                    .HasMaxLength(128);
 
                builder.Property(x => x.Username)
                     .IsRequired()

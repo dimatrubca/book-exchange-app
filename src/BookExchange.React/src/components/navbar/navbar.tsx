@@ -21,7 +21,7 @@ import { useStyles } from "./navbar.styles";
 const headersData = [
   {
     label: "Home",
-    href: "/",
+    href: "/home",
   },
   {
     label: "Request Book",
