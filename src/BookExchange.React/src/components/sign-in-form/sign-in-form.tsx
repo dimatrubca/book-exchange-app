@@ -43,30 +43,33 @@ const SignInForm = ({ handleClose }: any) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <TextField
-        {...register("username")}
-        label="Username"
-        fullWidth
-        helperText={errors.username?.message}
-      />
-      <br />
-      <br />
-      <TextField
-        {...register("password")}
-        label="Password"
-        type="password"
-        fullWidth
-        helperText={errors.password?.message}
-      />
-      <br />
-      <br />
-      <div>
-        <Button type="submit" variant="contained" color="primary">
-          Sign In
-        </Button>
-      </div>
-    </form>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextField
+          {...register("username")}
+          label="Username"
+          fullWidth
+          helperText={errors.username?.message}
+        />
+        <br />
+        <br />
+        <TextField
+          {...register("password")}
+          label="Password"
+          type="password"
+          fullWidth
+          helperText={errors.password?.message}
+        />
+        <br />
+        <br />
+        <div>
+          <Button type="submit" variant="contained" color="primary">
+            Sign In
+          </Button>
+        </div>
+      </form>
+      <Button>Facebook login</Button>
+    </>
   );
 };
 

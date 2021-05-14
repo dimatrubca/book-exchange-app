@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using BookExchange.Application.Books.Commands;
+using BookExchange.Application.Filter;
 using BookExchange.Application.Posts.Commands;
 using BookExchange.Application.Users.Commands;
 using BookExchange.Domain.Auth;
 using BookExchange.Domain.DTOs;
 using BookExchange.Domain.Models;
+using BookExchange.Domain.Queries;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,9 +27,12 @@ namespace BookExchange.Application.Common.Mappings
                CreateMap<ReplacePostCommand, Post>();
 
                CreateMap<CreateUserCommand, ApplicationUser>();
-               CreateMap<ApplicationUser, UserDto>();
+               CreateMap<User, UserDto>();
+               CreateMap<UserContact, UserContactDto>();
 
                CreateMap<ApplicationUser, CreateUserCommand>();
+
+               CreateMap<BookFilter, GetBooksQuery>();
           }
      }
 }

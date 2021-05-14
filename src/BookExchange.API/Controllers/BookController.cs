@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BookExchange.Application.Books.Commands;
 using BookExchange.Application.Common.Exceptions;
+using BookExchange.Application.Filter;
+using BookExchange.Application.Wrappers;
 using BookExchange.Domain.Commands;
 using BookExchange.Domain.DTOs;
 using BookExchange.Domain.Models;
@@ -36,17 +38,18 @@ namespace BookExchange.API.Controllers
                var book = await _mediator.Send(new GetBookQuery { Id=id, IncludeDetails=includeDetails });
                var bookDto = _mapper.Map<BookDto>(book);
               
-               return Ok(bookDto);
+               return Ok(new Response<BookDto>(bookDto));
           } 
 
 
           [HttpGet]
-          [Authorize]
-          public async Task<IActionResult> GetAll([FromQuery] GetBooksQuery query) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           List<Book> books = await _mediator.Send(query);
-               var result = books.Select(b => _mapper.Map<BookDto>(b));
+          [AllowAnonymous]
+          public async Task<IActionResult> GetAll([FromQuery] BookFilter bookFilter) {
+               GetBooksQuery query = _mapper.Map<GetBooksQuery>(bookFilter);
+               List<Book> books = await _mediator.Send(query);
+               var result = books.Select(b => _mapper.Map<BookDto>(b)).ToList();
 
-               return Ok(result);                
+               return Ok(new PagedResponse<List<BookDto>>(result, bookFilter.PageNumber, bookFilter.PageSize));                
           }
 
           [HttpPost]

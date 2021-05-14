@@ -94,5 +94,7 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
                _context.SaveChangesWithIdentityInsert<T>();
           }
 
+          Expression<Func<Book, bool>> predicate
+
      }
 }

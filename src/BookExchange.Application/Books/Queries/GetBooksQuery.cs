@@ -12,12 +12,14 @@ namespace BookExchange.Domain.Queries
      {
           public bool IncludeDetails { get; set; }
 
-          // filter options:
           public string ISBN { get; set; }
           public string Title { get; set; }
           public string Author { get; set; }
+          public string Condition { get; set; }
           public string Category { get; set; }
-          public int MinBookPageCount { get; set; }
-          public int MaxBookPageCount { get; set; } = int.MaxValue;
+          public string Publisher { get; set; }
+          public string Description { get; set; }
+          public int MinPageCount { get; set; }
+          public int MaxPageCount { get; set; } = int.MaxValue;
      }
 }

@@ -7,5 +7,6 @@ namespace BookExchange.Domain.Interfaces
 {
      public interface IUserRepository : IRepositoryBase<User>
      {
+          public User GetUserByIdentityId(string id);
      }
 }

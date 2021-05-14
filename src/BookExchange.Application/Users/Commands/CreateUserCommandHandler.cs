@@ -4,6 +4,7 @@ using BookExchange.Application.Common.Extensions;
 using BookExchange.Domain.Auth;
 using BookExchange.Domain.Interfaces;
 using BookExchange.Domain.Models;
+using IdentityModel;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -19,25 +20,23 @@ namespace BookExchange.Application.Users.Commands
      class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, User>
      {
           private readonly IMapper _mapper;
-          private readonly IHttpContextAccessor _accessor;
+          private readonly IHttpContextAccessor contextAccessor;
           private readonly IUserRepository _userRepository;
 
           public CreateUserCommandHandler(IMapper mapper, IHttpContextAccessor accessor, IUserRepository userRepository)
           {
                _mapper = mapper;
-               _accessor = accessor;
+               contextAccessor = accessor;
                _userRepository = userRepository;
           }
 
           public async Task<User> Handle(CreateUserCommand request, CancellationToken cancellationToken)
           {
-               var contextUser = _accessor.HttpContext.User;
+               var claims = contextAccessor.HttpContext.User.Claims;
 
-               string identityId = contextUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-               string email = contextUser.FindFirst(ClaimTypes.Email).Value;
-               string username = contextUser.FindFirst(ClaimTypes.Name).Value;
-               string firstName = contextUser.Identity.FirstName();
-               string lastName = contextUser.Identity.LastName();
+               string identityId = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Id).Value;
+               string email = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Email).Value;
+               string username = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name).Value;
 
                if (CheckUserWithUsernameExists(username))
                {
@@ -53,8 +52,6 @@ namespace BookExchange.Application.Users.Commands
                {
                     IdentityId = identityId,
                     Username = username,
-                    FirstName= firstName,
-                    LastName= lastName,
                     UserContact = new UserContact
                     {
                          Email = email

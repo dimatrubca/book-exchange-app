@@ -1,6 +1,8 @@
 ﻿using BookExchange.API.Identity;
 using BookExchange.API.Identity.DTOs;
 using BookExchange.Application.Common.Configurations;
+using IdentityServer4;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -19,7 +21,10 @@ namespace BookExchange.API.Controllers
 {
      [Route("api/[controller]")]
      [ApiController]
-     [AllowAnonymous]
+     //[Authorize(AuthenticationSchemes = "Bearer")]
+     // [Authorize]
+     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+
      public class IdentityController : ControllerBase
      {
           private readonly SignInManager<IdentityUser> _signInManager;
@@ -40,15 +45,31 @@ namespace BookExchange.API.Controllers
                return new JsonResult(from c in User.Claims select new { c.Type, c.Value });
           }
 
+          /////////////////////////////// test routes
+          [Authorize(Roles = "user")]
+          [HttpGet("user")]
+          public IActionResult GetBasic() {
+               return Ok(new { Role=  "Basic" });
+          }
+
+          [Authorize(Roles = "admin")]
+          [HttpGet("admin")]
+          public IActionResult GetAdmin()
+          {
+               return Ok(new { Role = "admin" });
+          }
+
           [HttpPost("register")]
+          ///////////////////////////////
+
+
+          [AllowAnonymous]
           public async Task<IActionResult> Register(RegisterIdentityUserDto userDto)
           {
                var user = new IdentityUser
                {
                     UserName = userDto.Username,
-                    Email = userDto.Email,
-                    FirstName = userDto.FirstName,
-                    LastName = userDto.LastName
+                    Email = userDto.Email
                };
 
                var result = await _userManager.CreateAsync(user, userDto.Password);
@@ -60,29 +81,5 @@ namespace BookExchange.API.Controllers
                return BadRequest(result.Errors);
           }
 
-          [HttpPost("login")]
-          public async Task<IActionResult> Login(LoginIdentityUserDto userDto)
-          { 
-               var checkingPassword = await _signInManager.PasswordSignInAsync(userDto.Username, userDto.Password, false, false);
-
-               if (!checkingPassword.Succeeded)
-               {
-                    return Unauthorized();
-               }
-
-               var signInCredentials = new SigningCredentials(_authenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
-               var jwtSecurityToken = new JwtSecurityToken(
-                    issuer: _authenticationOptions.Issuer,
-                    audience: _authenticationOptions.Audience,
-                    claims: new List<Claim>(),
-                    expires: DateTime.Now.AddDays(30),
-                    signingCredentials: signInCredentials
-               );
-
-               var tokenHandler = new JwtSecurityTokenHandler();
-               var encodedToken = tokenHandler.WriteToken(jwtSecurityToken);
-
-               return Ok(new { AccessToken = encodedToken});
-          }
      }
 }

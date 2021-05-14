@@ -5,6 +5,7 @@ using BookExchange.Application.Users.Queries;
 using BookExchange.Domain.Auth;
 using BookExchange.Domain.DTOs;
 using BookExchange.Domain.Models;
+using IdentityServer4;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,7 @@ namespace BookExchange.API.Controllers
 {
      [Route("api/[controller]")]
      [ApiController]
+     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
      public class UserController : ControllerBase
      {
 
@@ -58,7 +60,7 @@ namespace BookExchange.API.Controllers
           public async Task<IActionResult> GetUser()
           {
                var user = await _mediator.Send(new GetUserQuery());
-               var result = _mapper.Map<UserDto>(user); // TODO: check user dto
+               var result = _mapper.Map<UserDto>(user);
 
                return Ok(result);
           }

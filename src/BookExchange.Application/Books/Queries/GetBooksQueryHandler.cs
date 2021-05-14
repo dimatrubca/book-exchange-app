@@ -26,8 +26,8 @@ namespace BookExchange.Service.Services
 
           public Task<List<Book>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
           {
-               Expression<Func<Book, bool>> predicate = (b => b.Details.PageCount >= request.MinBookPageCount
-                                                                 && b.Details.PageCount <= request.MaxBookPageCount);
+               Expression<Func<Book, bool>> predicate = (b => b.Details.PageCount >= request.MinPageCount
+                                                                 && b.Details.PageCount <= request.MaxPageCount);
                if (!string.IsNullOrEmpty(request.Title))
                     predicate = predicate.AndAlso(b => b.Title.Contains(request.Title));
 
@@ -36,6 +36,9 @@ namespace BookExchange.Service.Services
 
                if (!string.IsNullOrEmpty(request.Category))
                     predicate = predicate.AndAlso(b => b.Categories.Any(c => c.Label.Contains(request.Category, StringComparison.InvariantCultureIgnoreCase)));
+
+               if (!string.IsNullOrEmpty(request.Publisher))
+                    predicate = predicate.AndAlso(b => b.Details.Publisher.Contains(request.Publisher));
 
                var books = _bookRepository.GetBooksByCondition(predicate);
 

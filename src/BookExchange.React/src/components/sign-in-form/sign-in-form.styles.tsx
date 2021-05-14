@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2),
     },
   },
+
+  btnGoogleLogin: {},
 }));
 
 export { useStyles };

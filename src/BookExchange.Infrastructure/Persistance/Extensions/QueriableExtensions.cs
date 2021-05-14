@@ -14,6 +14,8 @@ namespace BookExchange.Infrastructure.Persistance.Extensions
                return query.Skip((page - 1) * pageSize).Take(pageSize);
           }
 
+          public static List<T> CreatePaginatedResult<T>
+
           public static IQueryable<T> IncludeMultiple<T>(this IQueryable<T> query,
                params Expression<Func<T, object>>[] includes) where T : class
           {
