@@ -17,6 +17,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-router": "^5.1.13",
+    "clsx": "^1.1.1",
     "material-ui-icons": "^1.0.0-beta.36",
     "material-ui-image": "^3.3.2",
     "material-ui-search-bar": "^1.0.0",

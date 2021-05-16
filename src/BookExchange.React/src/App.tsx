@@ -15,7 +15,8 @@ import { AddBook } from "./modules/add-book";
 import { Navbar } from "./components/navbar";
 import { Userbar } from "./components/userbar";
 import { useToken } from "./hooks";
-import { SignIn } from "./modules/sign-in";
+import { SignInPage } from "./modules/sign-in-page";
+import { SignUpPage } from "modules/sign-up-page";
 
 import { AuthContext } from "./context";
 import { AccountService } from "./services";
@@ -55,7 +56,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem(`userData`);
+    const token = localStorage.getItem(`token`);
     const expirationTime = localStorage.getItem(`tokenExpirationTime`);
 
     if (token == null || expirationTime == null) return;
@@ -93,7 +94,8 @@ function App() {
           <Userbar />
           <Switch>
             <Route exact path="/home" component={HomePage} />
-            <Route exact path="/sign-in" component={SignIn} />
+            <Route exact path="/sign-in" component={SignInPage} />
+            <Route exact path="/sign-up" component={SignUpPage} />
             <Route exact path="/profile" component={ProfilePage} />
             {/* <Route exact path="/" component={Home} /> */}
             <Route exact path="/search" render={(props) => <SearchBooks />} />
