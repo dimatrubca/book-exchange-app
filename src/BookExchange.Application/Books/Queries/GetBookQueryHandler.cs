@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Service.Services
 {
-     class GetBookQueryHandler : IRequestHandler<GetBookQuery, Book>
+     public class GetBookQueryHandler : IRequestHandler<GetBookQuery, Book>
      {
           private readonly IBookRepository _bookRepository;
 

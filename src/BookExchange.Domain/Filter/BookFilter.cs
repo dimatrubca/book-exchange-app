@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookExchange.Application.Filter
+namespace BookExchange.Domain.Filter
 {
-     public class BookFilter : PaginationFilter
+     public class BookFilter : PaginationRequestFilter
      {
           public string ISBN { get; set; }
           public string Title { get; set; }

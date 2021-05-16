@@ -1,4 +1,4 @@
-import { Grid, Typography, Container } from "@material-ui/core";
+import { Grid, Typography, Container, Paper } from "@material-ui/core";
 import React from "react";
 import { useStyles } from "./header-instructions.styles";
 import { InstructionItem, InstructionItemProps } from "./instruction-item";
@@ -23,30 +23,32 @@ const HeaderInstructions = () => {
 
   return (
     <Container>
-      <Grid container spacing={10}>
-        <Grid item sm={4} className={classes.rightBorder}>
-          <Typography variant="h4">SEARCH</Typography>
-          <Typography className="instruction-text" variant="body1">
-            30+ buyback vendors
-          </Typography>
+      <Paper>
+        <Grid container spacing={10}>
+          <Grid item sm={4} className={classes.rightBorder}>
+            <Typography variant="h4">SEARCH</Typography>
+            <Typography className="instruction-text" variant="body1">
+              30+ buyback vendors
+            </Typography>
+          </Grid>
+          <Grid item sm={4} className={classes.rightBorder}>
+            <Typography className="instruction-title" variant="h4">
+              SEARCH
+            </Typography>
+            <Typography className="instruction-text" variant="body1">
+              30+ buyback vendors
+            </Typography>
+          </Grid>
+          <Grid item sm={4}>
+            <Typography className="instruction-title" variant="h4">
+              SEARCH
+            </Typography>
+            <Typography className="instruction-text" variant="body1">
+              30+ buyback vendors
+            </Typography>
+          </Grid>
         </Grid>
-        <Grid item sm={4} className={classes.rightBorder}>
-          <Typography className="instruction-title" variant="h4">
-            SEARCH
-          </Typography>
-          <Typography className="instruction-text" variant="body1">
-            30+ buyback vendors
-          </Typography>
-        </Grid>
-        <Grid item sm={4}>
-          <Typography className="instruction-title" variant="h4">
-            SEARCH
-          </Typography>
-          <Typography className="instruction-text" variant="body1">
-            30+ buyback vendors
-          </Typography>
-        </Grid>
-      </Grid>
+      </Paper>
     </Container>
   );
 };

@@ -10,8 +10,9 @@ namespace BookExchange.Domain.DTOs
      {
           public int Id { get; set; }
           public int BookId { get; set; }
-          public int PostedById { get; set; }
-          public int ConditionId { get; set; }
+          public string Condition { get; set; }
+          public BookDto Book { get; set; }
+          public UserDto PostedBy { get; set; }
           public PostStatus Status { get; set; }
           public DateTime TimeAdded { get; set; }
      }

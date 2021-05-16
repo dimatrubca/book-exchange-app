@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using BookExchange.Application.Books.Commands;
 using BookExchange.Application.Common.Exceptions;
-using BookExchange.Application.Filter;
-using BookExchange.Application.Wrappers;
 using BookExchange.Domain.Commands;
 using BookExchange.Domain.DTOs;
+using BookExchange.Domain.Filter;
 using BookExchange.Domain.Models;
 using BookExchange.Domain.Queries;
+using BookExchange.Domain.Wrappers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -46,10 +46,9 @@ namespace BookExchange.API.Controllers
           [AllowAnonymous]
           public async Task<IActionResult> GetAll([FromQuery] BookFilter bookFilter) {
                GetBooksQuery query = _mapper.Map<GetBooksQuery>(bookFilter);
-               List<Book> books = await _mediator.Send(query);
-               var result = books.Select(b => _mapper.Map<BookDto>(b)).ToList();
+               var result = await _mediator.Send(query);
 
-               return Ok(new PagedResponse<List<BookDto>>(result, bookFilter.PageNumber, bookFilter.PageSize));                
+               return Ok(result);
           }
 
           [HttpPost]

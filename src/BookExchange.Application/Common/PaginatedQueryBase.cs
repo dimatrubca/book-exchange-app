@@ -2,19 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using BookExchange.Domain.Wrappers;
 
 namespace BookExchange.Domain.Queries
 {
-     public class PaginatedQueryBase<TResponse> : IRequest<TResponse>
+     public class PaginatedQueryBase<TDto> : IRequest<PagedResponse<List<TDto>>>
      {
-          const int maxPageSize = 50;
-          public int PageNumber { get; set; } = 1;
-
-          private int _pageSize = 10;
-          public int PageSize
-          {
-               get { return _pageSize; }
-               set { _pageSize = (value > maxPageSize) ? maxPageSize : value; }
-          }
+          public int PageNumber { get; set; }
+          public int PageSize { get; set; }
+          public string SortDirection { get; set; }
+          public string SortBy { get; set; }
+          public string FilterLogicalOperator { get; set; }
      }
 }

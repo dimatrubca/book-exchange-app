@@ -16,9 +16,13 @@ const HomePage = () => {
       {/* <Paper variant="outlined">
         <img src={book6} style={{ width: "100%" }} />
       </Paper> */}
-      <div>
-        <img src={book6} className={classes.topImage} />
-      </div>
+      <Box mb={10}>
+        <Container>
+          <Paper>
+            <img src={book6} className={classes.topImage} />
+          </Paper>
+        </Container>
+      </Box>
       <HeaderInstructions />
       <Container>
         <Paper>

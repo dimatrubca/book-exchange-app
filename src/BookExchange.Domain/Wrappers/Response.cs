@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookExchange.Application.Wrappers
+namespace BookExchange.Domain.Wrappers
 {
      public class Response<T>
      {

@@ -1,5 +1,8 @@
-﻿using BookExchange.Domain.Interfaces;
+﻿using AutoMapper;
+using BookExchange.Domain.Filter;
+using BookExchange.Domain.Interfaces;
 using BookExchange.Domain.Models;
+using BookExchange.Domain.Wrappers;
 using BookExchange.Infrastructure.Persistance.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using static BookExchange.Domain.Extensions;
 
 namespace BookExchange.Infrastructure.Persistance.Repositories
 {
@@ -35,6 +39,13 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
           public List<T> GetAllByCondition(Expression<Func<T, bool>> predicate)
           {
                return _entitites.Where(predicate).ToList();
+          }
+
+          // TODO: test method
+          public List<T> GetAllByConditions(List<Expression<Func<T, bool>>> predicates, List<Expression<Func<T, object>>> includes, LogicalOperator predicateLogicalOperator)
+          {
+               var predicate = CombineExpresions(predicates, predicateLogicalOperator);
+               return _entitites.IncludeMultiple<T>(includes.ToArray()).Where(predicate).ToList();
           }
 
           public List<T> GetAllByConditionWithInclude(Expression<Func<T, bool>> predicate,
@@ -94,7 +105,14 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
                _context.SaveChangesWithIdentityInsert<T>();
           }
 
-          Expression<Func<Book, bool>> predicate
+          public List<T> GetAllByConditions(List<Expression<Func<T, bool>>> predicate, List<Expression<Func<Book, object>>> includes, LogicalOperator predicateLogicalOperators)
+          {
+               throw new NotImplementedException();
+          }
 
+          public PagedResponse<List<TDto>> GetPagedData<TDto>(List<Expression<Func<T, bool>>> predicates, List<Expression<Func<T, object>>> includes, PaginationRequestFilter paginationFilter, IMapper mapper)
+          {
+               return _entitites.AsQueryable().CreatePaginatedResponse<T, TDto>(predicates, includes, paginationFilter, mapper);
+          }
      }
 }

@@ -21,6 +21,7 @@ import { AuthContext } from "./context";
 import { AccountService } from "./services";
 import { theme } from "./theme";
 import { HomePage } from "./modules/home-page/home-page";
+import { ProfilePage } from "modules/profile-page";
 
 let logoutTimer: NodeJS.Timeout;
 
@@ -93,6 +94,7 @@ function App() {
           <Switch>
             <Route exact path="/home" component={HomePage} />
             <Route exact path="/sign-in" component={SignIn} />
+            <Route exact path="/profile" component={ProfilePage} />
             {/* <Route exact path="/" component={Home} /> */}
             <Route exact path="/search" render={(props) => <SearchBooks />} />
             <Route exact path="/book/:id" component={BookDetails} />

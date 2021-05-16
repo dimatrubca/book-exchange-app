@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BookExchange.Application.Books.Commands;
-using BookExchange.Application.Filter;
+using BookExchange.Domain.Filter;
 using BookExchange.Application.Posts.Commands;
 using BookExchange.Application.Users.Commands;
 using BookExchange.Domain.Auth;
@@ -10,6 +10,7 @@ using BookExchange.Domain.Queries;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using BookExchange.Application.Posts.Queries;
 
 namespace BookExchange.Application.Common.Mappings
 {
@@ -33,6 +34,10 @@ namespace BookExchange.Application.Common.Mappings
                CreateMap<ApplicationUser, CreateUserCommand>();
 
                CreateMap<BookFilter, GetBooksQuery>();
+               CreateMap<GetBooksQuery, PaginationRequestFilter>();
+
+               CreateMap<PostFilter, GetPostsQuery>();
+               CreateMap<GetPostsQuery, PaginationRequestFilter>();
           }
      }
 }

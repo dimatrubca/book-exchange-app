@@ -10,7 +10,6 @@ import {
   ListItemAvatar,
   Typography,
 } from "@material-ui/core";
-import { DataGrid } from "@material-ui/data-grid";
 import { useDemoData } from "@material-ui/x-grid-data-generator";
 
 import React, { useEffect, useState } from "react";
@@ -21,6 +20,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { useStyles } from "./book-page.styles";
 import { BookService } from "../../services";
 import { useParams } from "react-router";
+import { PostsGrid } from "./components";
 
 type BookDetailsProps = {
   title: string;
@@ -195,20 +195,7 @@ const BookDetails = (props: any) => {
           </Grid>
         </Grid>
       </div>
-      <div style={{ height: 400, width: "100%" }}>
-        <DataGrid
-          {...data}
-          filterModel={{
-            items: [
-              {
-                columnField: "commodity",
-                operatorValue: "contains",
-                value: "rice",
-              },
-            ],
-          }}
-        />
-      </div>
+      <PostsGrid />
       );
     </Container>
   );

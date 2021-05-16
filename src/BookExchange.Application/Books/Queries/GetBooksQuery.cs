@@ -1,4 +1,5 @@
-﻿using BookExchange.Domain.Models;
+﻿using BookExchange.Domain.DTOs;
+using BookExchange.Domain.Models;
 using BookExchange.Domain.Parameters;
 using MediatR;
 using System;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace BookExchange.Domain.Queries
 {
-     public class GetBooksQuery : IRequest<List<Book>>
+     public class GetBooksQuery : PaginatedQueryBase<BookDto>
      {
           public bool IncludeDetails { get; set; }
 
@@ -21,5 +22,6 @@ namespace BookExchange.Domain.Queries
           public string Description { get; set; }
           public int MinPageCount { get; set; }
           public int MaxPageCount { get; set; } = int.MaxValue;
+
      }
 }

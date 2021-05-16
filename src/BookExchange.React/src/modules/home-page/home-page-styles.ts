@@ -4,7 +4,6 @@ import { blue } from "@material-ui/core/colors";
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      marginTop: "-67px",
       zIndex: -100,
       position: "relative",
       width: "100%",

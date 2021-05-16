@@ -12,6 +12,7 @@ using BookExchange.Application.Posts.Queries;
 using BookExchange.Application.Posts.Commands;
 using BookExchange.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using BookExchange.Domain.Filter;
 
 namespace BookExchange.API.Controllers
 {
@@ -39,9 +40,9 @@ namespace BookExchange.API.Controllers
 
           [HttpGet]
           [ApiExceptionFilter]
-          public async Task<IActionResult> GetAll([FromQuery] GetPostsQuery query) {
-               var posts = await _mediator.Send(query);
-               var result = posts.Select(p => _mapper.Map<PostDto>(p));
+          public async Task<IActionResult> GetAll([FromQuery] PostFilter filter) {
+               GetPostsQuery query = _mapper.Map<GetPostsQuery>(filter);
+               var result = await _mediator.Send(query);
 
                return Ok(result);
           }

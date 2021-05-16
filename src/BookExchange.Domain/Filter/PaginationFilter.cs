@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookExchange.Application.Filter
+namespace BookExchange.Domain.Filter
 {
      public class PaginationFilter
      {
@@ -40,6 +40,9 @@ namespace BookExchange.Application.Filter
 
                }
           }
+
+          public string SortDirection { get; set; }
+          public string SortBy { get; set; }
 
           public PaginationFilter()
           {

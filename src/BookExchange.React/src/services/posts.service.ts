@@ -1,4 +1,4 @@
-const API_BASE_URL = `https://localhost:44348/api/`;
+const API_BASE_URL = `https://localhost:5001/api/`;
 
 const GetPostById = async (id: string) => {
   return fetch(`${API_BASE_URL}/post/${id}`)
@@ -16,16 +16,27 @@ const GetPosts = async () => {
   return json;
 };
 
-const GetPostsForBook = async (bookId: string) => {
-  const response = await fetch(
-    "https://localhost:44348/api/post?" +
-      new URLSearchParams({
-        bookId: bookId,
-      })
-  );
+export interface PostFilter {
+  pageNumber: number;
+  pageSize: number;
+  sortDirection: string;
+  sortBy: string;
+  bookId: number;
+}
 
-  const json = response.ok ? response.json() : [];
-  return json;
+const GetPostsForBook = async (filter: PostFilter) => {
+  const response = await fetch(
+    "https://localhost:5001/api/post?" +
+      new URLSearchParams({
+        pageNumber: filter.pageNumber.toString(),
+        pageSize: filter.pageSize.toString(),
+        sortDirection: filter.sortDirection,
+        sortBy: filter.sortBy,
+        bookId: filter.bookId.toString(),
+      }).toString()
+  ).then((response) => response.json());
+
+  return response;
 };
 
 const AddPostForBook = async (bookId: number, authorId: number) => {
