@@ -209,12 +209,12 @@ namespace BookExchange.API
 
                app.UseStaticFiles();
                app.UseRouting();
+               app.UseCors(configurePolicy => configurePolicy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
                app.UseAuthentication();
                app.UseIdentityServer();
                app.UseAuthorization();
 
-               app.UseCors(configurePolicy => configurePolicy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
                app.UseEndpoints(endpoints => {
                     endpoints.MapControllers();

@@ -59,12 +59,10 @@ namespace BookExchange.API.Controllers
                return Ok(new { Role = "admin" });
           }
 
+
           [HttpPost("register")]
-          ///////////////////////////////
-
-
           [AllowAnonymous]
-          public async Task<IActionResult> Register(RegisterIdentityUserDto userDto)
+          public async Task<IActionResult> Register([FromBody] RegisterIdentityUserDto userDto)
           {
                var user = new IdentityUser
                {

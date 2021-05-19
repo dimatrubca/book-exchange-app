@@ -44,7 +44,7 @@ namespace BookExchange.API.Controllers
 
           [HttpGet]
           [AllowAnonymous]
-          public async Task<IActionResult> GetAll([FromQuery] BookFilter bookFilter) {
+          public async Task<IActionResult> GetAll([FromQuery] BooksFilter bookFilter) {
                GetBooksQuery query = _mapper.Map<GetBooksQuery>(bookFilter);
                var result = await _mediator.Send(query);
 

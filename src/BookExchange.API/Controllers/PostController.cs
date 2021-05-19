@@ -40,7 +40,7 @@ namespace BookExchange.API.Controllers
 
           [HttpGet]
           [ApiExceptionFilter]
-          public async Task<IActionResult> GetAll([FromQuery] PostFilter filter) {
+          public async Task<IActionResult> GetAll([FromQuery] PostsFilter filter) {
                GetPostsQuery query = _mapper.Map<GetPostsQuery>(filter);
                var result = await _mediator.Send(query);
 

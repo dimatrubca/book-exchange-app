@@ -58,7 +58,10 @@ const SignUpForm = () => {
       const result = await AccountService.SignUp(data);
       console.log(result);
 
-      const resultToken = await AccountService.RequestToken(data);
+      const resultToken = await AccountService.RequestToken(
+        data.username,
+        data.password
+      );
       const token = resultToken.access_token;
       const expirationTime = new Date(
         new Date().getTime() + Number(resultToken.expires_in) * 1000
@@ -68,6 +71,9 @@ const SignUpForm = () => {
       console.log(token, expirationTime);
 
       authContext.login(token, expirationTime);
+
+      const resultProfile = await AccountService.CreateProfile();
+      console.log(resultProfile);
     } catch (e) {
       console.log(e);
     }

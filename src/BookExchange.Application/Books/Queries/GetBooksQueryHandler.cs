@@ -39,8 +39,8 @@ namespace BookExchange.Service.Services
 
                var predicates = new List<Expression<Func<Book, bool>>>
                {
-                    b => b.Details.PageCount >= request.MinPageCount,
-                    b => b.Details.PageCount <= request.MaxPageCount
+                 /*   b => b.Details.PageCount >= request.MinPageCount,
+                    b => b.Details.PageCount <= request.MaxPageCount*/
                };
 
 

@@ -7,6 +7,7 @@ const AuthContext = createContext({
   login: (token: string, expirationDate: Date | null = null) => {},
   logout: () => {},
   user: null as Account.UserInfo | null,
+  fetchCurrentUser: null as any, // TODO: replace any
 });
 
 export { AuthContext };

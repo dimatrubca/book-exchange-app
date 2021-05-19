@@ -1,6 +1,7 @@
 ﻿using BookExchange.Domain.Filter;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -16,11 +17,13 @@ namespace BookExchange.Domain
           }
 
           //var result = predicates.Aggregate<Expression<Func<T, bool>>, Expression< Func<T, bool>>> (GetTrueExpression<T>, (result, next) => applyOperation.Invoke(result, next));
-          public static Expression<Func<T, bool>> CombineExpresions<T>(List<Expression<Func<T, bool>>> expresions, LogicalOperator combineOperator) {
+          public static Expression<Func<T, bool>> CombineExpresions<T>(this List<Expression<Func<T, bool>>> expresions, LogicalOperator combineOperator)
+          {
                ExpressionOperation<T> applyOperator;
 
-               switch (combineOperator) {
-                    case LogicalOperator.And:
+               switch (combineOperator)
+               {
+                    case LogicalOperator.Or:
                          applyOperator = OrElse<T>;
                          break;
                     default:
@@ -28,15 +31,12 @@ namespace BookExchange.Domain
                          break;
                };
 
-               Expression<Func<T, bool>> result = a => true;
+               if (expresions == null || expresions.Count == 0) return (a => true);
 
-               foreach (var expression in expresions)
-               {
-                    result = applyOperator(result, expression);
-               }
+               var result = expresions.Aggregate((current, expression) => applyOperator(current, expression));
+
                return result;
           }
-
           public static Expression<Func<T, bool>> AndAlso<T>(
               this Expression<Func<T, bool>> expr1,
               Expression<Func<T, bool>> expr2)

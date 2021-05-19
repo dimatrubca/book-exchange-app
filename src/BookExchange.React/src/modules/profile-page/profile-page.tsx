@@ -8,16 +8,17 @@ import {
   Typography,
   Divider,
 } from "@material-ui/core";
+import { AuthContext } from "context";
 
-import React from "react";
+import React, { useContext } from "react";
 import { useStyles } from "./profile-page-styles";
 
 import { StatisticsBar } from "./statistics-bar";
-import { UserDetails } from "./user-details";
+import { Contacts, Wishlist } from "./components";
 
 const ProfilePage = () => {
   const classes = useStyles();
-
+  const authContext = useContext(AuthContext);
   return (
     <div>
       <Container>
@@ -34,10 +35,14 @@ const ProfilePage = () => {
             <Grid item>
               <Grid container>
                 <Grid item xs={12}>
-                  <Typography>Vlad Barcareanu (lastReflect)</Typography>
+                  <Typography>
+                    Vlad Barcareanu ({authContext.user?.username})
+                  </Typography>
                 </Grid>
                 <Grid item>
-                  <Typography>Book Coins: 14</Typography>
+                  <Typography>
+                    Book Coins: {authContext.user?.points}
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>
@@ -46,7 +51,7 @@ const ProfilePage = () => {
           <Divider />
           <StatisticsBar />
         </Card>
-        <UserDetails />
+        <Wishlist />
       </Container>
     </div>
   );

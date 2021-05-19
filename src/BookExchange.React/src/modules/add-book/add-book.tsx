@@ -49,36 +49,36 @@ const AddBook = () => {
           <Fragment>
             {/* <Typography variant="h6">Fill in the form</Typography> */}
           </Fragment>
-
+          {/* 
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  {...register("Title")}
-                  label="Title"
-                  helperText={errors.Title?.message}
+                  {...register("title")}
+                  label="title"
+                  helperText={errors.title?.message}
                   fullWidth
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  {...register("ISBN")}
+                  {...register("isbn")}
                   label="ISBN"
                   fullWidth
-                  helperText={errors.ISBN?.message}
+                  helperText={errors.isbn?.message}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  {...register("ShortDescription")}
+                  {...register("shortDescription")}
                   label="Short Description"
-                  helperText={errors.ShortDescription?.message}
+                  helperText={errors.shortDescription?.message}
                   fullWidth
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  {...register("Publisher")}
+                  {...register("publisher")}
                   label="Publisher"
                   helperText={errors.Publisher?.message}
                   fullWidth
@@ -105,7 +105,7 @@ const AddBook = () => {
                 Submit
               </Button>
             </Grid>
-          </form>
+          </form> */}
         </Paper>
       </main>
     </>

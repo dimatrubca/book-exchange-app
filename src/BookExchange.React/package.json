@@ -8,6 +8,7 @@
     "@material-ui/data-grid": "^4.0.0-alpha.28",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
+    "@material-ui/x-grid": "^4.0.0-alpha.28",
     "@material-ui/x-grid-data-generator": "^4.0.0-alpha.28",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -27,6 +28,7 @@
     "react-hook-form": "^7.3.6",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
+    "react-swipeable-views": "^0.13.9",
     "typescript": "^4.1.2",
     "uuid": "^8.3.2",
     "web-vitals": "^1.0.1",
@@ -58,6 +60,7 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.7",
+    "@types/react-swipeable-views": "^0.13.0",
     "@types/uuid": "^8.3.0"
   }
 }

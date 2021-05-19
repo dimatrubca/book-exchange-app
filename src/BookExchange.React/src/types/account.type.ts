@@ -15,8 +15,16 @@ export declare module Account {
     username: string | null;
     fistName: string | null;
     lastName: string | null;
-    email: string | null;
     points: number | null;
-    address: string | null;
+    userContact: UserContact | null;
+  };
+
+  export type UserContact = {
+    phoneNumber: string | null;
+    email: string | null;
+    zipCode: string | null;
+    city: string | null;
+    region: string | null;
+    streetAddress: string | null;
   };
 }

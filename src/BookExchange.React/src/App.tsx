@@ -19,22 +19,25 @@ import { SignInPage } from "./modules/sign-in-page";
 import { SignUpPage } from "modules/sign-up-page";
 
 import { AuthContext } from "./context";
-import { AccountService } from "./services";
+import { AccountService, UserService } from "./services";
 import { theme } from "./theme";
 import { HomePage } from "./modules/home-page/home-page";
 import { ProfilePage } from "modules/profile-page";
+import { fetchApi } from "services/fetchApi";
+import { Account } from "types";
+import { RouterContainer } from "containers/router-container";
 
 let logoutTimer: NodeJS.Timeout;
 
 function App() {
   const [token, setToken] = useState<string | null>(null);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<Account.UserInfo | null>(null);
   const [tokenExpirationDate, setTokenExpirationDate] =
     useState<Date | null>(null);
 
   const login = useCallback(
     (token: string, expirationTime: Date | null = null) => {
-      console.log("Insode login: ", token);
+      console.log("Inside login: ", token);
       setToken(token);
       const expiration =
         expirationTime || new Date(new Date().getTime() + 1000 * 60 * 60);
@@ -46,6 +49,7 @@ function App() {
     },
     []
   );
+  //todo: on logout setuser(null)
 
   const logout = useCallback(() => {
     console.log("Inside logout callback");
@@ -53,16 +57,27 @@ function App() {
     setTokenExpirationDate(null);
     localStorage.removeItem("token");
     localStorage.removeItem("tokenExpirationTime");
+    localStorage.removeItem("user"); //
+  }, []);
+
+  const fetchCurrentUser = useCallback(async () => {
+    const response = await fetchApi<Account.UserInfo>("/user/current-user");
+    console.log("fetched user: ", response);
+    setUser(response);
+    localStorage.setItem("user", JSON.stringify(response));
   }, []);
 
   useEffect(() => {
     const token = localStorage.getItem(`token`);
     const expirationTime = localStorage.getItem(`tokenExpirationTime`);
+    const user = localStorage.getItem("user"); //
 
-    if (token == null || expirationTime == null) return;
+    if (token == null || expirationTime == null || user == null) return;
 
     if (token && expirationTime && new Date(expirationTime) > new Date()) {
       login(token, new Date(expirationTime));
+
+      setUser(JSON.parse(user));
     }
   }, [login]);
 
@@ -85,26 +100,11 @@ function App() {
             login: login,
             logout: logout,
             token: token,
-            user: null,
+            user: user,
+            fetchCurrentUser: fetchCurrentUser,
           }}
         >
-          <Navbar />
-          <h1>...</h1>
-
-          <Userbar />
-          <Switch>
-            <Route exact path="/home" component={HomePage} />
-            <Route exact path="/sign-in" component={SignInPage} />
-            <Route exact path="/sign-up" component={SignUpPage} />
-            <Route exact path="/profile" component={ProfilePage} />
-            {/* <Route exact path="/" component={Home} /> */}
-            <Route exact path="/search" render={(props) => <SearchBooks />} />
-            <Route exact path="/book/:id" component={BookDetails} />
-            <Route exact path="/post-book" component={PostBooks} />
-
-            <Route exact path="/contact" component={Contact} />
-            <Route exact path="/add-book" component={AddBook} />
-          </Switch>
+          <RouterContainer></RouterContainer>
         </AuthContext.Provider>
       </ThemeProvider>
     </div>

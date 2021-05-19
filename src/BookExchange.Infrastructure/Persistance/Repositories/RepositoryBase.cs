@@ -44,8 +44,8 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
           // TODO: test method
           public List<T> GetAllByConditions(List<Expression<Func<T, bool>>> predicates, List<Expression<Func<T, object>>> includes, LogicalOperator predicateLogicalOperator)
           {
-               var predicate = CombineExpresions(predicates, predicateLogicalOperator);
-               return _entitites.IncludeMultiple<T>(includes.ToArray()).Where(predicate).ToList();
+               var predicate = predicates.CombineExpresions(predicateLogicalOperator);
+               return _entitites.IncludeMultiple<T>(includes?.ToArray()).Where(predicate).ToList();
           }
 
           public List<T> GetAllByConditionWithInclude(Expression<Func<T, bool>> predicate,
@@ -105,10 +105,6 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
                _context.SaveChangesWithIdentityInsert<T>();
           }
 
-          public List<T> GetAllByConditions(List<Expression<Func<T, bool>>> predicate, List<Expression<Func<Book, object>>> includes, LogicalOperator predicateLogicalOperators)
-          {
-               throw new NotImplementedException();
-          }
 
           public PagedResponse<List<TDto>> GetPagedData<TDto>(List<Expression<Func<T, bool>>> predicates, List<Expression<Func<T, object>>> includes, PaginationRequestFilter paginationFilter, IMapper mapper)
           {

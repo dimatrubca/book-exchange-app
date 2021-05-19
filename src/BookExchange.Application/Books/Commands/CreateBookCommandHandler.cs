@@ -39,13 +39,13 @@ namespace BookExchange.Application.Books.Commands
 
           public async Task<Book> Handle(CreateBookCommand request, CancellationToken cancellationToken)
           {
-               if (Utils.CheckBookWithIsbnExists(_bookRepository, request.ISBN)) {
+               if (ServiceUtils.CheckBookWithIsbnExists(_bookRepository, request.ISBN)) {
                     throw new BadRequestException($"Book with ISBN = {request.ISBN} already exists");
                }
 
                var uploadDirectory = Path.Combine(_environment.WebRootPath, "uploads", "books");
-               var thumbnailPath = await Utils.SaveFile(request.Thumbnail, uploadDirectory);
-               var imagePath = await Utils.SaveFile(request.Image, uploadDirectory);
+               var thumbnailPath = await ServiceUtils.SaveFile(request.Thumbnail, uploadDirectory);
+               var imagePath = await ServiceUtils.SaveFile(request.Image, uploadDirectory);
 
                var book = new Book
                {

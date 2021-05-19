@@ -18,19 +18,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useStyles } from "./sign-in-form.styles";
 import { Account } from "../../../types";
-import { AccountService } from "../../../services";
+import { AccountService, UserService } from "../../../services";
 import { AuthContext } from "../../../context";
 import { useHistory } from "react-router";
 
 const schema = yup.object().shape({
-  username: yup
-    .string()
-    .required("Username is required")
-    .min(4, "Username should contain at least 4 characters"),
-  password: yup
-    .string()
-    .required("No password provided")
-    .min(8, "Password should contain at least 8 characters"),
+  username: yup.string().required("Username is required"),
+  password: yup.string().required("No password provided"),
 });
 
 const SignInForm = () => {
@@ -62,6 +56,10 @@ const SignInForm = () => {
       console.log(access_token, expirationTime);
 
       authContext.login(access_token, expirationTime);
+      authContext.user = await UserService.GetCurrentUser();
+      console.log(authContext.user);
+      const result = await authContext.fetchCurrentUser();
+      console.log(result);
       history.push("/home");
     } catch (e) {
       console.log(e);
@@ -109,12 +107,12 @@ const SignInForm = () => {
         color="primary"
         className={classes.submit}
       >
-        Sign Up
+        Sign In
       </Button>
       <Grid container justify="flex-end">
         <Grid item>
-          <Link href="#" variant="body2">
-            Already have an account? Sign in
+          <Link href="sign-up" variant="body2">
+            Don't have an account? Sign up
           </Link>
         </Grid>
       </Grid>

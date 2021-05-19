@@ -28,14 +28,17 @@ namespace BookExchange.Application.Posts.Queries
 
           public Task<PagedResponse<List<PostDto>>> Handle(GetPostsQuery request, CancellationToken cancellationToken)
           {
-               var includes = new List<Expression<Func<Post, Object>>>
-               {
-                    p => p.Book,
-                    p => p.PostedBy,
-                    p => p.Condition
-               };
+               var includes = new List<Expression<Func<Post, Object>>>();
+               var predicates = new List<Expression<Func<Post, bool>>>();
 
-               var predicates = new List<Expression<Func<Post, bool>>>{};
+               if (request.IncludeBook)
+                    includes.Add(p => p.Book);
+
+               if (request.IncludeCondition)
+                    includes.Add(p => p.Condition);
+
+               if (request.IncludePostedBy)
+                    includes.Add(p => p.PostedBy);
 
                if (request.ConditionId != null)
                     predicates.Add(p => p.ConditionId == request.ConditionId);
@@ -44,7 +47,7 @@ namespace BookExchange.Application.Posts.Queries
                     predicates.Add(p => p.PostedById == request.PostedById);
 
                if (request.Status != null)
-                    predicates.Add(p => p.Status == request.Status);
+                    predicates.Add(p => p.Status.ToString() == request.Status);
 
                if (request.BookId != null)
                     predicates.Add(p => p.BookId == request.BookId);

@@ -17,7 +17,7 @@ namespace BookExchange.Domain.Interfaces
           List<T> GetAll();
           List<T> GetAllWithInclude(params Expression<Func<T, object>>[] includeProperties);
           List<T> GetAllByCondition(Expression<Func<T, bool>> predicate);
-          List<T> GetAllByConditions(List<Expression<Func<T, bool>>> predicate, List<Expression<Func<Book, Object>>> includes, LogicalOperator predicateLogicalOperators);
+          List<T> GetAllByConditions(List<Expression<Func<T, bool>>> predicate, List<Expression<Func<T, Object>>> includes, LogicalOperator predicateLogicalOperators);
           List<T> GetAllByConditionWithInclude(Expression<Func<T, bool>> predicate,
                params Expression<Func<T, object>>[] includeProperties);
           PagedResponse<List<TDto>> GetPagedData<TDto>(List<Expression<Func<T, bool>>> predicates, 

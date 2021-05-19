@@ -1,18 +1,55 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   DataGrid,
   GridColDef,
+  GridFilterModelParams,
   GridSortDirection,
   GridValueGetterParams,
 } from "@material-ui/data-grid";
-import { Button, SortDirection } from "@material-ui/core";
-import { PostService, PostFilter } from "services/posts.service";
+
+import { XGrid } from "@material-ui/x-grid";
+
+import {
+  Button,
+  SortDirection,
+  Box,
+  Typography,
+  TableHead,
+} from "@material-ui/core";
+import { PostService } from "services/posts.service";
+import { PostsFilter } from "filters";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
-  { field: "owner", headerName: "Owner", width: 130 },
-  { field: "condition", headerName: "Condition", width: 130 },
-  { field: "postTime", headerName: "Posted", width: 130 },
+  {
+    field: "postedBy",
+    headerName: "Owner",
+    width: 130,
+    valueFormatter: (params) => params.row?.postedBy?.username,
+  },
+  {
+    field: "condition",
+    headerName: "Condition",
+    width: 130,
+    valueFormatter: (params) => params.row?.condition?.label,
+  },
+  {
+    field: "timeAdded",
+    headerName: "Posted",
+    width: 230,
+    valueFormatter: (params) => {
+      var date = new Date(Date.parse(params.row?.timeAdded));
+
+      var year = date.getFullYear();
+
+      var month = (1 + date.getMonth()).toString();
+      month = month.length > 1 ? month : "0" + month;
+
+      var day = date.getDate().toString();
+      day = day.length > 1 ? day : "0" + day;
+      return day + "/" + month + "/" + year;
+    },
+  },
   {
     field: "country",
     headerName: "Country",
@@ -27,79 +64,24 @@ const sortModel = [
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    condition: "Snow",
-    owner: "Jon",
-    postTime: new Date("3-2-2015").toLocaleDateString(),
-    country: "Finland",
-  },
-  {
-    id: 2,
-    condition: "Lannister",
-    owner: "Cersei",
-    postTime: new Date(2010, 7, 5).toLocaleDateString(),
-    country: "Moldova",
-  },
-  {
-    id: 3,
-    condition: "Lannister",
-    owner: "Jaime",
-    postTime: new Date(2010, 7, 5).toLocaleDateString(),
-    country: "Moldova",
-  },
-  {
-    id: 4,
-    condition: "Stark",
-    owner: "Arya",
-    postTime: new Date(2010, 7, 5).toLocaleDateString(),
-    country: "Romania",
-  },
-  {
-    id: 5,
-    condition: "Targaryen",
-    owner: "Daenerys",
-    postTime: new Date(2010, 7, 5).toLocaleDateString(),
-    country: "Russia",
-  },
-  {
-    id: 6,
-    condition: "Melisandre",
-    owner: null,
-    postTime: new Date(2010, 7, 5).toLocaleDateString(),
-    country: "Moldova",
-  },
-  {
-    id: 7,
-    condition: "Clifford",
-    owner: "Ferrara",
-    postTime: new Date(2010, 7, 5).toLocaleDateString(),
-    country: "Romania",
-  },
-  {
-    id: 8,
-    condition: "Frances",
-    owner: "Rossini",
-    postTime: new Date(2010, 7, 5).toLocaleDateString(),
-    country: "Romania",
-  },
-  {
-    id: 9,
-    condition: "Roxie",
-    owner: "Harvey",
-    postTime: new Date(2010, 7, 5).toLocaleDateString(),
-    country: "Moldova",
-  },
-];
 const PostsGrid = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [rows, setRows] = useState([]);
+  const [rowCount, setRowCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const pageSize = 5;
 
   const handlePageChange = (params: any) => {
     setPage(params.page);
+    console.log("now on page:", params.page);
   };
+
+  const onFilterChange = React.useCallback((params: GridFilterModelParams) => {
+    console.log(params.filterModel.items[0].value);
+    console.log("...");
+    console.log(params);
+  }, []);
 
   useEffect(() => {
     let didCancel = false;
@@ -108,19 +90,29 @@ const PostsGrid = () => {
       setLoading(true);
 
       try {
-        const postFilter: PostFilter = {
-          pageNumber: 1,
-          pageSize: 10,
-          sortBy: " ",
+        console.log("fetcing page: ", page);
+        const postFilter: PostsFilter = {
+          includeCondition: true,
+          includePostedBy: true,
+          pageNumber: page + 1,
+          pageSize: pageSize,
+          //  sortBy: " ",
           sortDirection: "asc",
           bookId: 1,
         };
-        const posts = await PostService.GetPostsForBook(postFilter);
+
+        const { data, totalRecords } = await PostService.GetPostsForBook(
+          postFilter
+        );
+
+        console.log("fetched posts: ", data);
         if (didCancel) {
           return;
         }
 
-        setRows(posts.data);
+        setRowCount(totalRecords);
+        setRows(data);
+        console.log(rows);
       } catch (err) {
         console.log("error fethcing posts");
       }
@@ -161,16 +153,25 @@ const PostsGrid = () => {
   };
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        checkboxSelection
-        sortModel={sortModel}
-      />
-      <Button onClick={handleButton}>Click</Button>
-    </div>
+    <>
+      <Box mb={2}>
+        <Typography variant="h5">Request this book:</Typography>
+      </Box>
+      <div style={{ height: 400, width: "100%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={pageSize}
+          rowCount={rowCount}
+          //   sortModel={sortModel}
+          paginationMode="server"
+          onPageChange={handlePageChange}
+          filterMode="server"
+          onFilterModelChange={onFilterChange}
+          loading={loading}
+        />
+      </div>
+    </>
   );
 };
 

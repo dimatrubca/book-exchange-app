@@ -57,7 +57,7 @@ namespace BookExchange.API.Controllers
           }
 
           [HttpGet("id")]
-          public async Task<IActionResult> GetUser()
+          public async Task<IActionResult> GetUser(int id)
           {
                var user = await _mediator.Send(new GetUserQuery());
                var result = _mapper.Map<UserDto>(user);

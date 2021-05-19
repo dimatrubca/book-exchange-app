@@ -30,7 +30,15 @@ namespace BookExchange.Infrastructure.Persistance.Extensions
 
                query = query.Filter(predicates, paginationFilter.FilterLogicalOperator);
 
-               query = query.Sort(paginationFilter.SortBy, paginationFilter.SortDirection);
+               if (paginationFilter.SortBy != null) {
+                    if (paginationFilter.SortDirection == "asc")
+                    {
+                         query = query.OrderBy(paginationFilter.SortBy);
+                    } else
+                    {
+                         query = query.OrderByDescending(paginationFilter.SortBy);
+                    }
+               }
 
                query = query.Page(paginationFilter.PageNumber, paginationFilter.PageSize);
 
@@ -45,9 +53,9 @@ namespace BookExchange.Infrastructure.Persistance.Extensions
 
           public static IQueryable<T> Filter<T>(this IQueryable<T> query, List<Expression<Func<T, bool>>> predicates, LogicalOperator filterLogicalOperator)
           { 
-               return query.Where(BookExchange.Domain.Extensions.CombineExpresions(predicates, filterLogicalOperator));
+               return query.Where(predicates.CombineExpresions(filterLogicalOperator));
           }
-
+          /*
           public static IQueryable<T> Sort<T>(this IQueryable<T> query, string columnName, string sortDirection)
           {
                if (string.IsNullOrWhiteSpace(columnName))
@@ -58,7 +66,7 @@ namespace BookExchange.Infrastructure.Persistance.Extensions
                // sort direction???
                query = query.OrderBy(columnName);
                return query;
-          }
+          }*/
 
 
           public static IQueryable<T> IncludeMultiple<T>(this IQueryable<T> query,
@@ -123,6 +131,63 @@ namespace BookExchange.Infrastructure.Persistance.Extensions
                context.SaveChanges();
                context.DisableIdentityInsert<T>();
                transaction.Commit();
+          }
+
+          public static IOrderedQueryable<T> OrderBy<T>(
+              this IQueryable<T> source,
+              string property)
+          {
+               return ApplyOrder<T>(source, property, "OrderBy");
+          }
+
+          public static IOrderedQueryable<T> OrderByDescending<T>(
+              this IQueryable<T> source,
+              string property)
+          {
+               return ApplyOrder<T>(source, property, "OrderByDescending");
+          }
+
+          public static IOrderedQueryable<T> ThenBy<T>(
+              this IOrderedQueryable<T> source,
+              string property)
+          {
+               return ApplyOrder<T>(source, property, "ThenBy");
+          }
+
+          public static IOrderedQueryable<T> ThenByDescending<T>(
+              this IOrderedQueryable<T> source,
+              string property)
+          {
+               return ApplyOrder<T>(source, property, "ThenByDescending");
+          }
+
+          static IOrderedQueryable<T> ApplyOrder<T>(
+              IQueryable<T> source,
+              string property,
+              string methodName)
+          {
+               string[] props = property.Split('.');
+               Type type = typeof(T);
+               ParameterExpression arg = Expression.Parameter(type, "x");
+               Expression expr = arg;
+               foreach (string prop in props)
+               {
+                    // use reflection (not ComponentModel) to mirror LINQ
+                    PropertyInfo pi = type.GetProperty(prop);
+                    expr = Expression.Property(expr, pi);
+                    type = pi.PropertyType;
+               }
+               Type delegateType = typeof(Func<,>).MakeGenericType(typeof(T), type);
+               LambdaExpression lambda = Expression.Lambda(delegateType, expr, arg);
+
+               object result = typeof(Queryable).GetMethods().Single(
+                       method => method.Name == methodName
+                               && method.IsGenericMethodDefinition
+                               && method.GetGenericArguments().Length == 2
+                               && method.GetParameters().Length == 2)
+                       .MakeGenericMethod(typeof(T), type)
+                       .Invoke(null, new object[] { source, lambda });
+               return (IOrderedQueryable<T>)result;
           }
      }
 }

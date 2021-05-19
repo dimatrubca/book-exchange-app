@@ -8,9 +8,13 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  Paper,
   Typography,
 } from "@material-ui/core";
+import { Divider } from "@material-ui/core";
+
 import { useDemoData } from "@material-ui/x-grid-data-generator";
+import Box from "@material-ui/core/Box";
 
 import React, { useEffect, useState } from "react";
 import PersonIcon from "@material-ui/icons/Person";
@@ -153,14 +157,25 @@ const BookDetails = (props: any) => {
 
   return (
     <Container>
-      {console.log(posts)}
-      <div>
-        <Grid container spacing={10}>
+      <Paper className={classes.bookPaper}>
+        <Grid container spacing={4}>
           <Grid item md={3}>
-            <img src={"props.imagePath"} alt="" className={classes.bookCover} />
+            <img
+              src={
+                "https://images-na.ssl-images-amazon.com/images/I/A1aDb5U5myL.jpg"
+              }
+              alt=""
+              className={classes.bookCover}
+            />
           </Grid>
-          <Grid item md={9}>
-            <Typography variant="h5">{"props.title"}</Typography>
+          <Grid item className={classes.bookInfo} md={9}>
+            <Typography
+              variant="h5"
+              component="h1"
+              className={classes.bookTitle}
+            >
+              Essentialism: The Disciplined Pursuit of Less
+            </Typography>
             <Typography>
               {/* <b>Authors:</b> {'props.authors.join(", ")'} */}
             </Typography>
@@ -168,24 +183,39 @@ const BookDetails = (props: any) => {
               <b>Published:</b> {"props.published"}
             </Typography>
             <Typography>
-              <b>Publisher:</b> {"props.publisher"}
+              <b>Author:</b> McKeown, Greg
             </Typography>
             <Typography>
-              <b>ISBN:</b> {"props.isbn"}
+              <b>ISBN:</b> 9780804137409
             </Typography>
-
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleClickOpen}
-            >
-              Request
-            </Button>
-            <br />
-            <br />
-            <Button variant="contained" color="primary">
-              Post
-            </Button>
+            <Typography>
+              <b>Publisher:</b> Lorem Ipsum
+            </Typography>
+            <Typography>
+              <b>Description:</b> Lorem Ipsum is simply dummy text of the
+              printing and typesetting industry. Lorem Ipsum has been the
+              industry's standard dummy text ever since the 1500s, when an
+              unknown printer took a galley of type and scrambled it to make a
+              type specimen book. It has survived not only five centuries, but
+              also the leap into electronic typesetting, remaining essentially
+              unchanged. It was popularised in the 1960s with the release of
+              Letraset sheets containing Lorem Ipsum passages, and more recently
+              with desktop publishing software like Aldus PageMaker including
+              versions of Lorem Ipsum.
+            </Typography>
+            <Box mt={3}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleClickOpen}
+                className={classes.rightButton}
+              >
+                Add To Wishlist
+              </Button>
+              <Button variant="contained" color="primary">
+                Post
+              </Button>
+            </Box>
             <PostsDialog
               posts={posts}
               selectedValue={selectedValue}
@@ -193,9 +223,11 @@ const BookDetails = (props: any) => {
               onClose={handleClose}
             />
           </Grid>
+          <Grid item xs={12}>
+            <PostsGrid />
+          </Grid>
         </Grid>
-      </div>
-      <PostsGrid />
+      </Paper>
       );
     </Container>
   );

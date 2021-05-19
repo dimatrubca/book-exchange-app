@@ -68,7 +68,7 @@ const SignInForm = ({ handleClose }: any) => {
           </Button>
         </div>
       </form>
-      <Button>Facebook login</Button>
+      <Button className={classes.btnGoogleLogin}>Facebook login</Button>
     </>
   );
 };

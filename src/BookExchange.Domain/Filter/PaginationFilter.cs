@@ -42,7 +42,7 @@ namespace BookExchange.Domain.Filter
           }
 
           public string SortDirection { get; set; }
-          public string SortBy { get; set; }
+          public virtual string SortBy { get; set; }
 
           public PaginationFilter()
           {

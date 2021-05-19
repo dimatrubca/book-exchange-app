@@ -18,9 +18,10 @@ import {
 import { v4 as uuidv4 } from "uuid";
 
 import { useStyles } from "./post-books.styles";
-import { BookCard, BookCardProps } from "../../components/book-card";
+import { BookCard } from "../../components/book-card";
 import { BookService } from "../../services";
-
+import { Book } from "types";
+/*
 const books: BookCardProps[] = [
   {
     id: 1,
@@ -58,23 +59,28 @@ const books: BookCardProps[] = [
       "https://m.media-amazon.com/images/I/51zJRaQ-0ML._SL500_.jpg",
   },
 ];
-
+*/
 const PostBooks = () => {
   const classes = useStyles();
   const [inputFields, setInputFields] = useState([{ id: uuidv4(), isbn: "" }]);
-  const [booksToAdd, setBooksToAdd] = useState([]);
-  const [notFoundBooks, setNotFoundBooks] = useState([]);
+  const [booksToAdd, setBooksToAdd] = useState<Book.Book[]>([]);
+  const [notFoundISBNs, setNotFoundISBNs] = useState<string[]>([]);
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     console.log("ISBNs", inputFields);
 
     try {
-      var books = BookService.GetBooksByISBN(
-        inputFields.map((field) => field.isbn)
-      );
+      let isbns = inputFields.map((field) => field.isbn);
+      const books = await BookService.GetBooksByISBN(isbns);
 
-      // setBooksToAdd(books);
+      const found = books.map((b) => b.isbn);
+      const notFound = isbns.filter((b) => {
+        return found.indexOf(b) < 0;
+      });
+
+      setBooksToAdd(books);
+      setNotFoundISBNs(notFound);
     } catch (e) {
       console.log("error while fetching books");
     }
@@ -121,10 +127,16 @@ const PostBooks = () => {
           <div key={inputField.id}>
             <TextField
               name="isbn"
+              type="number"
               label="ISBN"
               variant="outlined"
               value={inputField.isbn}
-              onChange={(event) => handleChangeInput(inputField.id, event)}
+              onChange={(event) => {
+                event.target.value = Math.max(0, parseInt(event.target.value))
+                  .toString()
+                  .slice(0, 12);
+                handleChangeInput(inputField.id, event);
+              }}
             />
 
             <IconButton
@@ -151,18 +163,23 @@ const PostBooks = () => {
           Submit
         </Button>
       </form>
-
+      {/* 
       {books.map((book) => (
         <Box my={3} key={book.id}>
           <BookCard {...book} />
         </Box>
       ))}
-
-      {notFoundBooks && (
+      */}
+      {booksToAdd ? (
+        booksToAdd.map((book) => <Box>{book.isbn}</Box>)
+      ) : (
+        <>Empty</>
+      )}
+      {notFoundISBNs && (
         <div>
           <Typography variant="h2">Add Manually</Typography>
           <Typography component="p">
-            {notFoundBooks.length} of your books weren't found in our Database.
+            {notFoundISBNs.length} of your books weren't found in our Database.
             You can still add them manually
           </Typography>
 

@@ -63,6 +63,7 @@ namespace BookExchange.Infrastructure.Persistance
                modelBuilder.ApplyConfiguration(new RequestConfig());
                modelBuilder.ApplyConfiguration(new ReviewConfig());
                modelBuilder.ApplyConfiguration(new BookAuthorConfig());
+               modelBuilder.ApplyConfiguration(new CategoryConfig());
 
                modelBuilder.Entity<BookReview>().ToTable("BookReviews");
                modelBuilder.Entity<PostReview>().ToTable("PostReviews");

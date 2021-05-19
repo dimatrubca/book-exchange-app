@@ -117,6 +117,10 @@ namespace BookExchange.Infrastructure.persistance.migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("BookCategory");
@@ -232,10 +236,11 @@ namespace BookExchange.Infrastructure.persistance.migrations
                     b.Property<int?>("PostedById")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Enabled");
 
                     b.Property<DateTime>("TimeAdded")
                         .ValueGeneratedOnAdd()

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using BookExchange.Application.Posts.Queries;
+using BookExchange.Application.Authors.Commands;
 
 namespace BookExchange.Application.Common.Mappings
 {
@@ -33,11 +34,18 @@ namespace BookExchange.Application.Common.Mappings
 
                CreateMap<ApplicationUser, CreateUserCommand>();
 
-               CreateMap<BookFilter, GetBooksQuery>();
+               CreateMap<BooksFilter, GetBooksQuery>();
                CreateMap<GetBooksQuery, PaginationRequestFilter>();
 
-               CreateMap<PostFilter, GetPostsQuery>();
+               CreateMap<PostsFilter, GetPostsQuery>();
                CreateMap<GetPostsQuery, PaginationRequestFilter>();
+
+               CreateMap<Condition, ConditionDto>();
+
+               CreateMap<CreateAuthorDto, CreateAuthorCommand>();
+               CreateMap<Author, AuthorDto>();
+
+               CreateMap<BookCategory, CategoryDto>();
           }
      }
 }
