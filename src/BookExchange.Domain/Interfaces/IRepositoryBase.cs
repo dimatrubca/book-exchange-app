@@ -20,7 +20,7 @@ namespace BookExchange.Domain.Interfaces
           List<T> GetAllByConditions(List<Expression<Func<T, bool>>> predicate, List<Expression<Func<T, Object>>> includes, LogicalOperator predicateLogicalOperators);
           List<T> GetAllByConditionWithInclude(Expression<Func<T, bool>> predicate,
                params Expression<Func<T, object>>[] includeProperties);
-          PagedResponse<List<TDto>> GetPagedData<TDto>(List<Expression<Func<T, bool>>> predicates, 
+          PagedResponse<TDto> GetPagedData<TDto>(List<Expression<Func<T, bool>>> predicates, 
                List<Expression<Func<T, object>>> includes, PaginationRequestFilter paginationFilter, IMapper mapper);
           bool SaveAll();
           void SaveAllWithIdentityInsert();

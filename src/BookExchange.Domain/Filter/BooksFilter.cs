@@ -15,11 +15,11 @@ namespace BookExchange.Domain.Filter
 
           public string ISBN { get; set; }
           public string Title { get; set; }
-          public string Author { get; set; }
-          public List<string> Categories { get; set; }
+          public List<int> AuthorsId { get; set; }
+          public List<int> CategoriesId { get; set; }
           public string Publisher { get; set; }
           public string Description { get; set; }
-          public DateTime PublishedOn { get; set; }
+          public int? PublishedYear { get; set; }
           public int? PageCount { get; set; }
           public int? MinPageCount { get; set; }   
           public int? MaxPageCount { get; set; }

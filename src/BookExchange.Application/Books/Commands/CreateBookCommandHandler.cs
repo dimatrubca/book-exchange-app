@@ -44,7 +44,6 @@ namespace BookExchange.Application.Books.Commands
                }
 
                var uploadDirectory = Path.Combine(_environment.WebRootPath, "uploads", "books");
-               var thumbnailPath = await ServiceUtils.SaveFile(request.Thumbnail, uploadDirectory);
                var imagePath = await ServiceUtils.SaveFile(request.Image, uploadDirectory);
 
                var book = new Book
@@ -52,14 +51,14 @@ namespace BookExchange.Application.Books.Commands
                     Title = request.Title,
                     ISBN = request.ISBN,
                     ShortDescription = request.ShortDescription,
-                    ThumbnailPath = thumbnailPath,
+                    ThumbnailPath = imagePath,
                     Authors = request.AuthorsIds?.Select(id => _bookAuthorsRepository.GetById(id)).ToList(),
                     Categories = request.CategoriesIds?.Select(id => _bookCategoriesRepository.GetById(id)).ToList(),
                     Details = new BookDetails
                     {
                          Description = request.Description,
                          Publisher = request.Publisher,
-                         PublishedOn = request.PublishedOn,
+                         PublishedYear = request.PublishedYear,
                          PageCount = request.PageCount,
                          ImagePath = imagePath
                     }

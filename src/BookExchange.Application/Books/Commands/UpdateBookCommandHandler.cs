@@ -47,8 +47,6 @@ namespace BookExchange.Application.Books.Commands
                if (!string.IsNullOrWhiteSpace(command.Publisher))
                     book.Details.Publisher = command.Publisher;
 
-               if (command.PublishedOn != null)
-                    book.Details.PublishedOn = command.PublishedOn;
 
                if (command.AuthorsIds != null)
                     command.AuthorsIds.ForEach(id => {

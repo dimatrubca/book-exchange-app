@@ -51,9 +51,9 @@ const AddBook = () => {
             {/* <Typography variant="h6">Fill in the form</Typography> */}
           </Fragment>
           <UploadFiles />
-          {/* 
+
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid container spacing={3}>
+            {/* <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   {...register("title")}
@@ -106,8 +106,8 @@ const AddBook = () => {
               >
                 Submit
               </Button>
-            </Grid>
-          </form> */}
+            </Grid> */}
+          </form>
         </Paper>
       </main>
     </>

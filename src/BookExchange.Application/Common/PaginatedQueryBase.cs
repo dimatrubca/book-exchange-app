@@ -6,7 +6,7 @@ using BookExchange.Domain.Wrappers;
 
 namespace BookExchange.Domain.Queries
 {
-     public class PaginatedQueryBase<TDto> : IRequest<PagedResponse<List<TDto>>>
+     public class PaginatedQueryBase<TDto> : IRequest<PagedResponse<TDto>>
      {
           public int PageNumber { get; set; }
           public int PageSize { get; set; }

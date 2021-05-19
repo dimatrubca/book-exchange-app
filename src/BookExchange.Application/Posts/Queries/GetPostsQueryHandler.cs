@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Application.Posts.Queries
 {
-     class GetPostsQueryHandler :  IRequestHandler<GetPostsQuery, PagedResponse<List<PostDto>>>
+     public class GetPostsQueryHandler :  IRequestHandler<GetPostsQuery, PagedResponse<PostDto>>
      {
           private readonly IPostRepository _postRepository;
           private readonly IMapper _mapper;
@@ -26,7 +26,7 @@ namespace BookExchange.Application.Posts.Queries
                _mapper = mapper;
           }
 
-          public Task<PagedResponse<List<PostDto>>> Handle(GetPostsQuery request, CancellationToken cancellationToken)
+          public Task<PagedResponse<PostDto>> Handle(GetPostsQuery request, CancellationToken cancellationToken)
           {
                var includes = new List<Expression<Func<Post, Object>>>();
                var predicates = new List<Expression<Func<Post, bool>>>();

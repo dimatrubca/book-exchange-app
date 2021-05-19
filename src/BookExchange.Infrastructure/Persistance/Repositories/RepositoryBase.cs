@@ -106,7 +106,7 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
           }
 
 
-          public PagedResponse<List<TDto>> GetPagedData<TDto>(List<Expression<Func<T, bool>>> predicates, List<Expression<Func<T, object>>> includes, PaginationRequestFilter paginationFilter, IMapper mapper)
+          public PagedResponse<TDto> GetPagedData<TDto>(List<Expression<Func<T, bool>>> predicates, List<Expression<Func<T, object>>> includes, PaginationRequestFilter paginationFilter, IMapper mapper)
           {
                return _entitites.AsQueryable().CreatePaginatedResponse<T, TDto>(predicates, includes, paginationFilter, mapper);
           }

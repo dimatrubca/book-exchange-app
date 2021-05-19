@@ -4,14 +4,16 @@ using BookExchange.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookExchange.Infrastructure.persistance.migrations
 {
     [DbContext(typeof(BookExchangeDbContext))]
-    partial class BookExchangeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210519224430_modifyBookSchema")]
+    partial class modifyBookSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

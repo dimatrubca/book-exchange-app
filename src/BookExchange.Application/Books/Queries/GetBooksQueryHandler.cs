@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Service.Services
 { 
-     public class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, PagedResponse<List<BookDto>>>
+     public class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, PagedResponse<BookDto>>
      {
           private readonly IBookRepository _bookRepository;
           private readonly IMapper _mapper;
@@ -29,7 +29,7 @@ namespace BookExchange.Service.Services
                _mapper = mapper;
           }
 
-          public Task<PagedResponse<List<BookDto>>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
+          public Task<PagedResponse<BookDto>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
           {
                var includes = new List<Expression<Func<Book, Object>>>
                { 
@@ -37,25 +37,57 @@ namespace BookExchange.Service.Services
                     b => b.Authors
                };
 
-               var predicates = new List<Expression<Func<Book, bool>>>
+               var predicates = new List<Expression<Func<Book, bool>>>();
+
+
+               if (!string.IsNullOrEmpty(request.Title)) 
                {
-                 /*   b => b.Details.PageCount >= request.MinPageCount,
-                    b => b.Details.PageCount <= request.MaxPageCount*/
-               };
-
-
-               if (!string.IsNullOrEmpty(request.Title))
                     predicates.Add(b => b.Title.Contains(request.Title));
+               }
 
                if (!string.IsNullOrEmpty(request.ISBN))
+               {
                     predicates.Add(b => b.ISBN.Equals(request.ISBN));
+               }
 
-               if (!string.IsNullOrEmpty(request.Category))
-                    predicates.Add(b => b.Categories.Any(c => c.Label.Contains(request.Category, StringComparison.InvariantCultureIgnoreCase)));
- 
-               if (!string.IsNullOrEmpty(request.Publisher))
+               if (request.CategoriesId.Count != 0)
+               {
+                    predicates.Add(b => b.Categories.Any(c => request.CategoriesId.Contains(c.Id)));
+                    includes.Add(b => b.Categories);
+               }
+
+               if (request.AuthorsId.Count != 0)
+               {
+                    predicates.Add(b => b.Authors.Any(c => request.AuthorsId.Contains(c.Id)));
+                    includes.Add(b => b.Authors);
+               }
+
+               if (!string.IsNullOrEmpty(request.Publisher)) 
+               {
                     predicates.Add(b => b.Details.Publisher.Contains(request.Publisher));
                     includes.Add(b => b.Details);
+               }
+
+               if (request.MaxPageCount != null)
+               {
+                    predicates.Add(b => b.Details.PageCount <= request.MaxPageCount);
+                    includes.Add(b => b.Details);
+               }
+
+               if (request.MinPageCount != null)
+               {
+                    predicates.Add(b => b.Details.PageCount >= request.MinPageCount);
+                    includes.Add(b => b.Details);
+               }
+
+               if (request.PublishedYear != null)
+               {
+                    predicates.Add(b => b.Details.PublishedYear == request.PublishedYear);
+                    includes.Add(b => b.Details);
+               }
+
+
+
 
                var paginationRequestFilter = _mapper.Map<PaginationRequestFilter>(request);
 

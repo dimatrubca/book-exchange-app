@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Domain.Wrappers
 {
-     public class PagedResponse<T> : Response<T>
+     public class PagedResponse<T> : Response<List<T>>
      {
           public int PageNumber { get; set; }
           public int PageSize { get; set; } 
@@ -17,7 +17,7 @@ namespace BookExchange.Domain.Wrappers
           public Uri NextPage { get; set; }
           public Uri PreviousPage { get; set; }
 
-          public PagedResponse(T data, int pageNumber, int pageSize) : base(data)
+          public PagedResponse(List<T> data, int pageNumber, int pageSize) : base(data)
           {
                this.PageNumber = pageNumber;
                this.PageSize = pageSize;

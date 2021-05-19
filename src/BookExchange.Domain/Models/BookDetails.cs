@@ -9,7 +9,7 @@ namespace BookExchange.Domain.Models
      {
           public string Description { get; set; }
           public string Publisher { get; set; }
-          public DateTime? PublishedOn { get; set; }
+          public int? PublishedYear { get; set; }
           public int? PageCount { get; set; }
           public string ImagePath { get; set; }
 

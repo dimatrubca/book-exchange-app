@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Application.Books.Queries
 {
-     public class GetBooksFromElasticQueryHandler : IRequestHandler<GetBooksFromElasticQuery, PagedResponse<List<ElasticBook>>>
+     public class GetBooksFromElasticQueryHandler : IRequestHandler<GetBooksFromElasticQuery, PagedResponse<ElasticBook>>
      {
           private readonly IElasticBookRepository _bookRepository;
 
@@ -22,7 +22,7 @@ namespace BookExchange.Application.Books.Queries
                _bookRepository = bookRepository;
           }
 
-          async Task<PagedResponse<List<ElasticBook>>> IRequestHandler<GetBooksFromElasticQuery, PagedResponse<List<ElasticBook>>>.Handle(GetBooksFromElasticQuery request, CancellationToken cancellationToken)
+          public async Task<PagedResponse<ElasticBook>> Handle(GetBooksFromElasticQuery request, CancellationToken cancellationToken)
           {
                var response = await _bookRepository.Get(request.searchTerm, 1, 10);
 

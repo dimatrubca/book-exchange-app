@@ -10,6 +10,7 @@ export declare module Book {
     thumbnailPath: string;
     authors: Author.Author[];
     categories: Category.Category[];
+    details: BookDetails;
   };
 
   export type BookDetails = {

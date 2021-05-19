@@ -12,7 +12,7 @@ namespace BookExchange.Domain.Interfaces
           public Task AddAsync(ElasticBook book);
           public Task DeleteById(int id);
           public Task AddBulkAsync(ElasticBook[] books);
-          public Task<PagedResponse<List<ElasticBook>>> Get(string query, int page, int pageSize);
+          public Task<PagedResponse<ElasticBook>> Get(string query, int page, int pageSize);
 
 
      }

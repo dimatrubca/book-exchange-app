@@ -21,7 +21,7 @@ namespace BookExchange.Infrastructure.Persistance.Extensions
                return query.Skip((page - 1) * pageSize).Take(pageSize);
           }
           
-          public static PagedResponse<List<TDto>> CreatePaginatedResponse<TEntity, TDto>(this IQueryable<TEntity> query, 
+          public static PagedResponse<TDto> CreatePaginatedResponse<TEntity, TDto>(this IQueryable<TEntity> query, 
                List<Expression<Func<TEntity, bool>>> predicates, List<Expression<Func<TEntity, object>>> includes, PaginationRequestFilter paginationFilter, IMapper mapper) where TEntity : class
           {
                query = query.IncludeMultiple(includes.ToArray());
@@ -45,7 +45,7 @@ namespace BookExchange.Infrastructure.Persistance.Extensions
 
                var listResult = mapper.Map<List<TDto>>(query.ToList());
 
-               return new PagedResponse<List<TDto>>(listResult, paginationFilter.PageNumber, paginationFilter.PageSize)
+               return new PagedResponse<TDto>(listResult, paginationFilter.PageNumber, paginationFilter.PageSize)
                {
                     TotalRecords = total
                };
