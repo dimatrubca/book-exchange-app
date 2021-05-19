@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { useStyles } from "./add-book.styles";
 import { Book } from "../../types";
 import { BookService } from "../../services/books.service";
+import { UploadFiles } from "components/upload-files";
 
 const schema = yup.object().shape({
   Title: yup.string().max(100).required("Title is required"),
@@ -49,6 +50,7 @@ const AddBook = () => {
           <Fragment>
             {/* <Typography variant="h6">Fill in the form</Typography> */}
           </Fragment>
+          <UploadFiles />
           {/* 
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={3}>

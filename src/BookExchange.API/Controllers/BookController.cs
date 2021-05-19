@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookExchange.Application.Books.Commands;
+using BookExchange.Application.Books.Queries;
 using BookExchange.Application.Common.Exceptions;
 using BookExchange.Domain.Commands;
 using BookExchange.Domain.DTOs;
@@ -20,7 +21,6 @@ namespace BookExchange.API.Controllers
 {
      [Route("api/[controller]")]
      [ApiController]
-     [Authorize]
      public class BookController : ControllerBase
      {
           private readonly IMediator _mediator;
@@ -51,7 +51,17 @@ namespace BookExchange.API.Controllers
                return Ok(result);
           }
 
+          [HttpGet("elastic")]
+          [AllowAnonymous]
+          public async Task<IActionResult> GetAll([FromQuery] string searchTerm) {
+               GetBooksFromElasticQuery query = new GetBooksFromElasticQuery { searchTerm = searchTerm };
+               var result = await _mediator.Send(query);
+
+               return Ok(result);
+          }
+
           [HttpPost]
+          [AllowAnonymous]    
           public async Task<IActionResult> Post([FromForm] CreateBookCommand command) {
                var book = await _mediator.Send(command);
                var result = _mapper.Map<BookDto>(book);

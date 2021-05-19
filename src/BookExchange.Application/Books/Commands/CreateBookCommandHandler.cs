@@ -73,7 +73,9 @@ namespace BookExchange.Application.Books.Commands
                                         Title = book.Title,
                                         ShortDescription = book.ShortDescription,
                                         Description = book.Details.Description,
-                                        Authors = book.Authors?.Select(a => a.Name).ToList() }, cancellationToken); 
+                                        Authors = book.Authors?.Select(a => a.Name).ToList(),
+                                        Categories = book.Categories?.Select(a => a.Label).ToList()
+                                       }, cancellationToken); 
 
                return await Task.FromResult(book);
           }

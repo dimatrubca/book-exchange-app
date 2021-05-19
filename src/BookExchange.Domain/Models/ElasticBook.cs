@@ -1,15 +1,11 @@
-﻿using BookExchange.Domain.Models;
-using MediatR;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace BookExchange.Application.Books.Events
+namespace BookExchange.Domain.Models
 {
-     public class BookCreatedEvent : INotification
+     public class ElasticBook
      {
-          [Required]
           public int Id { get; set; }
           public string Title { get; set; }
           public List<string> Authors { get; set; }

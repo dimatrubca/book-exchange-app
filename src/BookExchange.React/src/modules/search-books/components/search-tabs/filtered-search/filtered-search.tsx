@@ -18,6 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { AuthorsService, BookService, CategoryService } from "services";
 import { Author, Category, Book } from "types";
+import { VariantType, useSnackbar } from "notistack";
 
 const schema = yup.object().shape({
   title: yup.string(),
@@ -56,9 +57,11 @@ const FilteredSearch = ({
     resolver: yupResolver(schema),
   });
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const onSubmit = async (data: Book.SearchFilters) => {
     console.log(data);
-
+    enqueueSnackbar("This is a success message!");
     try {
       data.pageSize = rowsPerPage;
       data.pageNumber = 1;

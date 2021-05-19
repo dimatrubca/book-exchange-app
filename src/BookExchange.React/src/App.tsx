@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ThemeProvider } from "@material-ui/core";
+import { SnackbarProvider, VariantType, useSnackbar } from "notistack";
 
 import "./App.css";
 
@@ -93,20 +94,22 @@ function App() {
 
   return (
     <div>
-      <ThemeProvider theme={theme}>
-        <AuthContext.Provider
-          value={{
-            isLoggedIn: !!token,
-            login: login,
-            logout: logout,
-            token: token,
-            user: user,
-            fetchCurrentUser: fetchCurrentUser,
-          }}
-        >
-          <RouterContainer></RouterContainer>
-        </AuthContext.Provider>
-      </ThemeProvider>
+      <SnackbarProvider maxSnack={3}>
+        <ThemeProvider theme={theme}>
+          <AuthContext.Provider
+            value={{
+              isLoggedIn: !!token,
+              login: login,
+              logout: logout,
+              token: token,
+              user: user,
+              fetchCurrentUser: fetchCurrentUser,
+            }}
+          >
+            <RouterContainer></RouterContainer>
+          </AuthContext.Provider>
+        </ThemeProvider>
+      </SnackbarProvider>
     </div>
   );
 }

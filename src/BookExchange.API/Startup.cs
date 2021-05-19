@@ -39,6 +39,8 @@ using IdentityServer4;
 using IdentityServer4.Test;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using IdentityServer4.Services;
+using BookExchange.Infrastructure.ElasticSearch;
+using BookExchange.Infrastructure.ElasticSearch.Repositories;
 
 namespace BookExchange.API
 {
@@ -180,6 +182,9 @@ namespace BookExchange.API
 
                services.AddSingleton<ILogger>(svc => svc.GetRequiredService<ILogger<RequestTimeMiddleware>>());
 
+               services.AddElasticSearch(Configuration);
+
+
                services.AddScoped<DbContext, BookExchangeDbContext>();
                services.AddScoped<IBookRepository, BookRepository>();
                services.AddScoped<IUserRepository, UserRepository>();
@@ -189,8 +194,11 @@ namespace BookExchange.API
                services.AddScoped<IRepositoryBase<BookDetails>, RepositoryBase<BookDetails>>();
                services.AddScoped<IRepositoryBase<BookCategory>, RepositoryBase<BookCategory>>();
 
+               services.AddScoped<IElasticBookRepository, ElasticBookRepository>();
+
                services.AddMediatR(typeof(Application.Class1));
                services.AddAutoMapper(typeof(Application.Common.Mappings.MappingProfile).Assembly);
+
           }
 
           // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

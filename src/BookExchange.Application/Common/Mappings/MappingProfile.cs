@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 using BookExchange.Application.Posts.Queries;
 using BookExchange.Application.Authors.Commands;
+using BookExchange.Application.Books.Events;
 
 namespace BookExchange.Application.Common.Mappings
 {
@@ -46,6 +47,8 @@ namespace BookExchange.Application.Common.Mappings
                CreateMap<Author, AuthorDto>();
 
                CreateMap<BookCategory, CategoryDto>();
+
+               CreateMap<BookCreatedEvent, ElasticBook>();
           }
      }
 }
