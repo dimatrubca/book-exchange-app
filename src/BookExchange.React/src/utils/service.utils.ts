@@ -9,4 +9,30 @@ const objectToQueryParams = (obj: any) => {
   }
 };
 
-export {};
+const filterToQueryString = (params: any) => {
+  var esc = encodeURIComponent;
+  return Object.keys(params)
+    .filter((k) => {
+      if (!params[k]) return false;
+      return true;
+    })
+    .map((k) => {
+      if (Array.isArray(params[k])) {
+        let result = "";
+        for (let item of params[k]) {
+          if (result !== "") result = "&" + result;
+          result += esc(k) + "=" + esc(item["id"]);
+        }
+        return result;
+      }
+
+      return esc(k) + "=" + esc(params[k]);
+    })
+    .join("&");
+};
+
+const ServiceUtils = {
+  filterToQueryString,
+};
+
+export { ServiceUtils };

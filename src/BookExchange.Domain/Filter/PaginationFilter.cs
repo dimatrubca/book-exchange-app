@@ -54,5 +54,6 @@ namespace BookExchange.Domain.Filter
                this.PageNumber = pageNumber < 1 ? 1 : pageNumber;
                this.PageSize = pageSize > 10 ? 10 : pageSize;
           }
+          public LogicalOperator FilterLogicalOperator { get; set; }
      }
 }

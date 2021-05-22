@@ -15,6 +15,7 @@ import { Divider } from "@material-ui/core";
 
 import { useDemoData } from "@material-ui/x-grid-data-generator";
 import Box from "@material-ui/core/Box";
+import Rating from "@material-ui/lab/Rating";
 
 import React, { useEffect, useState } from "react";
 import PersonIcon from "@material-ui/icons/Person";
@@ -155,19 +156,12 @@ const BookDetails = (props: any) => {
     setSelectedValue(value);
   };
 
+  const [value, setValue] = React.useState<number | null>(2);
+
   return (
     <Container>
       <Paper className={classes.bookPaper}>
         <Grid container spacing={4}>
-          <Grid item md={3}>
-            <img
-              src={
-                "https://images-na.ssl-images-amazon.com/images/I/A1aDb5U5myL.jpg"
-              }
-              alt=""
-              className={classes.bookCover}
-            />
-          </Grid>
           <Grid item className={classes.bookInfo} md={9}>
             <Typography
               variant="h5"
@@ -176,6 +170,16 @@ const BookDetails = (props: any) => {
             >
               Essentialism: The Disciplined Pursuit of Less
             </Typography>
+            <Box mb={2}>
+              <Rating
+                name="simple-controlled"
+                value={value}
+                onChange={(event, newValue) => {
+                  setValue(newValue);
+                }}
+              />
+            </Box>
+
             <Typography>
               {/* <b>Authors:</b> {'props.authors.join(", ")'} */}
             </Typography>
@@ -221,6 +225,15 @@ const BookDetails = (props: any) => {
               selectedValue={selectedValue}
               open={open}
               onClose={handleClose}
+            />
+          </Grid>
+          <Grid item md={3}>
+            <img
+              src={
+                "https://images-na.ssl-images-amazon.com/images/I/A1aDb5U5myL.jpg"
+              }
+              alt=""
+              className={classes.bookCover}
             />
           </Grid>
           <Grid item xs={12}>

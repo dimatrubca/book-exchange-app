@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
   },
+  pageTitle: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 export { useStyles };

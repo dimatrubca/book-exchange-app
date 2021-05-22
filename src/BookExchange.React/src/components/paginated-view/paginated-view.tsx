@@ -1,37 +1,39 @@
-import React, { useState } from "react";
-
 import {
-  Container,
-  Typography,
-  Link,
   Box,
-  TextField,
+  Container,
   Grid,
   IconButton,
+  TablePagination,
 } from "@material-ui/core";
-import { BookCard } from "../../components/book-card";
-import { BookMediaCard } from "../../components/book-media-card";
-import { useStyles } from "./search-books.styles";
-import { SearchTabs } from "./components";
-import { BookService } from "services";
-import ListIcon from "@material-ui/icons/List";
+import React, { useEffect, useState } from "react";
+import { useStyles } from "./paginated-view.styles";
 import ViewComfyIcon from "@material-ui/icons/ViewComfy";
-import ViewListIcon from "@material-ui/icons/ViewList";
-import SettingsIcon from "@material-ui/icons/Settings";
 import ReorderIcon from "@material-ui/icons/Reorder";
-import { Pagination } from "@material-ui/lab";
-import TablePagination from "@material-ui/core/TablePagination";
-import { Book } from "types";
 
-const SearchBooks = () => {
-  const classes = useStyles();
+import { Common } from "types";
+
+interface PaginatedViewProps<TData> {
+  listCard: React.FC<{}>;
+  squareCard: React.FC<{}>;
+  fetchData: (
+    page: number,
+    rowsPerPage: number
+  ) => Common.PaginatedResult<TData>;
+}
+
+const PaginatedView = <TData extends { id: number }, T>(
+  props: PaginatedViewProps<TData>
+) => {
+  const [page, setPage] = useState<number>(2);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [totalRecords, setTotalRecords] = useState<number>(0);
+  const [data, setData] = useState<TData[]>();
   const [isListView, setListView] = useState<boolean>(true);
-  console.log("listview: ", isListView);
 
-  const [page, setPage] = React.useState(2);
-  const [books, setBooks] = React.useState<Book.Book[]>();
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [totalRecords, setTotalRecords] = React.useState(0);
+  const classes = useStyles();
+
+  const ListCard = props.listCard;
+  const SquareCard = props.squareCard;
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -47,14 +49,23 @@ const SearchBooks = () => {
     setPage(0);
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await props.fetchData(page, rowsPerPage);
+
+        setData(result.data);
+        setTotalRecords(result.totalRecords);
+      } catch (e) {
+        console.log(e);
+      }
+
+      fetchData();
+    };
+  }, [page, rowsPerPage]);
+
   return (
     <Container>
-      <SearchTabs
-        setTotalRecords={setTotalRecords}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        setBooks={setBooks}
-      />
       <Grid
         container
         justify="flex-end"
@@ -78,21 +89,23 @@ const SearchBooks = () => {
           <ViewComfyIcon />
         </IconButton>
       </Grid>
+
       {isListView ? (
-        books?.map((book) => (
-          <Box my={3} key={book.id}>
-            <BookCard {...book} />
+        data?.map((item) => (
+          <Box my={3} key={item.id}>
+            <ListCard {...item} />
           </Box>
         ))
       ) : (
         <Grid container spacing={4}>
-          {books?.map((book) => (
-            <Grid item sm={3} key={book.id}>
-              <BookMediaCard {...book} />
+          {data?.map((item) => (
+            <Grid item sm={3} key={item.id}>
+              <SquareCard {...item} />
             </Grid>
           ))}
         </Grid>
       )}
+
       <TablePagination
         component="div"
         count={totalRecords}
@@ -100,9 +113,9 @@ const SearchBooks = () => {
         onChangePage={handleChangePage}
         rowsPerPage={rowsPerPage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
-      />{" "}
+      />
     </Container>
   );
 };
 
-export { SearchBooks };
+export { PaginatedView };

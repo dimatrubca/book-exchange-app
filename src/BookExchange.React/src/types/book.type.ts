@@ -16,7 +16,22 @@ export declare module Book {
   export type BookDetails = {
     description: string;
     publisher: string;
+    publishedYear?: number;
+    pageCount?: number;
     imagePath: string;
+  };
+
+  export type CreateBook = {
+    title: string;
+    isbn: string;
+    shortDescription: string;
+    description: string;
+    publisher: string;
+    pageCount: number;
+    publishedYear: number;
+    authorsId: number[];
+    categoriesId: number[];
+    image: any;
   };
 
   export type SearchFilters = {

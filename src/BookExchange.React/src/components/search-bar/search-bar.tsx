@@ -23,7 +23,11 @@ const SearchBar = (props: SearchBarProps) => {
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={props.handleSearch(searchTerm)}>
+              <IconButton
+                onClick={() => {
+                  props.handleSearch(searchTerm);
+                }}
+              >
                 <SearchIcon />
               </IconButton>
             </InputAdornment>

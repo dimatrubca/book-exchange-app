@@ -52,7 +52,7 @@ namespace BookExchange.Application.Posts.Queries
                if (request.BookId != null)
                     predicates.Add(p => p.BookId == request.BookId);
 
-               var paginationRequestFilter = _mapper.Map<PaginationRequestFilter>(request);
+               var paginationRequestFilter = _mapper.Map<PaginationFilter>(request);
 
                var posts = _postRepository.GetPagedData<PostDto>(predicates, includes, paginationRequestFilter, _mapper);
 

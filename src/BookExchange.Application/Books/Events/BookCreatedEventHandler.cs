@@ -13,7 +13,7 @@ namespace BookExchange.Application.Books.Events
      class BookCreatedEventHandler : INotificationHandler<BookCreatedEvent>
      {
           private readonly IElasticBookRepository _elasticBookRepository;
-          private readonly IMapper _mapper;
+          private readonly IMapper _mapper;  
 
           public BookCreatedEventHandler(IElasticBookRepository elasticBookRepository, IMapper mapper)
           {
@@ -25,9 +25,7 @@ namespace BookExchange.Application.Books.Events
           {
                var book = _mapper.Map<ElasticBook>(notification);
 
-               _elasticBookRepository.AddAsync(book);
-
-               return Task.CompletedTask;
+               return _elasticBookRepository.AddAsync(book);
           }
      }
 }

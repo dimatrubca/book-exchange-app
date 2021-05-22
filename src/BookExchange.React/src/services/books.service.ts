@@ -44,7 +44,9 @@ const GetBooksBySearch = async (searchTerm: string) => {
   console.log(accessToken);
   console.log(`${API_BASE_URL}/book?title=${searchTerm}`);
   console.log("Bearer " + accessToken);
-  return fetchApi<Book.Book>("/book?title=${searchTerm}");
+  return fetchApi<Common.PaginatedResult<Book.Book>>(
+    `/book?title=${searchTerm}`
+  );
 };
 
 const GetBookById = async (id: number) => {
@@ -55,17 +57,23 @@ const GetBooksByISBN = async (isbns: string[]): Promise<Book.Book[]> => {
   return fetch(`${API_BASE_URL}/book`).then((data) => data.json());
 };
 
-const AddBook = async (car: Book.Book) => {
+const AddBook = async (book: Book.CreateBook) => {
   let formData = new FormData();
-  for (const [key, value] of Object.entries(car)) {
+  for (const [key, value] of Object.entries(book)) {
     if (value) {
       formData.append(key, <string | Blob>value);
     }
   }
+
+  // formData.append("file", book.image);
+
   const requestOptions = {
     method: "POST",
     body: formData,
   };
+
+  console.log(requestOptions);
+  console.log(book.image);
 
   fetch(`${API_BASE_URL}/book`, requestOptions)
     .then((response) => {

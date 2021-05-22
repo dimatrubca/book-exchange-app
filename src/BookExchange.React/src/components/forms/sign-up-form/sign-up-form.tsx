@@ -17,7 +17,6 @@ import LockIcon from "@material-ui/icons/Lock";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import clsx from "clsx";
 
 import { useStyles } from "./sign-up-form.styles";
 import { Account } from "types";

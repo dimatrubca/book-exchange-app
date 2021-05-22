@@ -3,6 +3,7 @@ using BookExchange.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -17,6 +18,11 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
           public List<Book> GetBooksByCondition(Expression<Func<Book, bool>> predicate)
           {
                return GetAllByConditionWithInclude(predicate, b => b.Details, b => b.Categories, b => b.Authors);
+          }
+
+          public List<Book> GetBooksWithIds(List<int> idList)
+          {
+               return _entitites.Where(b => idList.Contains(b.Id)).ToList();
           }
      }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BookExchange.Domain.Filter
 {
-     public class PostsFilter : PaginationRequestFilter
+     public class PostsFilter : PaginationFilter
      {
           public bool IncludePostedBy { get; set; }
           public bool IncludeCondition { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Domain.Filter
 {
-     public class BooksFilter : PaginationRequestFilter
+     public class BooksFilter : PaginationFilter
      {
           public bool IncludeDetails { get; set; }
           public bool IncludeAuthors { get; set; }

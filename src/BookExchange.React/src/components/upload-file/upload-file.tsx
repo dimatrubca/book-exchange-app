@@ -8,6 +8,7 @@ import {
   ListItem,
   withStyles,
 } from "@material-ui/core";
+import { useStyles } from "./upload-file.styles";
 
 const BorderLinearProgress = withStyles((theme) => ({
   root: {
@@ -21,15 +22,25 @@ const BorderLinearProgress = withStyles((theme) => ({
     borderRadius: 5,
     backgroundColor: "#1a90ff",
   },
+
+  btnChoose: {
+    marginBottom: theme.spacing(2),
+  },
 }))(LinearProgress);
 
-const UploadFiles = () => {
+interface UploadFileProps {
+  setCurrentFile: any;
+  currentFile: any;
+}
+
+const UploadFile = ({ currentFile, setCurrentFile }: UploadFileProps) => {
   const [selectedFiles, setSelectedFiles] = useState<any>();
-  const [currentFile, setCurrentFile] = useState();
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState("");
   const [isError, setError] = useState(false);
   const [fileInfos, setFileInfos] = useState([]);
+
+  const classes = useStyles();
 
   const selectFile = (e: any) => {
     setSelectedFiles(e.target.files);
@@ -37,13 +48,18 @@ const UploadFiles = () => {
 
   const upload = (e: any) => {
     console.log("uploading");
+    let currentFile = selectedFiles[0];
+    setProgress(0);
+    setCurrentFile(currentFile);
+
+    console.log(currentFile);
   };
 
   return (
     <div className="mg20">
       {currentFile && (
         <Box className="mb25" display="flex" alignItems="center">
-          <Box width="100%" mr={1}>
+          <Box width="100%" mr={1} mb={2}>
             <BorderLinearProgress variant="determinate" value={progress} />
           </Box>
           <Box minWidth={35}>
@@ -54,7 +70,6 @@ const UploadFiles = () => {
           </Box>
         </Box>
       )}
-
       <label htmlFor="btn-upload">
         <input
           id="btn-upload"
@@ -63,11 +78,16 @@ const UploadFiles = () => {
           type="file"
           onChange={selectFile}
         />
-        <Button className="btn-choose" variant="outlined" component="span">
+        <Button
+          className={classes.btnChoose}
+          variant="outlined"
+          component="span"
+        >
           Choose Files
         </Button>
+        <Typography style={{ display: "inline-block" }}>Cover Photo</Typography>
       </label>
-      <div className="file-name">
+      <div className={classes.fileName}>
         {selectedFiles &&
         selectedFiles !== undefined &&
         selectedFiles?.length > 0
@@ -84,27 +104,25 @@ const UploadFiles = () => {
       >
         Upload
       </Button>
-
       <Typography
         variant="subtitle2"
         className={`upload-message ${isError ? "error" : ""}`}
       >
         {message}
       </Typography>
-
-      <Typography variant="h6" className="list-header">
+      {/* <Typography variant="h6" className="list-header">
         List of Files
       </Typography>
       <ul className="list-group">
         {fileInfos &&
           fileInfos.map((file, index) => (
             <ListItem divider key={index}>
-              {/* <a href={file.url}>{file.name}</a> */}
+             <a href={file.url}>{file.name}</a> 
             </ListItem>
           ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };
 
-export { UploadFiles };
+export { UploadFile };

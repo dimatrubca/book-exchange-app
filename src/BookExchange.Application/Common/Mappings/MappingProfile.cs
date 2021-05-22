@@ -13,6 +13,7 @@ using System.Text;
 using BookExchange.Application.Posts.Queries;
 using BookExchange.Application.Authors.Commands;
 using BookExchange.Application.Books.Events;
+using BookExchange.Application.WishList.Queries;
 
 namespace BookExchange.Application.Common.Mappings
 {
@@ -36,10 +37,10 @@ namespace BookExchange.Application.Common.Mappings
                CreateMap<ApplicationUser, CreateUserCommand>();
 
                CreateMap<BooksFilter, GetBooksQuery>();
-               CreateMap<GetBooksQuery, PaginationRequestFilter>();
+               CreateMap<GetBooksQuery, PaginationFilter>();
 
                CreateMap<PostsFilter, GetPostsQuery>();
-               CreateMap<GetPostsQuery, PaginationRequestFilter>();
+               CreateMap<GetPostsQuery, PaginationFilter>();
 
                CreateMap<Condition, ConditionDto>();
 
@@ -49,6 +50,9 @@ namespace BookExchange.Application.Common.Mappings
                CreateMap<BookCategory, CategoryDto>();
 
                CreateMap<BookCreatedEvent, ElasticBook>();
+
+               CreateMap<WishListFilter, GetWishListAllQuery>();
+               CreateMap<GetWishListAllQuery, PaginationFilter>();
           }
      }
 }

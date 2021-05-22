@@ -17,7 +17,7 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
      public class RepositoryBase<T> : IRepositoryBase<T> where T : BaseEntity
      {
           private readonly DbContext _context;
-          private readonly DbSet<T> _entitites;
+          protected readonly DbSet<T> _entitites;
 
           public RepositoryBase(DbContext context)
           {
@@ -106,7 +106,7 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
           }
 
 
-          public PagedResponse<TDto> GetPagedData<TDto>(List<Expression<Func<T, bool>>> predicates, List<Expression<Func<T, object>>> includes, PaginationRequestFilter paginationFilter, IMapper mapper)
+          public PagedResponse<TDto> GetPagedData<TDto>(List<Expression<Func<T, bool>>> predicates, List<Expression<Func<T, object>>> includes, PaginationFilter paginationFilter, IMapper mapper)
           {
                return _entitites.AsQueryable().CreatePaginatedResponse<T, TDto>(predicates, includes, paginationFilter, mapper);
           }

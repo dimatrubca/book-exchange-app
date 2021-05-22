@@ -89,7 +89,7 @@ namespace BookExchange.Service.Services
 
 
 
-               var paginationRequestFilter = _mapper.Map<PaginationRequestFilter>(request);
+               var paginationRequestFilter = _mapper.Map<PaginationFilter>(request);
 
                var books = _bookRepository.GetPagedData<BookDto>(predicates, includes, paginationRequestFilter, _mapper);
 

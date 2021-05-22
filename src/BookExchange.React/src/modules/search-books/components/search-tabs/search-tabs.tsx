@@ -45,7 +45,7 @@ const SearchTabs = (props: SearchTabsProps) => {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <SmartSearch />
+          <SmartSearch {...props} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           <FilteredSearch {...props} />

@@ -50,7 +50,7 @@ namespace BookExchange.Infrastructure.ElasticSearch.Repositories
                }
           }
 
-          public async Task<PagedResponse<ElasticBook>> Get(string query, int page, int pageSize)
+          public async Task<List<int>> Get(string query, int page, int pageSize)
           {
                var result = await _elasticClient.SearchAsync<ElasticBook>(x => x.Query(q => q
                                                                  .MultiMatch(mp => mp
@@ -60,13 +60,8 @@ namespace BookExchange.Infrastructure.ElasticSearch.Repositories
                                                               .From(page - 1)
                                                               .Size(pageSize));
 
-               var response =  new PagedResponse<ElasticBook>(result.Documents.ToList(), page, pageSize)
-               {
-                    TotalRecords = (int)result.Total,
-                    PageNumber = page,
-                    Data = result.Documents.ToList()
-               };
-
+               var response = result.Documents.Select(b => b.Id).ToList();
+               //result.HitsMetadata.Total
                return response;
           }
      }

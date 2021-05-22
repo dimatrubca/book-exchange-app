@@ -8,5 +8,6 @@ namespace BookExchange.Domain.Interfaces
      public interface IBookRepository : IRepositoryBase<Book>
      {
           public List<Book> GetBooksByCondition(Expression<Func<Book, bool>> predicate);
+          public List<Book> GetBooksWithIds(List<int> idList);
      }
 }

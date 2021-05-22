@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Paper } from "@material-ui/core";
 import { useStyles } from "./wishlist-styles";
 import { BookCard } from "../../../../components/book-card";
+import { PaginatedView } from "components/paginated-view";
 /*
 const books: BookCardProps[] = [
   {
@@ -42,7 +43,14 @@ const books: BookCardProps[] = [
 ];*/
 
 const Wishlist = () => {
+  //pagination view container
   const classes = useStyles();
+  const [page, setPage] = useState<number>(2);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [totalRecords, setTotalRecords] = useState<number>(0);
+  const [data, setData] = useState<Book.Book[]>();
+
+  const fetchWishlist = () => {};
 
   return (
     <div>
@@ -50,11 +58,7 @@ const Wishlist = () => {
         Wishlist
       </Typography>
 
-      {/* {books.map((book) => (
-        <Box my={3} key={book.id}>
-          <BookCard {...book} />
-        </Box>
-      ))} */}
+      <PaginatedView />
     </div>
   );
 };

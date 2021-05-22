@@ -6,4 +6,13 @@ export declare module Common {
     totalRecords: number;
     data: T[];
   };
+
+  export type PaginationFilter = {
+    [key: string]: any;
+
+    pageNumber?: number;
+    pageSize?: number;
+    sortDirection?: string;
+    sortBy?: string;
+  };
 }

@@ -11,6 +11,7 @@ import { PostBooks } from "../../modules/post-books";
 import { SearchBooks } from "../../modules/search-books";
 import { AddBook } from "../../modules/add-book";
 import { ProfilePage } from "../../modules/profile-page";
+import { AddPost } from "../../modules/add-post";
 
 interface RouterContainerProps {
   children: React.ReactNode;
@@ -33,6 +34,7 @@ const RouterContainer = () => {
         <Route exact path="/post-book" component={PostBooks} />
 
         <Route exact path="/add-book" component={AddBook} />
+        <Route exact path="/posts/add/:bookId" component={AddPost} />
       </Switch>
     </Router>
   );

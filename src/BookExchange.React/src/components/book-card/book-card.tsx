@@ -18,7 +18,7 @@ import { Book } from "types";
 
 const BookCard = (book: Book.Book) => {
   const classes = useStyles();
-
+  console.log("thumbnail:", book.thumbnailPath);
   return (
     <Card className={classes.root}>
       <div className={classes.details}>
@@ -42,7 +42,7 @@ const BookCard = (book: Book.Book) => {
       </div>
       <CardMedia
         className={classes.cover}
-        image={book.thumbnailPath}
+        image="https://images-na.ssl-images-amazon.com/images/I/41TVwg27ujL._SX331_BO1,204,203,200_.jpg"
         title="Live from space album cover"
       />
     </Card>
