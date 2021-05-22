@@ -18,11 +18,11 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Application.WishList.Queries
 {
-     using WishList = BookExchange.Domain.Models.WishList;
+     using Wishlist = BookExchange.Domain.Models.Wishlist;
 
      public class GetUserWishlistQueryHandler : IRequestHandler<GetUserWishlistQuery, PagedResponse<WishListDto>>
      {
-          private readonly IRepositoryBase<WishList> wishlistRepository;
+          private readonly IRepositoryBase<Wishlist> wishlistRepository;
           private readonly IHttpContextAccessor _contextAccessor;
           private readonly IUserRepository _userRepository;
           private readonly IMapper _mapper;
@@ -38,7 +38,7 @@ namespace BookExchange.Application.WishList.Queries
 
                User user = _userRepository.GetUserByIdentityId(identityId);
 
-               var predicates = new List<Expression<Func<WishList, bool>>>() {
+               var predicates = new List<Expression<Func<Wishlist, bool>>>() {
                     w => w.UserId == user.Id
                };
 

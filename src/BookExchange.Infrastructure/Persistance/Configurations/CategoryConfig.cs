@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Infrastructure.Persistance.Configurations
 {
-     public class CategoryConfig : IEntityTypeConfiguration<BookCategory>
+     public class CategoryConfig : IEntityTypeConfiguration<Category>
      {
-          public void Configure(EntityTypeBuilder<BookCategory> builder)
+          public void Configure(EntityTypeBuilder<Category> builder)
           {
                builder.Property(x => x.Label)
                     .IsRequired();

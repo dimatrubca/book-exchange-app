@@ -14,31 +14,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using System.Buffers;
 using BookExchange.API.Configuration;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using System.Configuration;
 using Newtonsoft.Json;
 using BookExchange.Application.Common.Exceptions;
-using BookExchange.Domain.Auth;
-using Microsoft.AspNetCore.Identity;
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using BookExchange.Application.Common.Extensions;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using BookExchange.API.Identity;
-using IdentityUser = BookExchange.API.Identity.IdentityUser;
-using IdentityServer4;
-using IdentityServer4.Test;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using IdentityServer4.Services;
 using BookExchange.Infrastructure.ElasticSearch;
 using BookExchange.Infrastructure.ElasticSearch.Repositories;
 
@@ -95,86 +75,33 @@ namespace BookExchange.API
                     options.UseSqlServer(Configuration.GetConnectionString("BookExchangaDatabase"),
                     x => x.MigrationsAssembly(typeof(BookExchangeDbContext).Assembly.FullName)));
 
-               services.AddDbContext<IdentityContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("IdentityDatabase"),
-                    x => x.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)));
+               //var authOptions = services.ConfigureAuthOptions(Configuration);
 
-               services.AddScoped<IProfileService, IdentityProfileService>();
+               // accepts any access token issued by identity server
+               services.AddAuthentication("Bearer")
+                   .AddJwtBearer("Bearer", options => {
+                        options.Authority = "https://localhost:5001";
 
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                             ValidateAudience = false
+                        };
+                   });
 
-               services.AddIdentity<IdentityUser, IdentityRole>(options => {
-                         options.Password.RequiredLength = 5;
-               }).AddEntityFrameworkStores<IdentityContext>()
-                 .AddDefaultTokenProviders();
-
-               services.AddIdentityServer(options => {
-                    options.Events.RaiseErrorEvents = true;
-                    options.Events.RaiseInformationEvents = true;
-                    options.Events.RaiseFailureEvents = true;
-                    options.Events.RaiseSuccessEvents = true;
-
-                    // see https://identityserver4.readthedoc
-               })//.AddApiAuthorization<IdentityUser, IdentityContext>()
-
-
-                  .AddDeveloperSigningCredential()        //This is for dev only scenarios when you don’t have a certificate to use.
-                  .AddInMemoryIdentityResources(Config.IdentityResources)
-                  .AddInMemoryApiResources(Config.ApiResources)
-                  .AddInMemoryApiScopes(Config.ApiScopes)
-                  .AddInMemoryClients(Config.Clients)
-                   //.AddTestUsers(TestUsers.Users);
-                   .AddAspNetIdentity<IdentityUser>()
-                                       .AddProfileService<IdentityProfileService>();
-
-
-
-
-               var authOptions = services.ConfigureAuthOptions(Configuration);
-               //     // services.AddAuthentication(options => {
-               //     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-               //     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-               //})
-               //    /*.AddGoogle(options => {
-               //         options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-
-               //      // register your IdentityServer with Google at https://console.developers.google.com
-               //      // enable the Google+ API
-               //      // set the redirect URI to https://localhost:5001/signin-google
-               //      options.ClientId = "copy client ID from Google here";
-               //         options.ClientSecret = "copy client secret from Google here";
-               //    })
-               //  .AddIdentityServerAuthentication();
-               /*   .AddJwtBearer(options =>
-                  {
-                       options.Audience = "https://localhost:5001";
-                       options.Authority = "https://localhost:5001";
-                       options.RequireHttpsMetadata = false;
-                       options.Audience = "client";
-                  });*/
-               //  .AddLocalApi();
-               /*
-                            services.AddAuthentication()
-                   .AddJwtBearer(jwt => {
-                                 jwt.Authority = "https://localhost:5001";
-                                 jwt.RequireHttpsMetadata = false;
-                                 jwt.Audience = "bookApiResource";
-                            });*/
-               services.AddAuthentication()
-       .AddLocalApi();
-
+               // adds an authorization policy to make sure the token is for scope 'api1'
                services.AddAuthorization(options =>
                {
-                    options.AddPolicy(IdentityServerConstants.LocalApi.PolicyName, policy =>
+                    options.AddPolicy("ApiScope", policy =>
                     {
-                         policy.AddAuthenticationSchemes(IdentityServerConstants.LocalApi.AuthenticationScheme);
                          policy.RequireAuthenticatedUser();
+                         policy.RequireClaim("scope", "bookApi");
                     });
                });
 
 
-               //services.AddJwtAuthentication(authOptions);
+          //services.AddJwtAuthentication(authOptions);
 
-               services.AddHttpContextAccessor();
+          services.AddHttpContextAccessor();
 
                services.AddControllers(options => {
                     options.Filters.Add(new AuthorizeFilter());
@@ -192,7 +119,7 @@ namespace BookExchange.API
 
                services.AddScoped<IRepositoryBase<Author>, RepositoryBase<Author>>();
                services.AddScoped<IRepositoryBase<BookDetails>, RepositoryBase<BookDetails>>();
-               services.AddScoped<IRepositoryBase<BookCategory>, RepositoryBase<BookCategory>>();
+               services.AddScoped<IRepositoryBase<Category>, RepositoryBase<Category>>();
 
                services.AddScoped<IElasticBookRepository, ElasticBookRepository>();
 
@@ -204,8 +131,6 @@ namespace BookExchange.API
           // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
           public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
           {
-
-
                if (env.IsDevelopment())
                {
                     app.UseDeveloperExceptionPage();
@@ -220,7 +145,6 @@ namespace BookExchange.API
                app.UseCors(configurePolicy => configurePolicy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
                app.UseAuthentication();
-               app.UseIdentityServer();
                app.UseAuthorization();
 
 

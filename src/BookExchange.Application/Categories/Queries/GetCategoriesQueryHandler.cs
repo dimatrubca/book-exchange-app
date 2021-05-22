@@ -11,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Application.Categories.Queries
 {
-     public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, List<BookCategory>>
+     public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, List<Category>>
      {
-          private readonly IRepositoryBase<BookCategory> _categoriesRepository;
+          private readonly IRepositoryBase<Category> _categoriesRepository;
 
-          public GetCategoriesQueryHandler(IRepositoryBase<BookCategory> categoriesRepository)
+          public GetCategoriesQueryHandler(IRepositoryBase<Category> categoriesRepository)
           {
                _categoriesRepository = categoriesRepository;
           }
 
-          public Task<List<BookCategory>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
+          public Task<List<Category>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
           {
                return Task.FromResult(_categoriesRepository.GetAll());
           }

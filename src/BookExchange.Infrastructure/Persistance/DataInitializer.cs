@@ -14,53 +14,46 @@ namespace BookExchange.Infrastructure.Persistance
                using (var context = new BookExchangeDbContextFactory().CreateDbContext(new string[] { }))
                {
                     context.Database.EnsureCreated();
-                    return;
-                    // create 3 users
-                    /*if (!context.Users.Any())
-                    {
-                         context.Users.Add(new User { Username = "admin", FirstName = "Dima", LastName = "Trubca", Password = "secret" });
-                         context.Users.Add(new User { Username = "tourist", FirstName = "Genady", LastName = "Korotkevichi", Password = "secret", Points = 1 });
-                         context.Users.Add(new User { Username = "jiangly", FirstName = "Petru", LastName = "Mitrivich", Password = "secret", Points = 2 });
-                    }*/
-                    context.SaveChanges();
-
-                    // create user contacts
-                    if (!context.Set<UserContact>().Any())
-                    {
-                         context.Add(new UserContact { UserId = 1, Email = "admin@gmail.com" });
-                         context.Add(new UserContact { UserId = 2, Email = "tourist313@gmail.com", Country = "Moldova" });
-                         context.Add(new UserContact { UserId = 3, Email = "jiangly323@gmail.com", Country = "Moldova", City = "Chisinau" });
-                    }
 
                     // create 3 books
                     if (!context.Books.Any())
                     {
-                         context.Books.Add(new Book { ISBN = "9780786112517", Title = "War and Peace", ShortDescription = "War and Peace is a novel by the Russian author Leo Tolstoy..." });
-                         context.Books.Add(new Book { ISBN = "9788807900501", Title = "A Confession", ShortDescription = "A Confession, or My Confession, is a short work on the subject of melancholia, philosophy and religion" });
-                         context.Books.Add(new Book { ISBN = "9780786105236", Title = "The Cossacks", ShortDescription = "The Cossacks is a short novel by Leo Tolstoy, published in 1863 in the popular literary magazine The Russian Messenger" });
+                         context.Books.Add(new Book {
+                              ISBN = "9780786112517",
+                              Title = "War and Peace",
+                              ShortDescription = "War and Peace is a novel by the Russian author Leo Tolstoy...",
+                              Details = new BookDetails { Description = "Long Description1 word", PageCount = 300, Publisher = "PublisherName" },
+                         });
+                         context.Books.Add(new Book {
+                              ISBN = "9788807900501",
+                              Title = "A Confession",
+                              ShortDescription = "A Confession, or My Confession, is a short work on the subject of melancholia, philosophy and religion" ,
+                              Details = new BookDetails { Description = "Long Description2 test", PageCount = 200, Publisher = "PublisherName" },
+                         });
+                         context.Books.Add(new Book { 
+                              ISBN = "9780786105236", 
+                              Title = "The Cossacks", 
+                              ShortDescription = "The Cossacks is a short novel by Leo Tolstoy, published in 1863 in the popular literary magazine The Russian Messenger",
+                              Details = new BookDetails { BookId = 3, Description = "Long Description3 just", PageCount = 150, Publisher = "PublisherName" },
+                         });
                     }
                     context.SaveChanges();
 
-                    if (!context.Set<BookDetails>().Any())
-                    {
-                         context.Add(new BookDetails { BookId = 1, Description = "Long Description1 word", PageCount = 300, Publisher = "PublisherName" });
-                         context.Add(new BookDetails { BookId = 2, Description = "Long Description2 test", PageCount = 200, Publisher = "PublisherName" });
-                         context.Add(new BookDetails { BookId = 3, Description = "Long Description3 just", PageCount = 150, Publisher = "PublisherName" });
-                    }
 
-                    if (!context.Set<BookCategory>().Any())
+                    if (!context.Set<Category>().Any())
                     {
-                         context.Add(new BookCategory { Label = "Novel" });
-                         context.Add(new BookCategory { Label = "Fiction" });
-                         context.Add(new BookCategory { Label = "War story" });
+                         context.Add(new Category { Label = "Novel" });
+                         context.Add(new Category { Label = "Fiction" });
+                         context.Add(new Category { Label = "War story" });
                     }
 
                     if (!context.Set<Author>().Any())
                     {
-                         context.Add(new Author { Name = "Leo Tolstoy" });
-                         context.Add(new Author { Name = "Greg McKewn" });
-                         context.Add(new Author { Name = "John Green" });
+                         context.Authors.Add(new Author { Name = "Leo Tolstoy" });
+                         context.Authors.Add(new Author { Name = "Greg McKewn" });
+                         context.Authors.Add(new Author { Name = "John Green" });
                     }
+
                     context.SaveChanges();
 
                     if (!context.Set<BookAuthor>().Any())
@@ -70,20 +63,18 @@ namespace BookExchange.Infrastructure.Persistance
                          context.Add(new BookAuthor { BookId = 3, AuthorId = 1 });
 
                     }
-                    context.SaveChanges();
 
-                    if (!context.Set<BookBookCategory>().Any())
+                    if (!context.Set<BookCategory>().Any())
                     {
-                         context.Add(new BookBookCategory { BookId = 1, CategoryId = 1 });
-                         context.Add(new BookBookCategory { BookId = 1, CategoryId = 2 });
-                         context.Add(new BookBookCategory { BookId = 1, CategoryId = 3 });
-                         context.Add(new BookBookCategory { BookId = 2, CategoryId = 2 });
-                         context.Add(new BookBookCategory { BookId = 3, CategoryId = 1 });
-                         context.Add(new BookBookCategory { BookId = 3, CategoryId = 2 });
+                         context.Add(new BookCategory { BookId = 1, CategoryId = 1 });
+                         context.Add(new BookCategory { BookId = 1, CategoryId = 2 });
+                         context.Add(new BookCategory { BookId = 1, CategoryId = 3 });
+                         context.Add(new BookCategory { BookId = 2, CategoryId = 2 });
+                         context.Add(new BookCategory { BookId = 3, CategoryId = 1 });
+                         context.Add(new BookCategory { BookId = 3, CategoryId = 2 });
                     }
 
 
-                    context.SaveChanges();
 
                     // add book conditions
                     if (!context.Set<Condition>().Any())
@@ -95,45 +86,72 @@ namespace BookExchange.Infrastructure.Persistance
                     };
 
 
-                    if (!context.Posts.Any())
+                    // create 3 users
+                    if (!context.Users.Any())
                     {
-                         context.Posts.Add(new Post { PostedById = 1, BookId = 1, ConditionId = 1 });
-                         context.Posts.Add(new Post { PostedById = 1, BookId = 2, ConditionId = 2 });
-                         context.Posts.Add(new Post { PostedById = 2, BookId = 1, ConditionId = 1 });
+                         var user1 = new User
+                         {
+                              Username = "dimatrubca",
+                              FirstName = "Dima",
+                              LastName = "Trubca",
+                              Points = 10,
+                              IdentityId = "1",
+                              UserContact = new UserContact { Email = "dimatrubca@gmail.com" },
+                              Posts = new List<Post>()
+                              {
+                                   new Post { BookId = 1, ConditionId = 1 },
+                                   new Post { BookId = 2, ConditionId = 2 }
+                              }
+                         };
 
-                         context.Posts.Add(new Post { PostedById = 1, BookId = 2, ConditionId = 3 });
-                         context.Posts.Add(new Post { PostedById = 2, BookId = 2, ConditionId = 2 });
-                         context.Posts.Add(new Post { PostedById = 2, BookId = 1, ConditionId = 2 });
+
+                         var user2 = new User
+                         {
+                              Username = "valentin",
+                              FirstName = "Valentin",
+                              LastName = "Korotkevichi",
+                              Points = 5,
+                              IdentityId = "2",
+                              UserContact = new UserContact { Email = "dimatrubca@outlook.com" },
+                              Posts = new List<Post>()
+                              {
+                                   new Post { BookId = 1, ConditionId = 2 },
+                                   new Post { BookId = 2, ConditionId = 3 }
+                              }
+                         };
+
+                         context.Users.Add(user1);
+                         context.Users.Add(user2);
                     }
 
                     context.SaveChanges();
 
+
                     // populate wishlist table
-                    if (!context.WishList.Any())
+                    if (!context.Wishlist.Any())
                     {
-                         context.WishList.Add(new WishList { UserId = 1, BookId = 3 });
-                         context.WishList.Add(new WishList { UserId = 1, BookId = 2 });
-                         context.WishList.Add(new WishList { UserId = 3, BookId = 2 });
-                         context.WishList.Add(new WishList { UserId = 3, BookId = 1 });
+                         context.Wishlist.Add(new Wishlist { UserId = 1, BookId = 3 });
+                         context.Wishlist.Add(new Wishlist { UserId = 1, BookId = 2 });
+                         context.Wishlist.Add(new Wishlist { UserId = 1, BookId = 1 });
+                         context.Wishlist.Add(new Wishlist { UserId = 2, BookId = 2 });
+                         context.Wishlist.Add(new Wishlist { UserId = 2, BookId = 1 });
                     }
 
                     // populate requests table
                     if (!context.Requests.Any())
                     {
-                         context.Requests.Add(new Request { PostId = 4, UserId = 1 });
-                         context.Requests.Add(new Request { PostId = 5, UserId = 2 });
-                         context.Requests.Add(new Request { PostId = 1, UserId = 3 });
-                         context.Requests.Add(new Request { PostId = 2, UserId = 1 });
+                         context.Requests.Add(new Request { PostId = 3, UserId = 1 });
+                         context.Requests.Add(new Request { PostId = 1, UserId = 2 });
+                         context.Requests.Add(new Request { PostId = 2, UserId = 2 });
                     }
-                    context.SaveChanges();
+
 
                     // populate bookmarks table
                     if (!context.Bookmarks.Any())
                     {
                          context.Bookmarks.Add(new Bookmark { UserId = 1, PostId = 4 });
-                         context.Bookmarks.Add(new Bookmark { UserId = 1, PostId = 5 });
-                         context.Bookmarks.Add(new Bookmark { UserId = 2, PostId = 5 });
-                         context.Bookmarks.Add(new Bookmark { UserId = 3, PostId = 5 });
+                         context.Bookmarks.Add(new Bookmark { UserId = 1, PostId = 3 });
+                         context.Bookmarks.Add(new Bookmark { UserId = 2, PostId = 2 });
                     }
 
                     // populate book reviews
@@ -143,7 +161,6 @@ namespace BookExchange.Infrastructure.Persistance
                          context.Reviews.Add(new BookReview { BookId = 1, ReviewerId = 2, Rating = 4, Message = "I did really like it." });
                          context.Reviews.Add(new BookReview { BookId = 2, ReviewerId = 2, Rating = 3, Message = "Not bad" });
 
-                         context.Reviews.Add(new PostReview { PostId = 1, ReviewerId = 3, Rating = 5, Message = "Super" });
                          context.Reviews.Add(new PostReview { PostId = 1, ReviewerId = 2, Rating = 4, Message = "Very Good" });
                          context.Reviews.Add(new PostReview { PostId = 2, ReviewerId = 2, Rating = 4, Message = "Excelent" });
                          context.Reviews.Add(new PostReview { PostId = 2, ReviewerId = 1, Rating = 3, Message = "Good" });

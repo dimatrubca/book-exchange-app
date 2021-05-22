@@ -3,7 +3,6 @@ using BookExchange.Application.Books.Commands;
 using BookExchange.Domain.Filter;
 using BookExchange.Application.Posts.Commands;
 using BookExchange.Application.Users.Commands;
-using BookExchange.Domain.Auth;
 using BookExchange.Domain.DTOs;
 using BookExchange.Domain.Models;
 using BookExchange.Domain.Queries;
@@ -30,11 +29,9 @@ namespace BookExchange.Application.Common.Mappings
                CreateMap<CreatePostCommand, Post>();
                CreateMap<ReplacePostCommand, Post>();
 
-               CreateMap<CreateUserCommand, ApplicationUser>();
                CreateMap<User, UserDto>();
                CreateMap<UserContact, UserContactDto>();
 
-               CreateMap<ApplicationUser, CreateUserCommand>();
 
                CreateMap<BooksFilter, GetBooksQuery>();
                CreateMap<GetBooksQuery, PaginationFilter>();
@@ -47,7 +44,7 @@ namespace BookExchange.Application.Common.Mappings
                CreateMap<CreateAuthorDto, CreateAuthorCommand>();
                CreateMap<Author, AuthorDto>();
 
-               CreateMap<BookCategory, CategoryDto>();
+               CreateMap<Category, CategoryDto>();
 
                CreateMap<BookCreatedEvent, ElasticBook>();
 

@@ -15,6 +15,6 @@ namespace BookExchange.Domain.Models
           public virtual ICollection<User> WishedBy { get; set; }
           public virtual ICollection<Author> Authors { get; set; }
           public virtual ICollection<BookAuthor> BookAuthor { get; set; }
-          public virtual ICollection<BookCategory> Categories { get; set; }
+          public virtual ICollection<Category> Categories { get; set; }
      }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Application.Categories.Queries
 {
-     public class GetCategoriesQuery : IRequest<List<BookCategory>>
+     public class GetCategoriesQuery : IRequest<List<Category>>
      {
      }
 }

@@ -41,7 +41,7 @@ namespace BookExchange.Infrastructure.Persistance.Configurations
                
                builder.HasMany(x => x.WishedBooks)
                     .WithMany(x => x.WishedBy)
-                    .UsingEntity<WishList>(
+                    .UsingEntity<Wishlist>(
                          x => x.HasOne(x => x.Book).WithMany().HasForeignKey(x => x.BookId),
                          x => x.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId)
                     );

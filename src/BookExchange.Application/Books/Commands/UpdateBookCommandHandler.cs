@@ -14,9 +14,9 @@ namespace BookExchange.Application.Books.Commands
      {
           private readonly IBookRepository _bookRepository;
           private readonly IRepositoryBase<Author> _bookAuthorsRepository;
-          private readonly IRepositoryBase<BookCategory> _bookCategoriesRepository;
+          private readonly IRepositoryBase<Category> _bookCategoriesRepository;
 
-          public UpdateBookCommandHandler(IBookRepository bookRepository, IRepositoryBase<Author> bookAuthorsRepository, IRepositoryBase<BookCategory> bookCategoriesRepository)
+          public UpdateBookCommandHandler(IBookRepository bookRepository, IRepositoryBase<Author> bookAuthorsRepository, IRepositoryBase<Category> bookCategoriesRepository)
           {
                _bookRepository = bookRepository;
                _bookAuthorsRepository = bookAuthorsRepository;

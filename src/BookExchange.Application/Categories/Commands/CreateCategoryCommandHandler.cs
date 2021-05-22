@@ -12,22 +12,22 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Application.Categories.Commands
 {
-     public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, BookCategory>
+     public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Category>
      {
-          private readonly IRepositoryBase<BookCategory> _categoriesRepository;
+          private readonly IRepositoryBase<Category> _categoriesRepository;
 
-          public CreateCategoryCommandHandler(IRepositoryBase<BookCategory> categoriesRepository)
+          public CreateCategoryCommandHandler(IRepositoryBase<Category> categoriesRepository)
           {
                _categoriesRepository = categoriesRepository;
           }
 
-          public Task<BookCategory> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+          public Task<Category> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
           {
                if (ServiceUtils.CheckBookCategoryExists(_categoriesRepository, request.Label)) {
                     throw new BadRequestException($"Category with label = {request.Label} already exists");
                }
 
-               BookCategory bookCategory = new BookCategory
+               Category bookCategory = new Category
                {
                     Label = request.Label
                };

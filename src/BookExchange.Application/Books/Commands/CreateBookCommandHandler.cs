@@ -22,10 +22,10 @@ namespace BookExchange.Application.Books.Commands
           private readonly IHostingEnvironment _environment;
           private readonly IBookRepository _bookRepository;
           private readonly IRepositoryBase<Author> _bookAuthorsRepository;
-          private readonly IRepositoryBase<BookCategory> _bookCategoriesRepository;
+          private readonly IRepositoryBase<Category> _bookCategoriesRepository;
 
           public CreateBookCommandHandler(IBookRepository bookRepository, 
-               IRepositoryBase<Author> bookAuthorsRepository, IRepositoryBase<BookCategory> bookCategoriesRepository, 
+               IRepositoryBase<Author> bookAuthorsRepository, IRepositoryBase<Category> bookCategoriesRepository, 
                IHostingEnvironment environment, IMediator mediator)
           {
                _bookRepository = bookRepository;

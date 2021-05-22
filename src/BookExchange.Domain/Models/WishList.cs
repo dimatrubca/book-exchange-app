@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Domain.Models
 {
-     public class WishList : BaseEntity
+     public class Wishlist : BaseEntity
      {
           public int UserId { get; set; }
           public int BookId { get; set; }

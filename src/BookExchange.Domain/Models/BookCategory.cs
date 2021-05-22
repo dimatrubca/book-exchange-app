@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace BookExchange.Domain.Models
 {
-     public class BookCategory : BaseEntity
+     public class BookCategory
      {
-          public string Label;
+          public int BookId;
+          public int CategoryId;
 
-          public List<Book> Books;
+          public Book Book;
+          public Category Category;
      }
 }

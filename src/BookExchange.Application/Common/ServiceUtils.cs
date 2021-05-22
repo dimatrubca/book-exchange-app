@@ -30,7 +30,7 @@ namespace BookExchange.Application.Common
                return bookRepository.GetBooksByCondition(b => b.ISBN == ISBN).Any();
           }
 
-          public static bool CheckBookCategoryExists(IRepositoryBase<BookCategory> categoryRepository, string label)
+          public static bool CheckBookCategoryExists(IRepositoryBase<Category> categoryRepository, string label)
           {
                return categoryRepository.GetAllByCondition(c => c.Label == label).Any();
           }

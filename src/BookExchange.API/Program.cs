@@ -14,7 +14,6 @@ using BookExchange.Services;
 using BookExchange.Domain.DTOs;
 using BookExchange.Domain.Models;
 using BookExchange.Infrastructure.Persistance;
-using BookExchange.API.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,9 +27,6 @@ namespace BookExchange.API
                using (var scope = host.Services.CreateScope())
                {
                     var serviceProvider = scope.ServiceProvider;
-                    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-                    IdentitySeeder.SeedAll(roleManager);
                     DataInitializer.SeedDatabase();
                }
 

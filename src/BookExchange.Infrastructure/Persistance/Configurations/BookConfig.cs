@@ -36,7 +36,7 @@ namespace BookExchange.Infrastructure.Persistance.Configurations
 
                builder.HasMany(x => x.Categories)
                     .WithMany(x => x.Books)
-                    .UsingEntity<BookBookCategory>(
+                    .UsingEntity<BookCategory>(
                          x => x.HasOne(x => x.Category).WithMany().HasForeignKey(b => b.CategoryId),
                          x => x.HasOne(x => x.Book).WithMany().HasForeignKey(b => b.BookId)
                     ); 

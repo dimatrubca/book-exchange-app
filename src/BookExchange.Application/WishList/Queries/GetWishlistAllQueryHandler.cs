@@ -15,18 +15,18 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Application.WishList.Queries
 {
-     using WishList = BookExchange.Domain.Models.WishList;
+     using Wishlist = BookExchange.Domain.Models.Wishlist;
 
 
      // TODO: make paginated requesthandlerbase
      public class GetWishListAllQueryHandler : IRequestHandler<GetWishListAllQuery, PagedResponse<WishListDto>>
      {
 
-          private readonly IRepositoryBase<WishList> wishlistRepository;
+          private readonly IRepositoryBase<Wishlist> wishlistRepository;
           private readonly IMapper _mapper;
           Task<PagedResponse<WishListDto>> IRequestHandler<GetWishListAllQuery, PagedResponse<WishListDto>>.Handle(GetWishListAllQuery request, CancellationToken cancellationToken)
           {
-               var predicates = new List<Expression<Func<WishList, bool>>>();
+               var predicates = new List<Expression<Func<Wishlist, bool>>>();
 
                if (request.UserId != null) 
                {

@@ -2,7 +2,6 @@
 using BookExchange.Application.Common.Configurations;
 using BookExchange.Application.Users.Commands;
 using BookExchange.Application.Users.Queries;
-using BookExchange.Domain.Auth;
 using BookExchange.Domain.DTOs;
 using BookExchange.Domain.Models;
 using IdentityServer4;
@@ -15,24 +14,20 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using IdentityUser = BookExchange.API.Identity.IdentityUser;
 
 namespace BookExchange.API.Controllers
 {
      [Route("api/[controller]")]
      [ApiController]
-     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+     [Authorize("ApiScope")]
      public class UserController : ControllerBase
      {
 
           private readonly IMediator _mediator;
           private readonly IMapper _mapper;
 
-          public UserController(IMediator mediator, IMapper mapper, UserManager<IdentityUser> userManager)
+          public UserController(IMediator mediator, IMapper mapper)
           {
                _mediator = mediator;
                _mapper = mapper;
