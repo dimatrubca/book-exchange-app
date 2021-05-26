@@ -1,26 +1,22 @@
 import React, { useContext } from "react";
+import { useSnackbar } from "notistack";
+import { useHistory } from "react-router";
+
 import {
-  Avatar,
-  Box,
   Button,
   Checkbox,
-  Container,
-  CssBaseline,
   FormControlLabel,
   Grid,
   Link,
-  Paper,
   TextField,
-  Typography,
 } from "@material-ui/core";
-import LockIcon from "@material-ui/icons/Lock";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useStyles } from "./sign-up-form.styles";
 import { Account } from "types";
-import { AccountService } from "services";
+import { AccountService, UserService } from "services";
 import { AuthContext } from "context";
 
 const schema = yup.object().shape({
@@ -41,6 +37,8 @@ const schema = yup.object().shape({
 const SignUpForm = () => {
   const classes = useStyles();
   const authContext = useContext(AuthContext);
+  const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   const {
     register,
@@ -71,10 +69,11 @@ const SignUpForm = () => {
 
       authContext.login(token, expirationTime);
 
-      const resultProfile = await AccountService.CreateProfile();
-      console.log(resultProfile);
+      await UserService.CreateProfile();
+      authContext.fetchCurrentUser();
+      history.push("/profile");
     } catch (e) {
-      console.log(e);
+      enqueueSnackbar(e.message, { variant: "error" });
     }
   };
 
@@ -159,7 +158,7 @@ const SignUpForm = () => {
       </Button>
       <Grid container justify="flex-end">
         <Grid item>
-          <Link href="#" variant="body2">
+          <Link href="/sign-in" variant="body2">
             Already have an account? Sign in
           </Link>
         </Grid>

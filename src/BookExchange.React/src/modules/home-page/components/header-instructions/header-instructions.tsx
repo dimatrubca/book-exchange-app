@@ -23,28 +23,28 @@ const HeaderInstructions = () => {
 
   return (
     <Container>
-      <Paper>
-        <Grid container spacing={10}>
-          <Grid item sm={4} className={classes.rightBorder}>
-            <Typography variant="h4">SEARCH</Typography>
+      <Paper className={classes.root}>
+        <Grid container spacing={5} justify="center" alignItems="center">
+          <Grid item sm={3} className={classes.rightBorder}>
+            <Typography variant="h4">Post Books</Typography>
             <Typography className="instruction-text" variant="body1">
-              30+ buyback vendors
+              Books you want to exchange
             </Typography>
           </Grid>
-          <Grid item sm={4} className={classes.rightBorder}>
+          <Grid item sm={3} className={classes.rightBorder}>
             <Typography className="instruction-title" variant="h4">
-              SEARCH
+              Earn Points
             </Typography>
             <Typography className="instruction-text" variant="body1">
-              30+ buyback vendors
+              +1 point for each book you give away
             </Typography>
           </Grid>
-          <Grid item sm={4}>
+          <Grid item sm={3}>
             <Typography className="instruction-title" variant="h4">
-              SEARCH
+              Request Books
             </Typography>
             <Typography className="instruction-text" variant="body1">
-              30+ buyback vendors
+              100+ posted books
             </Typography>
           </Grid>
         </Grid>

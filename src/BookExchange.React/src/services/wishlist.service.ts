@@ -3,7 +3,7 @@ import { ServiceUtils } from "../utils";
 import { Common, Wishlist } from "../types";
 
 const GetAll = async (filter: Wishlist.WishlistFilter) => {
-  const query = ServiceUtils.filterToQueryString(filter);
+  const query = ServiceUtils.objectToQueryString(filter);
   console.log(query);
 
   return fetchApi<Common.PaginatedResult<Wishlist.Wishlist>>(

@@ -9,7 +9,7 @@ const fetchApi = <TResponse>(
   config.headers["Authorization"] = getUserToken();
 
   console.log("config: ", config);
-  return fetch(`https://localhost:5001/api${url}`, config)
+  return fetch(`https://localhost:5002/api${url}`, config)
     .then((res) => {
       if (!res.ok) {
         return res.text().then((text) => {

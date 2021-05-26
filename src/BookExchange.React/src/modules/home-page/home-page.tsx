@@ -7,7 +7,9 @@ import Image from "material-ui-image";
 
 import { useStyles } from "./home-page-styles";
 import { HeaderInstructions } from "./components";
+import { Leaderboard } from "components/leaderboard";
 import { classicNameResolver } from "typescript";
+import { RecommendedBooks } from "components/recommended-books";
 
 const HomePage = () => {
   const classes = useStyles();
@@ -23,27 +25,40 @@ const HomePage = () => {
           </Paper>
         </Container>
       </Box>
-      <HeaderInstructions />
-      <Container>
-        <Paper>
-          <Typography variant="h2">Why use BookExchange?</Typography>
-          <Typography variant="body1">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis,
-            minus tempora ullam alias iure dolorum? Nesciunt eos ex ratione,
-            harum ab omnis officiis voluptas minima obcaecati consequuntur et
-            laborum in!
-          </Typography>
-        </Paper>
-      </Container>
-      <Container>
-        <Typography variant="h2">Recently swapped books</Typography>
-      </Container>
-      <Container>
-        <Typography variant="h2">Top Users</Typography>
-      </Container>
-      <Container>
-        <Typography variant="h2">Top Users</Typography>
-      </Container>
+
+      <Box my={10}>
+        <HeaderInstructions />
+      </Box>
+
+      <Box my={2}>
+        <Container>
+          <Paper>
+            <Leaderboard />
+          </Paper>
+        </Container>
+      </Box>
+
+      <Box my={2}>
+        <Container>
+          <Paper>
+            <RecommendedBooks />
+          </Paper>
+        </Container>
+      </Box>
+
+      <Box my={3}>
+        <Container>
+          <Paper>
+            <Typography variant="h2">About Us</Typography>
+            <Typography variant="body1">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis,
+              minus tempora ullam alias iure dolorum? Nesciunt eos ex ratione,
+              harum ab omnis officiis voluptas minima obcaecati consequuntur et
+              laborum in!
+            </Typography>
+          </Paper>
+        </Container>
+      </Box>
     </div>
   );
 };

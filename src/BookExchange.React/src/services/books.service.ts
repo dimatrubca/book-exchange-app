@@ -50,11 +50,12 @@ const GetBooksBySearch = async (searchTerm: string) => {
 };
 
 const GetBookById = async (id: number) => {
-  return fetch(`${API_BASE_URL}/book/${id}`).then((data) => data.json());
+  return fetchApi<Book.Book>(`/book/${id}`);
 };
 
+// check bellow
 const GetBooksByISBN = async (isbns: string[]): Promise<Book.Book[]> => {
-  return fetch(`${API_BASE_URL}/book`).then((data) => data.json());
+  return fetchApi<Book.Book[]>(`/book`);
 };
 
 const AddBook = async (book: Book.CreateBook) => {

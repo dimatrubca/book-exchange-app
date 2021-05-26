@@ -9,7 +9,7 @@ const objectToQueryParams = (obj: any) => {
   }
 };
 
-const filterToQueryString = (params: any) => {
+const objectToQueryString = (params: any) => {
   var esc = encodeURIComponent;
   return Object.keys(params)
     .filter((k) => {
@@ -32,7 +32,7 @@ const filterToQueryString = (params: any) => {
 };
 
 const ServiceUtils = {
-  filterToQueryString,
+  objectToQueryString,
 };
 
 export { ServiceUtils };

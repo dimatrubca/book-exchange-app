@@ -1,4 +1,6 @@
 import { PostsFilter } from "filters";
+import { fetchApi } from "./fetchApi";
+import { Post } from "types";
 
 const API_BASE_URL = `https://localhost:5001/api/`;
 
@@ -18,6 +20,7 @@ const GetPosts = async () => {
   return json;
 };
 
+// posts filter to
 const GetPostsForBook = async (filter: PostsFilter) => {
   const searchParams = new URLSearchParams();
 
@@ -52,6 +55,25 @@ const AddPostForBook = async (bookId: number, authorId: number) => {
   return;
 };
 
-const PostService = { GetPostById, GetPosts, GetPostsForBook, AddPostForBook };
+const CreatePost = async (data: Post.CreatePost) => {
+  const requestOptions = {
+    method: "POST",
+    body: data,
+  };
+  return fetchApi(`/post`, requestOptions);
+};
+
+const GetBookConditions = async (bookId: number): Promise<string[]> => {
+  return fetchApi<string[]>(`/post/conditions`);
+};
+
+const PostService = {
+  GetPostById,
+  GetPosts,
+  GetPostsForBook,
+  AddPostForBook,
+  GetBookConditions,
+  CreatePost,
+};
 
 export { PostService };

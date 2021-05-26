@@ -1,15 +1,11 @@
 import React, { useContext } from "react";
 import {
-  Avatar,
   Button,
-  Checkbox,
-  Container,
   FormControlLabel,
   Grid,
   Link,
   Paper,
   TextField,
-  Typography,
 } from "@material-ui/core";
 import LockIcon from "@material-ui/icons/Lock";
 import { useForm } from "react-hook-form";
@@ -21,6 +17,7 @@ import { Account } from "../../../types";
 import { AccountService, UserService } from "../../../services";
 import { AuthContext } from "../../../context";
 import { useHistory } from "react-router";
+import { useSnackbar } from "notistack";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username is required"),
@@ -31,6 +28,7 @@ const SignInForm = () => {
   const classes = useStyles();
   const authContext = useContext(AuthContext);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   const {
     register,
@@ -41,8 +39,6 @@ const SignInForm = () => {
   });
 
   const onSubmit = async (data: Account.SignInData) => {
-    console.log(data);
-
     try {
       const { access_token, expires_in } = await AccountService.RequestToken(
         data.username,
@@ -52,17 +48,14 @@ const SignInForm = () => {
       const expirationTime = new Date(
         new Date().getTime() + Number(expires_in) * 1000
       );
-
-      console.log(access_token, expirationTime);
+      console.log(`Expiration time: `, expirationTime);
 
       authContext.login(access_token, expirationTime);
-      authContext.user = await UserService.GetCurrentUser();
-      console.log(authContext.user);
-      const result = await authContext.fetchCurrentUser();
-      console.log(result);
-      history.push("/home");
+
+      await authContext.fetchCurrentUser();
+      history.push("/profile");
     } catch (e) {
-      console.log(e);
+      enqueueSnackbar(e.message, { variant: "error" });
     }
   };
 

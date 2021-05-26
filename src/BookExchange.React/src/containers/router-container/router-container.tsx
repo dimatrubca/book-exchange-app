@@ -13,6 +13,8 @@ import { AddBook } from "../../modules/add-book";
 import { ProfilePage } from "../../modules/profile-page";
 import { AddPost } from "../../modules/add-post";
 
+import { PurchaseCoinsCallback } from "../../callbacks";
+
 interface RouterContainerProps {
   children: React.ReactNode;
 }
@@ -24,6 +26,10 @@ const RouterContainer = () => {
       <h1>...</h1>
       <Userbar />
       <Switch>
+        <Route
+          path="/callbacks/single-payment/finish"
+          component={PurchaseCoinsCallback}
+        />
         <Route exact path="/home" component={HomePage} />
         <Route exact path="/sign-in" component={SignInPage} />
         <Route exact path="/sign-up" component={SignUpPage} />

@@ -3,7 +3,7 @@ import { Author, Category } from "types";
 
 export declare module Book {
   export type Book = {
-    id: string;
+    id: number;
     title: string;
     isbn: string;
     shortDescription: string;

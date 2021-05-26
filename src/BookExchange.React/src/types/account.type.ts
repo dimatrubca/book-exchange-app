@@ -11,20 +11,10 @@ export declare module Account {
     confirmPassword: string;
   };
 
-  export type UserInfo = {
-    username: string | null;
-    fistName: string | null;
-    lastName: string | null;
-    points: number | null;
-    userContact: UserContact | null;
-  };
-
-  export type UserContact = {
-    phoneNumber: string | null;
-    email: string | null;
-    zipCode: string | null;
-    city: string | null;
-    region: string | null;
-    streetAddress: string | null;
+  export type TokenRequestResult = {
+    access_token: string;
+    expires_in: number;
+    token_type: string;
+    scope: string;
   };
 }
