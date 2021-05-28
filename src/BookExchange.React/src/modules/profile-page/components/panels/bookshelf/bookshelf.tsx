@@ -1,7 +1,7 @@
 import React from "react";
 
 import { PaginatedView } from "components/paginated-view";
-import { PostListCard } from "components/post-list-card";
+import { PostListCard, PostSquareCard } from "components/cards";
 import { UserService } from "services";
 import { PanelProps } from "./../";
 
@@ -11,8 +11,8 @@ const BookShelfPanel = ({ index, displayIndex }: PanelProps) => {
       <PaginatedView
         title="Requested Books"
         listCard={PostListCard}
-        squareCard={PostListCard}
-        service={UserService.GetPostRequests}
+        squareCard={PostSquareCard}
+        service={UserService.GetUserBookshelf}
       />
     </div>
   );

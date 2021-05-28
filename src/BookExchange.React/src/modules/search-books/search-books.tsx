@@ -26,9 +26,9 @@ import { Book } from "types";
 const SearchBooks = () => {
   const classes = useStyles();
   const [isListView, setListView] = useState<boolean>(true);
-  console.log("listview: ", isListView);
+  const [isActiveSmartSearch, setActiveSmartSearch] = useState<boolean>(true);
 
-  const [page, setPage] = React.useState(2);
+  const [page, setPage] = React.useState(1);
   const [books, setBooks] = React.useState<Book.Book[]>();
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [totalRecords, setTotalRecords] = React.useState(0);
@@ -37,15 +37,17 @@ const SearchBooks = () => {
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
-    setPage(newPage);
+    setPage(newPage + 1);
   };
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setPage(1);
   };
+
+  if (page <= 0) setPage(1);
 
   return (
     <Container>
@@ -54,6 +56,8 @@ const SearchBooks = () => {
         page={page}
         rowsPerPage={rowsPerPage}
         setBooks={setBooks}
+        isActiveSmartSearch={isActiveSmartSearch}
+        setActiveSmartSearch={setActiveSmartSearch}
       />
       <Grid
         container
@@ -96,10 +100,11 @@ const SearchBooks = () => {
       <TablePagination
         component="div"
         count={totalRecords}
-        page={page}
+        page={page - 1}
         onChangePage={handleChangePage}
         rowsPerPage={rowsPerPage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
+        rowsPerPageOptions={[1, 2, 3, 5, 10]}
       />{" "}
     </Container>
   );

@@ -2,17 +2,22 @@ import React, { useEffect } from "react";
 import { Container, Typography } from "@material-ui/core";
 
 import { PaymentService } from "../services";
+import { useSnackbar } from "notistack";
+import { useHistory } from "react-router";
 
 const PurchaseCoinsCallback = (props: any) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const history = useHistory();
+
   useEffect(() => {
     const cancelPayment = async () => {
       try {
         const result = PaymentService.CancelPayment();
-        console.log("result", result);
+        enqueueSnackbar("Payment was canceled", { variant: "success" });
       } catch (e) {
         console.log(e);
-        // redirect to profile page
       }
+      history.push("/profile");
     };
 
     cancelPayment();

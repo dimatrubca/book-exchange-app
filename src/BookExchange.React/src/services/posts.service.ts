@@ -1,6 +1,7 @@
 import { PostsFilter } from "filters";
 import { fetchApi } from "./fetchApi";
-import { Post } from "types";
+import { Post, Common } from "types";
+import { ServiceUtils } from "utils";
 
 const API_BASE_URL = `https://localhost:5001/api/`;
 
@@ -13,11 +14,10 @@ const GetPostById = async (id: string) => {
     });
 };
 
-const GetPosts = async () => {
-  const response = await fetch(`${API_BASE_URL}/post`);
+const GetPosts = async (filter: Post.PostsFilter) => {
+  const query = ServiceUtils.objectToQueryString(filter);
 
-  const json = response.ok ? await response.json() : [];
-  return json;
+  return await fetchApi<Common.PaginatedResult<Post.Post>>(`/post?${query}`);
 };
 
 // posts filter to
@@ -37,28 +37,13 @@ const GetPostsForBook = async (filter: PostsFilter) => {
   return response;
 };
 
-const AddPostForBook = async (bookId: number, authorId: number) => {
-  const requestOptions = {
-    method: "POST",
-    body: JSON.stringify({
-      bookId: bookId,
-      authorId: authorId,
-    }),
-  };
-
-  fetch(`${API_BASE_URL}/post`, requestOptions)
-    .then((response) => response.json())
-    .catch((error) => {
-      console.log("Error", error);
-    });
-
-  return;
-};
-
 const CreatePost = async (data: Post.CreatePost) => {
   const requestOptions = {
     method: "POST",
-    body: data,
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
   };
   return fetchApi(`/post`, requestOptions);
 };
@@ -71,7 +56,6 @@ const PostService = {
   GetPostById,
   GetPosts,
   GetPostsForBook,
-  AddPostForBook,
   GetBookConditions,
   CreatePost,
 };

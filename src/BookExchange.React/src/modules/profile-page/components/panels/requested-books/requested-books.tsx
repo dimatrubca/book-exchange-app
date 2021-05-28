@@ -1,8 +1,9 @@
 import React from "react";
 
+import { RequestListCard } from "components/cards";
 import { PaginatedView } from "components/paginated-view";
-import { PostListCard } from "components/post-list-card";
-import { UserService } from "services";
+import { RequestService, UserService } from "services";
+import { useSnackbar } from "notistack";
 
 interface RequestedBooksProps {
   index: number;
@@ -14,9 +15,9 @@ const RequestedBooksPanel = ({ index, displayIndex }: RequestedBooksProps) => {
     <div hidden={displayIndex !== index}>
       <PaginatedView
         title="Requested Books"
-        listCard={PostListCard}
-        squareCard={PostListCard}
-        service={UserService.GetRequestedPosts}
+        listCard={RequestListCard}
+        squareCard={RequestListCard}
+        service={UserService.GetRequestsFromUser}
       />
     </div>
   );

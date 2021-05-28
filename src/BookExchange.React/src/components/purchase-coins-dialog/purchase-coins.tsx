@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
@@ -15,6 +15,7 @@ import { useStyles } from "./purchase-coints.styles";
 import { Container, DialogContent, Grid } from "@material-ui/core";
 
 import { PaymentService } from "services";
+import { AuthContext } from "context";
 
 interface PurchaseCoinsDialogProps {
   open: boolean;
@@ -23,6 +24,8 @@ interface PurchaseCoinsDialogProps {
 
 const PurchaseCoinsDialog = (props: PurchaseCoinsDialogProps) => {
   const classes = useStyles();
+  const { user } = useContext(AuthContext);
+
   const { onClose, open } = props;
 
   const handleClose = () => {
@@ -30,8 +33,9 @@ const PurchaseCoinsDialog = (props: PurchaseCoinsDialogProps) => {
   };
 
   const handleBuyCoinsClick = async () => {
+    if (!user) return;
     try {
-      var result = await PaymentService.SinglePayment();
+      var result = await PaymentService.SinglePayment(user.id, 1.0);
       window.location.replace(result.url); // checkalternatives
     } catch (e) {
       console.log(e);
@@ -45,7 +49,9 @@ const PurchaseCoinsDialog = (props: PurchaseCoinsDialogProps) => {
       open={open}
       className={classes.root}
     >
-      <DialogTitle id="simple-dialog-title">1 book coin = 0.5$</DialogTitle>
+      <DialogTitle id="simple-dialog-title">
+        More coins, more books! Buy 10 coins for a 1$.
+      </DialogTitle>
       <DialogContent>
         <Button
           color="primary"

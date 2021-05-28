@@ -1,18 +1,18 @@
 import React from "react";
-import { BookCard } from "components/book-card";
-import { BookMediaCard } from "components/book-media-card";
-import { PaginatedView } from "components/paginated-view";
+import { DealsListCard } from "components/cards";
+
 import { UserService } from "services";
 import { PanelProps } from "./../";
+import { PaginatedView } from "components/paginated-view";
 
 const SentBooksPanel = ({ index, displayIndex }: PanelProps) => {
   return (
     <div hidden={displayIndex !== index}>
       <PaginatedView
         title="Sent Books"
-        listCard={BookCard}
-        squareCard={BookMediaCard}
-        service={UserService.GetWishedBooks}
+        listCard={DealsListCard}
+        squareCard={DealsListCard}
+        service={UserService.GetDealsFromUser}
       />
     </div>
     //todo: change to post card

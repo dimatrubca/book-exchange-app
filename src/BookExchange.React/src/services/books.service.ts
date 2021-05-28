@@ -45,12 +45,12 @@ const GetBooksBySearch = async (searchTerm: string) => {
   console.log(`${API_BASE_URL}/book?title=${searchTerm}`);
   console.log("Bearer " + accessToken);
   return fetchApi<Common.PaginatedResult<Book.Book>>(
-    `/book?title=${searchTerm}`
+    `/book/smart-search?searchTerm=${searchTerm}`
   );
 };
 
 const GetBookById = async (id: number) => {
-  return fetchApi<Book.Book>(`/book/${id}`);
+  return fetchApi<Book.Book>(`/book/${id}?includeDetails=true`);
 };
 
 // check bellow
@@ -73,19 +73,11 @@ const AddBook = async (book: Book.CreateBook) => {
     body: formData,
   };
 
+  console.log(book);
   console.log(requestOptions);
   console.log(book.image);
 
-  fetch(`${API_BASE_URL}/book`, requestOptions)
-    .then((response) => {
-      console.log(response.ok);
-      console.log(response.status);
-      response.text();
-    })
-    .then((data) => console.log(data))
-    .catch((error) => {
-      console.log("There was an error", error);
-    });
+  return fetchApi<Book.Book>("/book", requestOptions);
 };
 
 const BookService = {

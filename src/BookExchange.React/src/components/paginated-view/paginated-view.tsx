@@ -1,6 +1,5 @@
 import {
   Box,
-  Container,
   Grid,
   IconButton,
   TablePagination,
@@ -11,18 +10,25 @@ import { useStyles } from "./paginated-view.styles";
 import ViewComfyIcon from "@material-ui/icons/ViewComfy";
 import ReorderIcon from "@material-ui/icons/Reorder";
 
-import { Common, Book, Post } from "types";
+import { Common, Book, Post, Request, Deal } from "types";
 import { useFetch } from "hooks";
 import { AuthContext } from "context";
+import { CardProps } from "components/cards";
 
-interface PaginatedViewProps<TData extends Book.Book | Post.Post> {
+interface PaginatedViewProps<
+  TData extends Book.Book | Post.Post | Deal.Deal | Request.Request
+> {
   title: string;
-  listCard: React.FC<TData>;
-  squareCard: React.FC<TData>;
+  listCard: React.FC<CardProps<TData>>;
+  squareCard: React.FC<CardProps<TData>>;
   service: (...args: any) => Promise<Common.PaginatedResult<TData>>;
+  cardAction?: (id: number) => void;
+  cardActionText?: string;
 }
 
-const PaginatedView = <TData extends Book.Book | Post.Post>(
+const PaginatedView = <
+  TData extends Book.Book | Post.Post | Deal.Deal | Request.Request
+>(
   props: PaginatedViewProps<TData>
 ) => {
   const [page, setPage] = useState<number>(1);
@@ -57,9 +63,8 @@ const PaginatedView = <TData extends Book.Book | Post.Post>(
   };
 
   useEffect(() => {
-    console.log("!!!\n\n");
     console.log("User: ", user, user?.id);
-    fetchData(user?.id, page, rowsPerPage);
+    fetchData(user?.id, rowsPerPage, page);
     //eslint-disable-next-line
   }, [page, rowsPerPage]);
 
@@ -109,14 +114,22 @@ const PaginatedView = <TData extends Book.Book | Post.Post>(
       {isListView ? (
         data.data?.map((item) => (
           <Box my={3} key={item.id}>
-            <ListCard {...item} />
+            <ListCard
+              cardItem={item}
+              action={props.cardAction}
+              actionText={props.cardActionText}
+            />
           </Box>
         ))
       ) : (
         <Grid container spacing={4}>
           {data.data?.map((item) => (
             <Grid item sm={3} key={item.id}>
-              <SquareCard {...item} />
+              <SquareCard
+                cardItem={item}
+                action={props.cardAction}
+                actionText={props.cardActionText}
+              />
             </Grid>
           ))}
         </Grid>

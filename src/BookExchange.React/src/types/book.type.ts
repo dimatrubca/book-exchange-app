@@ -46,5 +46,6 @@ export declare module Book {
     filterOperator?: string;
     pageSize?: number;
     pageNumber?: number;
+    sortBy?: string;
   };
 }

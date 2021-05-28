@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Avatar,
@@ -15,9 +15,25 @@ import {
 } from "@material-ui/core";
 
 import { useStyles } from "./leaderboard.styles";
+import { UserService } from "services";
+import { useFetch } from "hooks";
 
 const Leaderboard = () => {
   const classes = useStyles();
+
+  const {
+    data: users,
+    fetch: fetchTopUsers,
+    isLoading,
+  } = useFetch(UserService.GetTopUsers);
+
+  useEffect(() => {
+    fetchTopUsers(3);
+  }, []);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className={classes.root}>
@@ -31,23 +47,23 @@ const Leaderboard = () => {
             <Typography variant="h6">Username</Typography>
           </Grid>
           <Grid item>
-            <Typography variant="h6">Exchanged Books</Typography>
+            <Typography variant="h6">Book Points</Typography>
           </Grid>
         </Grid>
 
-        {[0, 1, 2, 3].map((value) => {
-          const labelId = `checkbox-list-secondary-label-${value}`;
+        {users?.map((user, index) => {
+          const labelId = `checkbox-list-secondary-label-${index}`;
           return (
-            <ListItem key={value} button>
+            <ListItem key={index} button>
               <ListItemAvatar>
                 <Avatar
-                  alt={`Avatar n°${value + 1}`}
-                  src={`/static/images/avatar/${value + 1}.jpg`}
+                // alt={`Avatar n°${value + 1}`}
+                // src={`/static/images/avatar/${value + 1}.jpg`}
                 />
               </ListItemAvatar>
-              <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
+              <ListItemText id={labelId} primary={`${user.username}`} />
               <ListItemSecondaryAction className={classes.score}>
-                <Typography variant="h6">81</Typography>
+                <Typography variant="h6">{user.points}</Typography>
               </ListItemSecondaryAction>
             </ListItem>
           );

@@ -11,6 +11,8 @@ interface SearchTabsProps {
   setTotalRecords: React.Dispatch<React.SetStateAction<number>>;
   rowsPerPage: number;
   setBooks: React.Dispatch<React.SetStateAction<Book.Book[] | undefined>>;
+  isActiveSmartSearch: any;
+  setActiveSmartSearch: any;
 }
 
 const SearchTabs = (props: SearchTabsProps) => {
@@ -45,10 +47,18 @@ const SearchTabs = (props: SearchTabsProps) => {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <SmartSearch {...props} />
+          <SmartSearch
+            {...props}
+            isActiveSmartSearch={props.isActiveSmartSearch}
+            setActiveSmartSearch={props.setActiveSmartSearch}
+          />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <FilteredSearch {...props} />
+          <FilteredSearch
+            {...props}
+            isActiveSmartSearch={props.isActiveSmartSearch}
+            setActiveSmartSearch={props.setActiveSmartSearch}
+          />
         </TabPanel>
       </SwipeableViews>
     </Paper>

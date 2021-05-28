@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Paper } from "@material-ui/core";
-import { BookCard } from "components/book-card";
-import { BookMediaCard } from "components/book-media-card";
+import { BookListCard, BookSquareCard } from "components/cards";
 import { PaginatedView } from "components/paginated-view";
 import { UserService } from "services";
 
@@ -15,8 +14,8 @@ const WishlistPanel = ({ index, displayIndex }: WishlistPanelProps) => {
     <div hidden={displayIndex !== index}>
       <PaginatedView
         title="Wishlist"
-        listCard={BookCard}
-        squareCard={BookMediaCard}
+        listCard={BookListCard}
+        squareCard={BookSquareCard}
         service={UserService.GetWishedBooks}
       />
     </div>

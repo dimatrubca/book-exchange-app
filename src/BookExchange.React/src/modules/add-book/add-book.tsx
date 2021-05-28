@@ -17,6 +17,8 @@ import { BookService } from "../../services/books.service";
 import { UploadFile } from "components/upload-file";
 import { Autocomplete } from "@material-ui/lab";
 import { AuthorsService, CategoryService } from "services";
+import { useHistory } from "react-router";
+import { useSnackbar } from "notistack";
 
 const schema = yup.object().shape({
   // Title: yup.string().max(100).required("Title is required"),
@@ -38,6 +40,8 @@ const AddBook = () => {
     Category.Category[]
   >([]);
   const [currentFile, setCurrentFile] = useState();
+  const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   const {
     register,
@@ -68,10 +72,18 @@ const AddBook = () => {
   }, []);
 
   const onSubmit = async (data: Book.CreateBook) => {
-    // alert(data);
+    console.log(data);
     data.image = currentFile;
 
-    await BookService.AddBook(data);
+    try {
+      var book = await BookService.AddBook(data);
+
+      enqueueSnackbar("Book Created Successfully", { variant: "success" });
+      history.push("/book" + book.id);
+    } catch (e) {
+      enqueueSnackbar(e.message, { variant: "error" });
+      history.push("/");
+    }
   };
 
   return (
@@ -81,9 +93,6 @@ const AddBook = () => {
           <Typography component="h1" variant="h5" className={classes.pageTitle}>
             Add New Book
           </Typography>
-          <Fragment>
-            {/* <Typography variant="h6">Fill in the form</Typography> */}
-          </Fragment>
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={3}>

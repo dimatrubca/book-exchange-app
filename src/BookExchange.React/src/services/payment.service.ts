@@ -19,13 +19,23 @@ const FinishSinglePayment = (payerId: string, paymentId: string) => {
 const CancelPayment = () => {
   const requestOptions = {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
   };
   return fetchApi(`/payment/cancel`, requestOptions);
 };
 
-const SinglePayment = () => {
+const SinglePayment = (userId: number, amount: number) => {
   const requestOptions = {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId: userId,
+      amount: amount,
+    }),
   };
 
   return fetchApi<Payment.ApprovePayment>(

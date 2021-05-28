@@ -30,7 +30,7 @@ const RouterContainer = () => {
           path="/callbacks/single-payment/finish"
           component={PurchaseCoinsCallback}
         />
-        <Route exact path="/home" component={HomePage} />
+        <Route exact path="/" component={HomePage} />
         <Route exact path="/sign-in" component={SignInPage} />
         <Route exact path="/sign-up" component={SignUpPage} />
         <Route exact path="/profile" component={ProfilePage} />

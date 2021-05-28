@@ -49,6 +49,8 @@ const UploadFile = ({ currentFile, setCurrentFile }: UploadFileProps) => {
   const upload = (e: any) => {
     console.log("uploading");
     let currentFile = selectedFiles[0];
+    console.log("selected:", selectedFiles[0]);
+    console.log(currentFile);
     setProgress(0);
     setCurrentFile(currentFile);
 
@@ -100,7 +102,7 @@ const UploadFile = ({ currentFile, setCurrentFile }: UploadFileProps) => {
         variant="contained"
         component="span"
         disabled={!selectedFiles}
-        onClick={upload}
+        onClick={(e: any) => upload(e)}
       >
         Upload
       </Button>
@@ -110,17 +112,6 @@ const UploadFile = ({ currentFile, setCurrentFile }: UploadFileProps) => {
       >
         {message}
       </Typography>
-      {/* <Typography variant="h6" className="list-header">
-        List of Files
-      </Typography>
-      <ul className="list-group">
-        {fileInfos &&
-          fileInfos.map((file, index) => (
-            <ListItem divider key={index}>
-             <a href={file.url}>{file.name}</a> 
-            </ListItem>
-          ))}
-      </ul> */}
     </div>
   );
 };

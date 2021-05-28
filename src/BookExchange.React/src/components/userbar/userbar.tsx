@@ -53,14 +53,14 @@ const Userbar = () => {
         ) : (
           <>
             {console.log("user: ", authContext.user)}
-            <RouterLink href="profile">
+            <RouterLink href="/profile">
               {" "}
               Welcome {authContext.user?.username}
             </RouterLink>
 
             {getNavItems(navDataLoggedIn)}
             <RouterLink
-              href="#"
+              href="/"
               className={classes.linkItem}
               onClick={authContext.logout}
             >

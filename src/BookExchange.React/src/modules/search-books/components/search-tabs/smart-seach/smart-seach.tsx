@@ -8,15 +8,16 @@ interface SmartSearchProps {
   setTotalRecords: React.Dispatch<React.SetStateAction<number>>;
   rowsPerPage: number;
   setBooks: React.Dispatch<React.SetStateAction<Book.Book[] | undefined>>;
+  isActiveSmartSearch: any;
+  setActiveSmartSearch: any;
 }
 
 const SmartSearch = (props: SmartSearchProps) => {
   const handleSearch = async (searchTerm: string) => {
     try {
-      console.log("searching books: " + searchTerm);
+      props.setActiveSmartSearch(true);
       var books = await BookService.GetBooksBySearch(searchTerm);
       console.log(books.data);
-      console.log("smart serach result");
       props.setBooks(books.data);
     } catch (e) {
       console.log(e);

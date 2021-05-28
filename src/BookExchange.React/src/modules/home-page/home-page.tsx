@@ -40,9 +40,7 @@ const HomePage = () => {
 
       <Box my={2}>
         <Container>
-          <Paper>
-            <RecommendedBooks />
-          </Paper>
+          <RecommendedBooks />
         </Container>
       </Box>
 

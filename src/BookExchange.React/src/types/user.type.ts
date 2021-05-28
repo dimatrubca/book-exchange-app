@@ -25,4 +25,10 @@ export declare module User {
     awaiting: number;
     sent: number;
   };
+
+  export type LeaderboardData = {
+    id: number;
+    username: string;
+    points: number;
+  };
 }

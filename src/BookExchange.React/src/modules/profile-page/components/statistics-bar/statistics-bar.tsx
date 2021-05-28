@@ -65,7 +65,7 @@ const StatisticsBar = ({ setDisplayViewIndex, userId }: StatisticsBarProps) => {
         onClick: () => {
           setDisplayViewIndex(4);
         },
-        count: userStats.wishlist,
+        count: userStats.bookshelf,
       },
       {
         name: "Requests",
