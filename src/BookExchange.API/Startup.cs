@@ -21,6 +21,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using BookExchange.Infrastructure.ElasticSearch;
 using BookExchange.Infrastructure.ElasticSearch.Repositories;
+using BookExchange.Application.Common.Interfaces;
+using BookExchange.Application.Common.Services;
+using BookExchange.Domain.ReadModel;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace BookExchange.API
 {
@@ -116,15 +121,25 @@ namespace BookExchange.API
                services.AddScoped<IBookRepository, BookRepository>();
                services.AddScoped<IUserRepository, UserRepository>();
                services.AddScoped<IPostRepository, PostRepository>();
+               services.AddScoped<IPaymentRepository, PaymentRepository>();
+               services.AddScoped<ICategoryRepository, CategoryRepository>();
+               services.AddScoped<IBookReviewRepository, BookReviewRepository>();
+               services.AddScoped<IRequestRepository, RequestRepository>();
+               services.AddScoped<IDealRepository, DealRepository>();
+               services.AddScoped<IWishlistRepository, WishlistRepository>();
 
                services.AddScoped<IRepositoryBase<Author>, RepositoryBase<Author>>();
                services.AddScoped<IRepositoryBase<BookDetails>, RepositoryBase<BookDetails>>();
-               services.AddScoped<IRepositoryBase<Category>, RepositoryBase<Category>>();
+               services.AddScoped<IRepositoryBase<Wishlist>, RepositoryBase<Wishlist>>();
 
-               services.AddScoped<IElasticBookRepository, ElasticBookRepository>();
+               services.AddScoped<IReadModelBookRepository, ElasticBookRepository>();
+               services.AddScoped<IRecommendationService, RecommendationService>();
 
                services.AddMediatR(typeof(Application.Class1));
                services.AddAutoMapper(typeof(Application.Common.Mappings.MappingProfile).Assembly);
+
+               services.AddDirectoryBrowser();
+
 
           }
 
@@ -139,8 +154,14 @@ namespace BookExchange.API
                }
                
                app.UseHttpsRedirection();
-
                app.UseStaticFiles();
+               /*
+               app.UseFileServer(new FileServerOptions { 
+                    FileProvider = new PhysicalFileProvider(
+                         Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles")),
+                    RequestPath = "/StaticFile"
+               });*/
+
                app.UseRouting();
                app.UseCors(configurePolicy => configurePolicy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
@@ -151,6 +172,8 @@ namespace BookExchange.API
                app.UseEndpoints(endpoints => {
                     endpoints.MapControllers();
                });
+
+
           }
      }
 }

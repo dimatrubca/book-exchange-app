@@ -38,7 +38,7 @@ namespace BookExchange.API.Controllers
                var book = await _mediator.Send(new GetBookQuery { Id=id, IncludeDetails=includeDetails });
                var bookDto = _mapper.Map<BookDto>(book);
               
-               return Ok(new Response<BookDto>(bookDto));
+               return Ok(bookDto);
           } 
 
 
@@ -51,10 +51,10 @@ namespace BookExchange.API.Controllers
                return Ok(result);
           }
 
-          [HttpGet("elastic")]
+          [HttpGet("smart-search")]
           [AllowAnonymous]
           public async Task<IActionResult> GetAll([FromQuery] string searchTerm) {
-               GetBooksFromElasticQuery query = new GetBooksFromElasticQuery { searchTerm = searchTerm };
+               SmartSearchBooksQuery query = new SmartSearchBooksQuery { SearchTerm = searchTerm };
                var result = await _mediator.Send(query);
 
                return Ok(result);

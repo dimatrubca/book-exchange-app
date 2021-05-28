@@ -13,9 +13,11 @@ using Microsoft.EntityFrameworkCore;
 using BookExchange.Services;
 using BookExchange.Domain.DTOs;
 using BookExchange.Domain.Models;
-using BookExchange.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using MediatR;
+using BookExchange.Application.Common;
+using BookExchange.Infrastructure.Persistance;
 
 namespace BookExchange.API
 {
@@ -23,11 +25,14 @@ namespace BookExchange.API
      {
           public static void Main(string[] args) {
                var host = CreateHostBuilder(args).Build();
-
+               
                using (var scope = host.Services.CreateScope())
                {
                     var serviceProvider = scope.ServiceProvider;
-                    DataInitializer.SeedDatabase();
+
+                    var mediator = scope.ServiceProvider.GetService<IMediator>();
+                    var context = scope.ServiceProvider.GetService<BookExchangeDbContext>();
+                    DataInitializer.SeedDatabase(context, mediator);
                }
 
                host.Run();

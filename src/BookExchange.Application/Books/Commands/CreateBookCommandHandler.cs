@@ -22,10 +22,10 @@ namespace BookExchange.Application.Books.Commands
           private readonly IHostingEnvironment _environment;
           private readonly IBookRepository _bookRepository;
           private readonly IRepositoryBase<Author> _bookAuthorsRepository;
-          private readonly IRepositoryBase<Category> _bookCategoriesRepository;
+          private readonly ICategoryRepository _bookCategoriesRepository;
 
           public CreateBookCommandHandler(IBookRepository bookRepository, 
-               IRepositoryBase<Author> bookAuthorsRepository, IRepositoryBase<Category> bookCategoriesRepository, 
+               IRepositoryBase<Author> bookAuthorsRepository, ICategoryRepository bookCategoriesRepository, 
                IHostingEnvironment environment, IMediator mediator)
           {
                _bookRepository = bookRepository;
@@ -43,8 +43,8 @@ namespace BookExchange.Application.Books.Commands
                     throw new BadRequestException($"Book with ISBN = {request.ISBN} already exists");
                }
 
-               var uploadDirectory = Path.Combine(_environment.WebRootPath, "uploads", "books");
-               var imagePath = await ServiceUtils.SaveFile(request.Image, uploadDirectory);
+               var uploadDirectory = Path.Combine("uploads", "books");
+               var imagePath = await ServiceUtils.SaveFile(_environment, request.Image, uploadDirectory);
 
                var book = new Book
                {
@@ -52,8 +52,8 @@ namespace BookExchange.Application.Books.Commands
                     ISBN = request.ISBN,
                     ShortDescription = request.ShortDescription,
                     ThumbnailPath = imagePath,
-                    Authors = request.AuthorsIds?.Select(id => _bookAuthorsRepository.GetById(id)).ToList(),
-                    Categories = request.CategoriesIds?.Select(id => _bookCategoriesRepository.GetById(id)).ToList(),
+                    Authors = request.AuthorsId?.Select(id => _bookAuthorsRepository.GetById(id)).ToList(),
+                    Categories = request.CategoriesId?.Select(id => _bookCategoriesRepository.GetById(id)).ToList(),
                     Details = new BookDetails
                     {
                          Description = request.Description,

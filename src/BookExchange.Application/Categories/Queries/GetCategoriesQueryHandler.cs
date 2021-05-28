@@ -13,9 +13,9 @@ namespace BookExchange.Application.Categories.Queries
 {
      public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, List<Category>>
      {
-          private readonly IRepositoryBase<Category> _categoriesRepository;
+          private readonly ICategoryRepository _categoriesRepository;
 
-          public GetCategoriesQueryHandler(IRepositoryBase<Category> categoriesRepository)
+          public GetCategoriesQueryHandler(ICategoryRepository categoriesRepository)
           {
                _categoriesRepository = categoriesRepository;
           }

@@ -12,13 +12,14 @@ namespace BookExchange.Infrastructure.Persistance
 
           public DbSet<User> Users { get; set; }
           public DbSet<Post> Posts { get; set; }
-          public DbSet<Review> Reviews { get; set; }
-          public DbSet<Deal> Deals { get; set; }
           public DbSet<Book> Books { get; set; }
           public DbSet<Wishlist> Wishlist { get; set; }
           public DbSet<Request> Requests { get; set; }
           public DbSet<Bookmark> Bookmarks { get; set; }
           public DbSet<Author> Authors { get; set; }
+          public DbSet<Payment> Payments { get; set; }
+          public DbSet<BookReview> BookReviews { get; set; }
+          public DbSet<Deal> Deals { get; set; }
 
           public BookExchangeDbContext(DbContextOptions<BookExchangeDbContext> options)
               : base(options)
@@ -57,14 +58,11 @@ namespace BookExchange.Infrastructure.Persistance
                modelBuilder.ApplyConfiguration(new PostConfig());
                modelBuilder.ApplyConfiguration(new BookConfig());
                modelBuilder.ApplyConfiguration(new BookDetailsConfig());
-               modelBuilder.ApplyConfiguration(new DealConfig());
                modelBuilder.ApplyConfiguration(new RequestConfig());
-               modelBuilder.ApplyConfiguration(new ReviewConfig());
                modelBuilder.ApplyConfiguration(new BookAuthorConfig());
                modelBuilder.ApplyConfiguration(new CategoryConfig());
-
-               modelBuilder.Entity<BookReview>().ToTable("BookReviews");
-               modelBuilder.Entity<PostReview>().ToTable("PostReviews");
+               modelBuilder.ApplyConfiguration(new BookReviewConfig());
+               modelBuilder.ApplyConfiguration(new DealConfig());
           }
      }
 }

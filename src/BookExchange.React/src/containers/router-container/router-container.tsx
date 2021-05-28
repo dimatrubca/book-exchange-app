@@ -13,7 +13,7 @@ import { AddBook } from "../../modules/add-book";
 import { ProfilePage } from "../../modules/profile-page";
 import { AddPost } from "../../modules/add-post";
 
-import { PurchaseCoinsCallback } from "../../callbacks";
+import { PurchaseCoinsCallback, CancelPaymentCallback } from "../../callbacks";
 
 interface RouterContainerProps {
   children: React.ReactNode;
@@ -27,14 +27,19 @@ const RouterContainer = () => {
       <Userbar />
       <Switch>
         <Route
+          exact
           path="/callbacks/single-payment/finish"
           component={PurchaseCoinsCallback}
+        />
+        <Route
+          exact
+          path="/callbacks/single-payment/cancel"
+          component={CancelPaymentCallback}
         />
         <Route exact path="/" component={HomePage} />
         <Route exact path="/sign-in" component={SignInPage} />
         <Route exact path="/sign-up" component={SignUpPage} />
         <Route exact path="/profile" component={ProfilePage} />
-        {/* <Route exact path="/" component={Home} /> */}
         <Route exact path="/search" render={(props) => <SearchBooks />} />
         <Route exact path="/book/:id" component={BookDetails} />
         <Route exact path="/post-book" component={PostBooks} />

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BookExchange.Domain.Interfaces;
 using BookExchange.Domain.Models;
+using BookExchange.Domain.ReadModel;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -12,20 +13,20 @@ namespace BookExchange.Application.Books.Events
 {
      class BookCreatedEventHandler : INotificationHandler<BookCreatedEvent>
      {
-          private readonly IElasticBookRepository _elasticBookRepository;
+          private readonly IReadModelBookRepository _bookReadRepository;
           private readonly IMapper _mapper;  
 
-          public BookCreatedEventHandler(IElasticBookRepository elasticBookRepository, IMapper mapper)
+          public BookCreatedEventHandler(IReadModelBookRepository elasticBookRepository, IMapper mapper)
           {
-               _elasticBookRepository = elasticBookRepository;
+               _bookReadRepository = elasticBookRepository;
                _mapper = mapper;
           }
 
           public Task Handle(BookCreatedEvent notification, CancellationToken cancellationToken)
           {
-               var book = _mapper.Map<ElasticBook>(notification);
+               var book = _mapper.Map<ReadModelBook>(notification);
 
-               return _elasticBookRepository.AddAsync(book);
+               return _bookReadRepository.AddAsync(book);
           }
      }
 }

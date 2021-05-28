@@ -78,5 +78,13 @@ namespace BookExchange.API.Controllers
 
                return NoContent();
           }
+
+          [HttpGet("conditions")]
+          public async Task<IActionResult> GetConditions()
+          {
+               var result = await _mediator.Send(new GetPostConditionsQuery());
+
+               return Ok(result);
+          }
      }
 }

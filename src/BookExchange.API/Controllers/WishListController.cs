@@ -14,26 +14,26 @@ namespace BookExchange.API.Controllers
 {
      [Route("api/[controller]")]
      [ApiController]
-     public class WishListController : ControllerBase
+     public class WishlistController : ControllerBase
      {
           private readonly IMediator _mediator;
           private readonly IMapper _mapper;
 
+          public WishlistController(IMediator mediator, IMapper mapper)
+          {
+               _mediator = mediator;
+               _mapper = mapper;
+          }
+
+
           [Authorize]
           [HttpGet]
-          public async Task<IActionResult> GetUserWishlist()
+          public async Task<IActionResult> GetUserWishlist([FromQuery] WishlistFilter filter)
           {
-               var result = await _mediator.Send(new GetUserWishlistQuery());
-
-               return Ok(result);
-          }
-          /*
-          public async Task<IActionResult> GetAll([FromQuery] WishListFilter filter)
-          {
-               GetWishListAllQuery query = _mapper.Map<GetWishListAllQuery>(filter);
+               var query = _mapper.Map<GetUserWishlistQuery>(filter);
                var result = await _mediator.Send(query);
 
                return Ok(result);
-          }*/
+          }
      }
 }

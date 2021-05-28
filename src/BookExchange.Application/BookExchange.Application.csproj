@@ -5,23 +5,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="C5" Version="2.5.3" />
     <PackageReference Include="IdentityModel" Version="5.1.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.6" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.10.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BookExchange.Domain\BookExchange.Domain.csproj" />
+     <ProjectReference Include="..\BookExchange.Domain\BookExchange.Domain.csproj" />
+    <ProjectReference Include="..\BookExchange.Infrastructure\BookExchange.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="WishList\Commands\" />
   </ItemGroup>
 
 </Project>

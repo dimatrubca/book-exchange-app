@@ -37,8 +37,19 @@ namespace BookExchange.IdentityServer
                {
                     ApplicationIdentityUser user = new ApplicationIdentityUser
                     {
-                         UserName = "valentin",
+                         UserName = "valentin341",
                          Email = "dimatrubca@outlook.com",
+                    };
+
+                    IdentityResult result = userManager.CreateAsync(user, "mysecreT1!").Result;
+               }
+
+               if (userManager.FindByEmailAsync("igor431thelast@gmail.com").Result == null)
+               {
+                    ApplicationIdentityUser user = new ApplicationIdentityUser
+                    {
+                         UserName = "igor431",
+                         Email = "igor431@outlook.com",
                     };
 
                     IdentityResult result = userManager.CreateAsync(user, "mysecreT1!").Result;

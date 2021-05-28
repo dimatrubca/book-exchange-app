@@ -125,15 +125,15 @@ namespace BookExchange.IdentityServer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "57909559-a2fa-44ac-beb2-901349f5bf83",
-                            ConcurrencyStamp = "f01d7624-6310-403e-8d48-e42d536ecd56",
+                            Id = "eb7e4baf-459b-4a1e-980c-6cea16bbf720",
+                            ConcurrencyStamp = "0d388f2f-efff-463b-92f1-f6d027edd1db",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "cc830dc9-c7c6-46c2-b5ac-3cde9e26fb7f",
-                            ConcurrencyStamp = "a2f24acd-465f-4154-8878-69be915036a3",
+                            Id = "2a23b7e5-44b2-485e-a0d9-a608358d1064",
+                            ConcurrencyStamp = "df2f9dbe-2f0b-444c-a95c-c018b3e883fe",
                             Name = "user",
                             NormalizedName = "USER"
                         });

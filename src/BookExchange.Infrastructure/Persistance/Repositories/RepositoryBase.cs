@@ -16,10 +16,10 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
 {
      public class RepositoryBase<T> : IRepositoryBase<T> where T : BaseEntity
      {
-          private readonly DbContext _context;
+          protected readonly BookExchangeDbContext _context;
           protected readonly DbSet<T> _entitites;
 
-          public RepositoryBase(DbContext context)
+          public RepositoryBase(BookExchangeDbContext context)
           {
                this._context = context;
                _entitites = context.Set<T>();

@@ -14,9 +14,9 @@ namespace BookExchange.Application.Categories.Commands
 {
      public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Category>
      {
-          private readonly IRepositoryBase<Category> _categoriesRepository;
+          private readonly ICategoryRepository _categoriesRepository;
 
-          public CreateCategoryCommandHandler(IRepositoryBase<Category> categoriesRepository)
+          public CreateCategoryCommandHandler(ICategoryRepository categoriesRepository)
           {
                _categoriesRepository = categoriesRepository;
           }

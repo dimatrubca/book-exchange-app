@@ -5,14 +5,14 @@ import { PaymentService } from "../services";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router";
 
-const PurchaseCoinsCallback = (props: any) => {
+const CancelPaymentCallback = (props: any) => {
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   useEffect(() => {
     const cancelPayment = async () => {
       try {
-        const result = PaymentService.CancelPayment();
+        const result = await PaymentService.CancelPayment();
         enqueueSnackbar("Payment was canceled", { variant: "success" });
       } catch (e) {
         console.log(e);
@@ -30,4 +30,4 @@ const PurchaseCoinsCallback = (props: any) => {
   );
 };
 
-export { PurchaseCoinsCallback };
+export { CancelPaymentCallback };

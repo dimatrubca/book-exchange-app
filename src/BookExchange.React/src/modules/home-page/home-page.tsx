@@ -15,9 +15,6 @@ const HomePage = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      {/* <Paper variant="outlined">
-        <img src={book6} style={{ width: "100%" }} />
-      </Paper> */}
       <Box mb={10}>
         <Container>
           <Paper>

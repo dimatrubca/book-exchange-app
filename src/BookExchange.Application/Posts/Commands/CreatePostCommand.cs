@@ -14,6 +14,6 @@ namespace BookExchange.Application.Posts.Commands
           [Required]
           public int PostedById { get; set; }
           [Required]
-          public int ConditionId { get; set; }
+          public Condition Condition { get; set; }
      }
 }

@@ -22,8 +22,8 @@ namespace BookExchange.Application.Books.Commands
           public string Publisher { get; set; }
           public int? PageCount { get; set; }
           public int? PublishedYear { get; set; }
-          public List<int> AuthorsIds { get; set; }
-          public List<int> CategoriesIds { get; set; }
+          public List<int> AuthorsId { get; set; }
+          public List<int> CategoriesId { get; set; }
           public IFormFile Image { get; set; }
 
      }

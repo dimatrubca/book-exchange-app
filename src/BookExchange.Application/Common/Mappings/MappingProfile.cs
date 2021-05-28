@@ -13,6 +13,12 @@ using BookExchange.Application.Posts.Queries;
 using BookExchange.Application.Authors.Commands;
 using BookExchange.Application.Books.Events;
 using BookExchange.Application.WishList.Queries;
+using BookExchange.Application.Users.Queries;
+using BookExchange.Application.Request.Commands;
+using BookExchange.Application.Deals.Commands;
+using BookExchange.Application.Deals.Queries;
+using BookExchange.Application.Request.Queries;
+using BookExchange.Domain.ReadModel;
 
 namespace BookExchange.Application.Common.Mappings
 {
@@ -36,20 +42,51 @@ namespace BookExchange.Application.Common.Mappings
                CreateMap<BooksFilter, GetBooksQuery>();
                CreateMap<GetBooksQuery, PaginationFilter>();
 
+               CreateMap<BooksFilter, GetUserWishedBooksQuery>();
+               CreateMap<GetUserWishedBooksQuery, PaginationFilter>();
+
                CreateMap<PostsFilter, GetPostsQuery>();
                CreateMap<GetPostsQuery, PaginationFilter>();
 
-               CreateMap<Condition, ConditionDto>();
 
                CreateMap<CreateAuthorDto, CreateAuthorCommand>();
                CreateMap<Author, AuthorDto>();
 
                CreateMap<Category, CategoryDto>();
 
-               CreateMap<BookCreatedEvent, ElasticBook>();
+               CreateMap<BookCreatedEvent, ReadModelBook>();
 
-               CreateMap<WishListFilter, GetWishListAllQuery>();
+               CreateMap<Wishlist, WishListDto>();
+
+               CreateMap<WishlistFilter, GetWishListAllQuery>();
+               CreateMap<WishlistFilter, GetUserWishlistQuery>();
                CreateMap<GetWishListAllQuery, PaginationFilter>();
+               CreateMap<GetUserWishlistQuery, PaginationFilter>();
+
+               //CreateMap<Dea
+               CreateMap<UpdateRequestDto, UpdateRequestCommand>();
+               CreateMap<Domain.Models.Request, RequestDto>();
+
+               CreateMap<UpdateDealDto, UpdateDealCommand>();
+               CreateMap<Deal, DealDto>();
+
+               CreateMap<PaginationFilter, GetDealsFromUserQuery>();
+               CreateMap<PaginationFilter, GetDealsToUserQuery>();
+
+               CreateMap<GetDealsFromUserQuery, PaginationFilter>();
+               CreateMap<GetDealsToUserQuery, PaginationFilter>();
+
+               CreateMap<GetRequestsToUserQuery, PaginationFilter>();
+               CreateMap<GetRequestsFromUserQuery, PaginationFilter>();
+
+               CreateMap<PaginationFilter, GetRequestsToUserQuery>();
+               CreateMap<PaginationFilter, GetRequestsFromUserQuery>();
+
+               CreateMap<GetUserPostsQuery, PaginationFilter>();
+               CreateMap<PaginationFilter, GetUserPostsQuery>();
+
+               CreateMap<User, TopUserDto>();
+               CreateMap<GetLeaderboardDto, GetTopUsersQuery>();
           }
      }
 }

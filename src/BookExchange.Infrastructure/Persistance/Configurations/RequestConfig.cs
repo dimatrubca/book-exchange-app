@@ -19,8 +19,11 @@ namespace BookExchange.Infrastructure.Persistance.Configurations
                builder.HasOne(x => x.Post)
                     .WithMany(x => x.Requests);
 
-               builder.HasKey(x => new { x.UserId, x.PostId });
-               builder.Ignore(x => x.Id);
+               builder.Property(x => x.Status)
+                    .HasConversion<string>()
+                    .HasDefaultValue(RequestStatus.Pending)
+                    .HasColumnType("varchar")
+                    .HasMaxLength(50);
           }
      }
 }

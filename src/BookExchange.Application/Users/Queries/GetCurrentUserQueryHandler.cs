@@ -1,4 +1,5 @@
-﻿using BookExchange.Domain.Interfaces;
+﻿using BookExchange.Application.Common.Exceptions;
+using BookExchange.Domain.Interfaces;
 using BookExchange.Domain.Models;
 using IdentityModel;
 using MediatR;
@@ -27,9 +28,19 @@ namespace BookExchange.Application.Users.Queries
 
           public Task<User> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
           {
-               string identityId = _contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Id).Value;
+               string identityId = _contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+
+               if (identityId == null)
+               { 
+                    throw new BadRequestException("User not logged in!");
+               }
 
                User user = _userRepository.GetUserByIdentityId(identityId);
+
+               if (user == null)
+               {
+                    throw new BadRequestException("Current user doesn't have a profile created");
+               }
 
                return Task.FromResult(user);
           }

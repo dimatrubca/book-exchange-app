@@ -20,23 +20,6 @@ const GetPosts = async (filter: Post.PostsFilter) => {
   return await fetchApi<Common.PaginatedResult<Post.Post>>(`/post?${query}`);
 };
 
-// posts filter to
-const GetPostsForBook = async (filter: PostsFilter) => {
-  const searchParams = new URLSearchParams();
-
-  for (let key in filter) {
-    if (filter[key] != null) {
-      searchParams.append(key, filter[key]);
-    }
-  }
-
-  const response = await fetch(
-    "https://localhost:5001/api/post?" + searchParams.toString()
-  ).then((response) => response.json());
-
-  return response;
-};
-
 const CreatePost = async (data: Post.CreatePost) => {
   const requestOptions = {
     method: "POST",
@@ -55,7 +38,6 @@ const GetBookConditions = async (bookId: number): Promise<string[]> => {
 const PostService = {
   GetPostById,
   GetPosts,
-  GetPostsForBook,
   GetBookConditions,
   CreatePost,
 };

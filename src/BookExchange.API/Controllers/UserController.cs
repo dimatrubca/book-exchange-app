@@ -1,18 +1,15 @@
 ﻿using AutoMapper;
-using BookExchange.Application.Common.Configurations;
+using BookExchange.Application.Deals.Queries;
+using BookExchange.Application.Request.Queries;
 using BookExchange.Application.Users.Commands;
 using BookExchange.Application.Users.Queries;
+using BookExchange.Domain;
 using BookExchange.Domain.DTOs;
+using BookExchange.Domain.Filter;
 using BookExchange.Domain.Models;
-using IdentityServer4;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -37,7 +34,7 @@ namespace BookExchange.API.Controllers
           public async Task<IActionResult> GetCurrentUser()
           {
                var user = await _mediator.Send(new GetCurrentUserQuery());
-               var result = _mapper.Map<UserDto>(user); // TODO: check user dto
+               var result = _mapper.Map<UserDto>(user); 
 
                return Ok(result);
           }
@@ -68,7 +65,7 @@ namespace BookExchange.API.Controllers
 
                return Ok(result);
           }
-               
+
 
           [HttpDelete]
           public async Task<IActionResult> DeleteUser()
@@ -77,20 +74,128 @@ namespace BookExchange.API.Controllers
 
                return NoContent();
           }
-          
-         /* [HttpGet("id1")]
-          [Authorize]
-          public async Task<IActionResult> Get(int id)*/
-          //{
-              /* Console.WriteLine(id);
-               string myId = _userManager.GetUserId(HttpContext.User);
-               var userID = User.Claims.Where(a => a.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
 
-               return Ok(new { Id = myId });*/
-               //var user = await _mediator.Send(new GetUserQuery { Id = id });
-               //var result = _mapper.Map<UserDto>(user);
 
-               //return Ok(result);
-          /*}*/
+
+          [HttpGet("{id}/stats")]
+          public async Task<IActionResult> GetUserStats(int id)
+          {
+               var response = await _mediator.Send(new GetUserStatsQuery { UserId = id });
+
+               return Ok(response);
+          }
+
+          [HttpGet("leaderboard")]
+          [AllowAnonymous]
+          public async Task<IActionResult> GetTopUsers([FromQuery] GetLeaderboardDto dto)
+          {
+               var query = _mapper.Map<GetTopUsersQuery>(dto);
+               var users = await _mediator.Send(query);
+
+               var response = _mapper.Map<List<TopUserDto>>(users);
+
+               return Ok(response);
+          }
+
+
+          [HttpGet("{id}/books/recommended")]
+          [AllowAnonymous]
+          public async Task<IActionResult> GetRecommendedBooks(int id, [FromQuery] int topN = 3)
+          {
+               var books = await _mediator.Send(new GetRecommendedBooksQuery { Id = id, TopN = topN });
+
+               var response = _mapper.Map<List<BookDto>>(books);
+
+               return Ok(response);
+          }
+
+
+          [HttpGet("{id}/books/wished")]
+          public async Task<IActionResult> GetWishedBooks(int id, [FromQuery] BooksFilter filter)
+          {
+               var query = _mapper.Map<GetUserWishedBooksQuery>(filter);
+               query.UserId = id;
+               var response = await _mediator.Send(query);
+
+               return Ok(response);
+          }
+
+          [HttpPost("{id}/books/wished")]
+          public async Task<IActionResult> AddBookToWishlist(int id, [FromBody] WishListDto wishlistDto)
+          {
+               var response = await _mediator.Send(new AddToWishlistCommand { UserId = id, BookId = wishlistDto.BookId });
+
+               return Ok(response);
+          }
+
+
+          [HttpGet("{id}/posts/owned")]
+          [AllowAnonymous]
+          public async Task<IActionResult> GetUserActivePosts(int id, [FromQuery] PaginationFilter filter)
+          {
+               var query = _mapper.Map<GetUserPostsQuery>(filter);
+               query.UserId = id;
+
+               var response = await _mediator.Send(query);
+
+               return Ok(response);
+          }
+
+
+          [HttpPost("{id}/requests/")]
+          [AllowAnonymous]
+          public async Task<IActionResult> RequestPost(int id, [FromBody] CreateRequestDto requestDto)
+          {
+              var result = await _mediator.Send(new RequestPostCommand { UserId = id, PostId = requestDto.PostId});
+
+               return Ok(result);
+          }
+
+
+          [HttpGet("{id}/requests/to")]
+          [AllowAnonymous]
+          public async Task<IActionResult> GetRequestsToUser(int id, [FromQuery] PaginationFilter filter)
+          {
+               var query = _mapper.Map<GetRequestsToUserQuery>(filter);
+               query.UserId = id;
+               var result = await _mediator.Send(query);
+
+               return Ok(result);
+          }
+
+          [HttpGet("{id}/requests/from")]
+          [AllowAnonymous]
+          public async Task<IActionResult> GetRequestsFromUser(int id, [FromQuery] PaginationFilter filter)
+          {
+               var query = _mapper.Map<GetRequestsFromUserQuery>(filter);
+               query.UserId = id;
+               var result = await _mediator.Send(query);
+
+               return Ok(result);
+          }
+
+          [HttpGet("{id}/deals/from")]
+          [AllowAnonymous]
+          public async Task<IActionResult> GetDealsFromUser(int id, [FromQuery] PaginationFilter filter)
+          {
+               var query = _mapper.Map<GetDealsFromUserQuery>(filter);
+               query.UserId = id;
+
+               var response = await _mediator.Send(query);
+
+               return Ok(response);
+          }
+
+          [HttpGet("{id}/deals/to")]
+          [AllowAnonymous]
+          public async Task<IActionResult> GetDealsToUser(int id, [FromQuery] PaginationFilter filter)
+          {
+               var query = _mapper.Map<GetDealsToUserQuery>(filter);
+               query.UserId = id;
+
+               var response = await _mediator.Send(query);
+
+               return Ok(response);
+          }
      }
-};
+}

@@ -2,43 +2,13 @@ import { Book, Category, Common } from "../types";
 
 import { fetchApi } from "./fetchApi";
 
-const API_BASE_URL = `https://localhost:5001/api`;
-
-const userData = localStorage.getItem("userData");
-const accessToken = userData ? JSON.parse(userData).token : "";
-
 const GetBooks = (filters: Book.SearchFilters) => {
   const str = getQueryString(filters);
   console.log(str);
   return fetchApi<Common.PaginatedResult<Book.Book>>("/book?" + str);
 };
 
-const getQueryString = (params: any) => {
-  var esc = encodeURIComponent;
-  return Object.keys(params)
-    .filter((k) => {
-      if (!params[k]) return false;
-      return true;
-    })
-    .map((k) => {
-      if (Array.isArray(params[k])) {
-        let result = "";
-        for (let item of params[k]) {
-          if (result !== "") result = "&" + result;
-          result += esc(k) + "=" + esc(item["id"]);
-        }
-        return result;
-      }
-
-      return esc(k) + "=" + esc(params[k]);
-    })
-    .join("&");
-};
-
 const GetBooksBySearch = async (searchTerm: string) => {
-  console.log(accessToken);
-  console.log(`${API_BASE_URL}/book?title=${searchTerm}`);
-  console.log("Bearer " + accessToken);
   return fetchApi<Common.PaginatedResult<Book.Book>>(
     `/book/smart-search?searchTerm=${searchTerm}`
   );
@@ -73,6 +43,29 @@ const AddBook = async (book: Book.CreateBook) => {
   console.log(book.image);
 
   return fetchApi<Book.Book>("/book", requestOptions);
+};
+
+// todo: check dependencies and remove method (transfered to ServiceUtils)
+const getQueryString = (params: any) => {
+  var esc = encodeURIComponent;
+  return Object.keys(params)
+    .filter((k) => {
+      if (!params[k]) return false;
+      return true;
+    })
+    .map((k) => {
+      if (Array.isArray(params[k])) {
+        let result = "";
+        for (let item of params[k]) {
+          if (result !== "") result = "&" + result;
+          result += esc(k) + "=" + esc(item["id"]);
+        }
+        return result;
+      }
+
+      return esc(k) + "=" + esc(params[k]);
+    })
+    .join("&");
 };
 
 const BookService = {

@@ -13,9 +13,9 @@ namespace BookExchange.Application.Categories.Commands
 {
      public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, Unit>
      {
-          private readonly IRepositoryBase<Category> _categoriesRepository;
+          private readonly ICategoryRepository _categoriesRepository;
 
-          public DeleteCategoryCommandHandler(IRepositoryBase<Category> categoriesRepository)
+          public DeleteCategoryCommandHandler(ICategoryRepository categoriesRepository)
           {
                _categoriesRepository = categoriesRepository;
           }

@@ -63,10 +63,7 @@ const FilteredSearch = ({
 
   const [searchFilters, setSearchFilters] = useState<Book.SearchFilters>();
 
-  const { enqueueSnackbar } = useSnackbar();
-
   const onSubmit = async (data: Book.SearchFilters) => {
-    enqueueSnackbar("This is a success message!");
     setActiveSmartSearch(false);
     setSearchFilters(data);
     try {
@@ -102,7 +99,7 @@ const FilteredSearch = ({
     }
   }, [isActiveSmartSearch, page, rowsPerPage]);
 
-  const sortByOptions = ["Title", "ISBN", "PageCount"];
+  const sortByOptions = ["Title", "ISBN"];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

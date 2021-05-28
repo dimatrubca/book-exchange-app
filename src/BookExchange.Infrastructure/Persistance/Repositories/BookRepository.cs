@@ -1,5 +1,9 @@
-﻿using BookExchange.Domain.Interfaces;
+﻿using AutoMapper;
+using BookExchange.Domain.DTOs;
+using BookExchange.Domain.Filter;
+using BookExchange.Domain.Interfaces;
 using BookExchange.Domain.Models;
+using BookExchange.Domain.Wrappers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,8 +15,9 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
 {
      public class BookRepository : RepositoryBase<Book>, IBookRepository
      {
-          public BookRepository(DbContext context) : base(context)
+          public BookRepository(BookExchangeDbContext context) : base(context)
           {
+
           }
 
           public List<Book> GetBooksByCondition(Expression<Func<Book, bool>> predicate)
@@ -22,7 +27,10 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
 
           public List<Book> GetBooksWithIds(List<int> idList)
           {
-               return _entitites.Where(b => idList.Contains(b.Id)).ToList();
+               return _entitites.Include(b => b.Details).Include(b => b.Authors).Include(b => b.Categories)
+                              .Where(b => idList.Contains(b.Id)).AsEnumerable().OrderBy(x => idList.IndexOf(x.Id)).ToList();
           }
+
+
      }
 }

@@ -16,9 +16,8 @@ namespace BookExchange.Domain.Models
           public virtual ICollection<Post> Posts { get; set; }
           public virtual ICollection<Post> BookmarkedPosts { get; set; }
           public virtual ICollection<Book> WishedBooks { get; set; }
-          public virtual ICollection<Deal> Deals { get; set; }
           public virtual ICollection<Request> Requests { get; set; }
-          //public virtual ICollection<Post> RequestedPosts { get; set; }
+          public virtual ICollection<BookReview> BookReviews { get; set; }
 
           public byte[] RowVersion { get; set; }
      }

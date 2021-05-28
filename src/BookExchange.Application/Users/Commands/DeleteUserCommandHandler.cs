@@ -14,6 +14,11 @@ namespace BookExchange.Application.Users.Commands
      {
           private readonly IUserRepository _userRepository;
 
+          public DeleteUserCommandHandler(IUserRepository userRepository)
+          {
+               _userRepository = userRepository;
+          }
+
           public Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
           {
                var user = _userRepository.Delete(request.Id);

@@ -22,10 +22,6 @@ const navData: NavData[] = [
 
 const navDataLoggedIn: NavData[] = [
   {
-    label: "Wishlist",
-    href: "/wishlist",
-  },
-  {
     label: "Post",
     href: "/add-book",
   },
@@ -52,10 +48,9 @@ const Userbar = () => {
           <>{getNavItems(navData)}</>
         ) : (
           <>
-            {console.log("user: ", authContext.user)}
             <RouterLink href="/profile">
               {" "}
-              Welcome {authContext.user?.username}
+              Welcome {authContext.user?.username}!
             </RouterLink>
 
             {getNavItems(navDataLoggedIn)}

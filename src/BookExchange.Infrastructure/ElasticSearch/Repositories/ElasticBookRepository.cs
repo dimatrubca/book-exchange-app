@@ -1,5 +1,6 @@
 ﻿using BookExchange.Domain.Interfaces;
 using BookExchange.Domain.Models;
+using BookExchange.Domain.ReadModel;
 using BookExchange.Domain.Wrappers;
 using Microsoft.Extensions.Logging;
 using Nest;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Infrastructure.ElasticSearch.Repositories
 {
-     public class ElasticBookRepository : IElasticBookRepository
+     public class ElasticBookRepository : IReadModelBookRepository
      {
           private readonly IElasticClient _elasticClient;
           private readonly ILogger _logger;
@@ -22,7 +23,7 @@ namespace BookExchange.Infrastructure.ElasticSearch.Repositories
                _logger = logger;
           }
 
-          public async Task AddAsync(ElasticBook book)
+          public async Task AddAsync(ReadModelBook book)
           {
                var response = await _elasticClient.IndexDocumentAsync(book);
 
@@ -33,12 +34,12 @@ namespace BookExchange.Infrastructure.ElasticSearch.Repositories
 
           public async Task DeleteById(int id)
           {
-               await _elasticClient.DeleteAsync<ElasticBook>(id);
+               await _elasticClient.DeleteAsync<ReadModelBook>(id);
           }
 
 
 
-          public async Task AddBulkAsync(ElasticBook[] books)
+          public async Task AddBulkAsync(ReadModelBook[] books)
           {
                var result = await _elasticClient.BulkAsync(b => b.Index("books").IndexMany(books));
 
@@ -52,7 +53,7 @@ namespace BookExchange.Infrastructure.ElasticSearch.Repositories
 
           public async Task<List<int>> Get(string query, int page, int pageSize)
           {
-               var result = await _elasticClient.SearchAsync<ElasticBook>(x => x.Query(q => q
+               var result = await _elasticClient.SearchAsync<ReadModelBook>(x => x.Query(q => q
                                                                  .MultiMatch(mp => mp
                                                                       .Query(query)
                                                                       .Fields(f => f

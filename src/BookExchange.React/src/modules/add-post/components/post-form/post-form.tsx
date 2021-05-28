@@ -80,7 +80,7 @@ const PostForm = ({ bookId }: PostFormParams) => {
             onChange={(e, data) => onChange(data)}
             filterSelectedOptions
             renderInput={(params) => (
-              <TextField {...params} variant="outlined" label="Category" />
+              <TextField {...params} variant="outlined" label="Condition" />
             )}
           />
         )}

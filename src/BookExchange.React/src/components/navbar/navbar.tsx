@@ -21,10 +21,10 @@ import { useStyles } from "./navbar.styles";
 const headersData = [
   {
     label: "Home",
-    href: "/home",
+    href: "/",
   },
   {
-    label: "Request Book",
+    label: "Search Books",
     href: "/search",
   },
   {
@@ -36,11 +36,6 @@ const headersData = [
     href: "/add-book",
   },
 ];
-
-//     key = 'label'
-//     color = "inherit"
-//     href = {href}
-//     component = {RouterLink}
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -150,12 +145,7 @@ const Navbar = () => {
       </Button>
     );
 
-    return (
-      <>
-        {buttons}
-        {/* {signUpButton} */}
-      </>
-    );
+    return <>{buttons}</>;
   };
 
   const getMenuItems = () => {

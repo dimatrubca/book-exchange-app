@@ -28,7 +28,7 @@ namespace BookExchange.Service.Services
                if (!request.IncludeDetails) {
                     book = _bookRepository.GetById(request.Id);
                } else {
-                    book = _bookRepository.GetByIdWithInclude(request.Id, b => b.Details);
+                    book = _bookRepository.GetByIdWithInclude(request.Id, b => b.Details, b => b.Categories, b=>b.Authors);
                }
 
                if (book == null)

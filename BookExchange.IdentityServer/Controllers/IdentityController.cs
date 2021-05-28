@@ -23,7 +23,7 @@ namespace BookExchange.IdentityServer.Controllers
 
           public IdentityController(UserManager<ApplicationIdentityUser> userManager)
           {
-               _userManager = userManager;
+                    _userManager = userManager;
           }
 
           private readonly UserManager<ApplicationIdentityUser> _userManager;

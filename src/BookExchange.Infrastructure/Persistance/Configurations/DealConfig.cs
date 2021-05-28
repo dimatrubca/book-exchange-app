@@ -16,6 +16,12 @@ namespace BookExchange.Infrastructure.Persistance.Configurations
                     .IsRequired()
                     .HasDefaultValueSql("getdate()");
 
+
+               builder.Property(x => x.DealStatus)
+                    .HasConversion<string>()
+                    .HasDefaultValue(DealStatus.InDelivery)
+                    .HasColumnType("varchar")
+                    .HasMaxLength(50);
           }
      }
 }

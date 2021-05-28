@@ -1,5 +1,6 @@
 ﻿using BookExchange.Domain.Interfaces;
 using BookExchange.Domain.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -12,17 +13,18 @@ namespace BookExchange.Application.Common
 {
      public static class ServiceUtils
      {
-          public static async Task<string> SaveFile(IFormFile file, string directory)
+          public static async Task<string> SaveFile(IHostingEnvironment environment, IFormFile file, string directory)
           {
                if (file == null || file.Length == 0) return null;
 
-               string savePath = Path.Combine(directory, file.FileName);
-               using (var fileStream = new FileStream(savePath, FileMode.Create))
+               var filePath = Path.Combine(directory, file.FileName);
+               string absolutePath = Path.Combine(environment.WebRootPath, filePath);
+               using (var fileStream = new FileStream(absolutePath, FileMode.Create))
                {
                     await file.CopyToAsync(fileStream);
                }
 
-               return savePath;
+               return filePath;
           }
 
           public static bool CheckBookWithIsbnExists(IBookRepository bookRepository, string ISBN)
@@ -30,7 +32,7 @@ namespace BookExchange.Application.Common
                return bookRepository.GetBooksByCondition(b => b.ISBN == ISBN).Any();
           }
 
-          public static bool CheckBookCategoryExists(IRepositoryBase<Category> categoryRepository, string label)
+          public static bool CheckBookCategoryExists(ICategoryRepository categoryRepository, string label)
           {
                return categoryRepository.GetAllByCondition(c => c.Label == label).Any();
           }

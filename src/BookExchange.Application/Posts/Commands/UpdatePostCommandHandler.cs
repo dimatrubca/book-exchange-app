@@ -21,6 +21,7 @@ namespace BookExchange.Application.Posts.Commands
 
           public Task<Post> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
           {
+               //TODO: validate bookId, postedById
                var post = _postRepository.GetById(request.Id);
 
                if (post == null)
@@ -28,8 +29,8 @@ namespace BookExchange.Application.Posts.Commands
                     throw new NotFoundException(nameof(Post), request.Id);
                }
 
-               if (request.ConditionId != null)
-                    post.ConditionId = request.ConditionId;
+               if (request.Condition != null)
+                    post.Condition = (Condition)request.Condition;
 
                if (request.Status.HasValue)
                     post.Status = request.Status.Value;

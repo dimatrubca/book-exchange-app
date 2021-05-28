@@ -1,5 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿    <Project Sdk="Microsoft.NET.Sdk.Web">
+                      
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>bd6ade01-1594-4125-89d7-53d65826a6fe</UserSecretsId>
@@ -26,10 +26,13 @@
     <ProjectReference Include="..\BookExchange.Application\BookExchange.Application.csproj" />
     <ProjectReference Include="..\BookExchange.Domain\BookExchange.Domain.csproj" />
     <ProjectReference Include="..\BookExchange.Infrastructure\BookExchange.Infrastructure.csproj" />
+       
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\uploads\books\" />
   </ItemGroup>
+     
+
 
 </Project>

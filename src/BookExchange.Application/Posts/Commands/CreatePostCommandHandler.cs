@@ -23,13 +23,8 @@ namespace BookExchange.Application.Posts.Commands
 
           public Task<Post> Handle(CreatePostCommand request, CancellationToken cancellationToken)
           {
+               //TODO: validate bookId, postedById
                var post = _mapper.Map<Post>(request);
-               /*var post = new Post
-               {
-                    BookId = request.BookId,
-                    PostedById = request.PostedById,
-                    ConditionId = request.ConditionId
-               };*/
 
                _postRepository.Add(post);
                _postRepository.SaveAll();

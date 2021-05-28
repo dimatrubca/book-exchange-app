@@ -34,14 +34,11 @@ namespace BookExchange.Application.Posts.Queries
                if (request.IncludeBook)
                     includes.Add(p => p.Book);
 
-               if (request.IncludeCondition)
-                    includes.Add(p => p.Condition);
-
                if (request.IncludePostedBy)
                     includes.Add(p => p.PostedBy);
 
-               if (request.ConditionId != null)
-                    predicates.Add(p => p.ConditionId == request.ConditionId);
+               if (request.Condition != null)
+                    predicates.Add(p => p.Condition == request.Condition);
 
                if (request.PostedById != null)
                     predicates.Add(p => p.PostedById == request.PostedById);

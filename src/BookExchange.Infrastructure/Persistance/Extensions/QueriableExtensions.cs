@@ -24,21 +24,23 @@ namespace BookExchange.Infrastructure.Persistance.Extensions
           public static PagedResponse<TDto> CreatePaginatedResponse<TEntity, TDto>(this IQueryable<TEntity> query, 
                List<Expression<Func<TEntity, bool>>> predicates, List<Expression<Func<TEntity, object>>> includes, PaginationFilter paginationFilter, IMapper mapper) where TEntity : class
           {
-               query = query.IncludeMultiple(includes.ToArray());
+               query = query.IncludeMultiple(includes?.ToArray());
 
                query = query.Filter(predicates, paginationFilter.FilterLogicalOperator);
 
                int total = query.Count();
 
-               if (paginationFilter.SortBy != null) {
-                    if (paginationFilter.SortDirection == "asc")
-                    {
-                         query = query.OrderBy(paginationFilter.SortBy);
-                    } else
+               if (paginationFilter.SortBy != null)
+               {
+                    if (paginationFilter.SortDirection == "desc")
                     {
                          query = query.OrderByDescending(paginationFilter.SortBy);
+                    } else
+                    {
+                         query = query.OrderBy(paginationFilter.SortBy);
                     }
                }
+
 
                query = query.Page(paginationFilter.PageNumber, paginationFilter.PageSize);
 

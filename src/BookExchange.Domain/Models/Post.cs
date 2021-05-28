@@ -5,22 +5,22 @@ using System.Threading.Tasks;
 
 namespace BookExchange.Domain.Models
 {
-     /*
-     public enum PostType { 
-          Lend = 1, 
-          GiveAway = 3,
-     } // points value
-     */
      public enum PostStatus { 
-          Enabled, 
+          Active, 
           Disabled
+     }
+
+     public enum Condition
+     {
+          New,
+          Good,
+          Acceptable,
      }
 
      public class Post : BaseEntity
      {
           public int BookId { get; set; }
           public int? PostedById { get; set; }
-          public int? ConditionId { get; set; }
           public PostStatus Status { get; set; }
           public DateTime TimeAdded { get; set; }
 
@@ -29,9 +29,8 @@ namespace BookExchange.Domain.Models
           public virtual Condition Condition { get; set; }
           public virtual ICollection<User> BookmarkedBy { get; set; }
           public virtual ICollection<Request> Requests { get; set; }
-          //public ICollection<User> RequestedBy { get; set; }
           public virtual ICollection<Deal> Deals { get; set; }
-          public virtual ICollection<PostReview> Reviews { get; set; }
+          //public ICollection<User> RequestedBy { get; set; }
           
      }
 }

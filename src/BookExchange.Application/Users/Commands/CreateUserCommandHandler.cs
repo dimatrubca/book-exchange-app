@@ -6,6 +6,7 @@ using IdentityModel;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,13 +25,13 @@ namespace BookExchange.Application.Users.Commands
                _userRepository = userRepository;
           }
 
-          public async Task<User> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+          public Task<User> Handle(CreateUserCommand request, CancellationToken cancellationToken)
           {
                var claims = contextAccessor.HttpContext.User.Claims;
 
-               string identityId = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Id).Value;
-               string email = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Email).Value;
-               string username = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name).Value;
+               string identityId = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+               string email = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value;
+               string username = claims.FirstOrDefault(x => x.Type == "name").Value;
 
                if (CheckUserWithUsernameExists(username))
                {
@@ -55,7 +56,7 @@ namespace BookExchange.Application.Users.Commands
                _userRepository.Add(user);
                _userRepository.SaveAll();
 
-               return user;
+               return Task.FromResult(user);
           }
 
           public bool CheckUserWithEmailExists(string email)

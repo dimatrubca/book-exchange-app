@@ -21,13 +21,13 @@ import { useHistory } from "react-router";
 import { useSnackbar } from "notistack";
 
 const schema = yup.object().shape({
-  // Title: yup.string().max(100).required("Title is required"),
-  // ISBN: yup
-  //   .string()
-  //   .length(13)
-  //   .matches(/^\d+$/, "Only digits allowed")
-  //   .required("ISBN must contain 13 digits"),
-  // ShortDescription: yup.string().required("Description is required"),
+  title: yup.string().max(100).required("Title is required"),
+  isbn: yup
+    .string()
+    .length(13)
+    .matches(/^\d+$/, "Only digits allowed")
+    .required("ISBN must contain 13 digits"),
+  shortDescription: yup.string().required("Description is required"),
   // Published: yup.string(),
   // PageCount: yup.number(),
   // Authors: yup.string().max(100),
@@ -79,7 +79,7 @@ const AddBook = () => {
       var book = await BookService.AddBook(data);
 
       enqueueSnackbar("Book Created Successfully", { variant: "success" });
-      history.push("/book" + book.id);
+      history.push("/book/" + book.id);
     } catch (e) {
       enqueueSnackbar(e.message, { variant: "error" });
       history.push("/");
@@ -102,6 +102,7 @@ const AddBook = () => {
                   variant="outlined"
                   label="Title"
                   helperText={errors.title?.message}
+                  error={!!errors.title}
                   fullWidth
                 />
               </Grid>
@@ -112,6 +113,7 @@ const AddBook = () => {
                   label="ISBN"
                   fullWidth
                   helperText={errors.isbn?.message}
+                  error={!!errors.isbn}
                 />
               </Grid>
               <Grid item xs={5}>
@@ -155,7 +157,8 @@ const AddBook = () => {
                   variant="outlined"
                   multiline
                   label="Description"
-                  helperText={errors.shortDescription?.message}
+                  helperText={errors.description?.message}
+                  error={!!errors.description}
                   fullWidth
                 />
               </Grid>

@@ -16,10 +16,15 @@ namespace BookExchange.Infrastructure.Persistance.Configurations
                     .HasDefaultValueSql("getdate()");
 
                builder.Property(x => x.Status)
-                    .HasDefaultValue(PostStatus.Enabled)
+                    .HasDefaultValue(PostStatus.Active)
                     .HasConversion(
                          x => x.ToString(),
                          x => (PostStatus)Enum.Parse(typeof(PostStatus), x));
+
+               builder.Property(x => x.Condition)
+                    .HasConversion<string>()
+                    .HasColumnType("varchar")
+                    .HasMaxLength(50);
           }
      }
 }

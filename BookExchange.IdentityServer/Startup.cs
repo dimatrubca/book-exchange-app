@@ -72,7 +72,7 @@ namespace BookExchange.IdentityServer
           }
 
           // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-          public void Configure(IApplicationBuilder app, IWebHostEnvironment env/*, UserManager<ApplicationIdentityUser> userManager*/)
+          public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationIdentityUser> userManager)
           {
                if (env.IsDevelopment())
                {
@@ -87,6 +87,8 @@ namespace BookExchange.IdentityServer
 
                app.UseRouting();
 
+               app.UseCors(configurePolicy => configurePolicy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
                app.UseIdentityServer();
 
                app.UseAuthorization();
@@ -95,7 +97,7 @@ namespace BookExchange.IdentityServer
                     endpoints.MapControllers();
                });
 
-               //IdentityDataSeeder.SeedAll(userManager);
+               IdentityDataSeeder.SeedAll(userManager);
           }
      }
 }

@@ -11,3 +11,5 @@ export interface PostsFilter extends PaginationFilter {
   conditionId?: number;
   timeAdded?: Date;
 }
+
+// todo: check dependencies and remove this module (transfered to /types)
