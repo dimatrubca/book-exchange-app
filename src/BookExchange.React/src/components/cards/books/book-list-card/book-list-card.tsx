@@ -30,13 +30,18 @@ const BookListCard = ({
           {book.title}
         </Link>
       </Typography>
-      <Typography variant="subtitle1" color="textSecondary">
-        by {book.authors?.map((a) => a.name).join(", ")}
-      </Typography>
+      {book.authors?.length !== 0 && (
+        <Typography variant="subtitle1" color="textSecondary">
+          by {book.authors.map((a) => a.name).join(", ")}
+        </Typography>
+      )}
+
       <Typography>ISBN: {book.isbn}</Typography>
-      <Typography>
-        Categories: {book.categories?.map((c) => c.label).join(", ")}
-      </Typography>
+      {book.categories.length !== 0 && (
+        <Typography>
+          Categories: {book.categories?.map((c) => c.label).join(", ")}
+        </Typography>
+      )}
     </ListCardContainer>
   );
 };

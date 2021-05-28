@@ -47,13 +47,15 @@ const HomePage = () => {
       <Box my={3}>
         <Container>
           <Paper>
-            <Typography variant="h2">About Us</Typography>
-            <Typography variant="body1">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis,
-              minus tempora ullam alias iure dolorum? Nesciunt eos ex ratione,
-              harum ab omnis officiis voluptas minima obcaecati consequuntur et
-              laborum in!
-            </Typography>
+            <Box p={3}>
+              <Typography variant="h2">About Us</Typography>
+              <Typography variant="body1">
+                Our Book exchange app makes the process of trading books easy.
+                The process is extremely simple: select the book you want to
+                give away, receive requests from others, mail your books and
+                receive poitnts, ask for books from others with your points.
+              </Typography>
+            </Box>
           </Paper>
         </Container>
       </Box>

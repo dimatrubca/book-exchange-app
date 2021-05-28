@@ -35,11 +35,6 @@ const getQueryString = (params: any) => {
     .join("&");
 };
 
-const SearchBooks = () => (serachTerm: string) => {
-  const userData = localStorage.getItem("userData");
-  const accessToken = userData ? JSON.parse(userData).token : "";
-};
-
 const GetBooksBySearch = async (searchTerm: string) => {
   console.log(accessToken);
   console.log(`${API_BASE_URL}/book?title=${searchTerm}`);

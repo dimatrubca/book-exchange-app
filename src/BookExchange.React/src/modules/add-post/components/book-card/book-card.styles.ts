@@ -10,7 +10,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   bookCover: {
-    width: "200",
+    maxWidth: 200,
+    maxHeight: 300,
     marginRight: theme.spacing(3),
   },
   bookDetails: {},

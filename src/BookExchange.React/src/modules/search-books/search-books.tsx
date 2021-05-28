@@ -9,6 +9,7 @@ import {
   Grid,
   IconButton,
 } from "@material-ui/core";
+import { BookListCard, BookSquareCard } from "components/cards";
 import { BookCard } from "../../components/book-card";
 import { BookMediaCard } from "../../components/book-media-card";
 import { useStyles } from "./search-books.styles";
@@ -85,14 +86,14 @@ const SearchBooks = () => {
       {isListView ? (
         books?.map((book) => (
           <Box my={3} key={book.id}>
-            <BookCard {...book} />
+            <BookListCard cardItem={book} />
           </Box>
         ))
       ) : (
         <Grid container spacing={4}>
           {books?.map((book) => (
             <Grid item sm={3} key={book.id}>
-              <BookMediaCard {...book} />
+              <BookSquareCard cardItem={book} />
             </Grid>
           ))}
         </Grid>

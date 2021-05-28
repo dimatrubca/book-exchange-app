@@ -124,9 +124,12 @@ const BookDetails = (props: any) => {
               </Typography>
             )}
 
-            <Typography>
-              <b>Authors:</b> {book.authors?.map((a) => a.name).join(", ")}
-            </Typography>
+            {book.authors?.length !== 0 && (
+              <Typography>
+                <b>Authors:</b> {book.authors.map((a) => a.name).join(", ")}
+              </Typography>
+            )}
+
             <Typography>
               <b>ISBN:</b> {book?.isbn}
             </Typography>

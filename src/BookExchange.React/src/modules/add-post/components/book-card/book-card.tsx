@@ -4,7 +4,7 @@ import { useStyles } from "./book-card.styles";
 import { useFetch } from "hooks";
 import { BookService } from "services";
 import { useParams } from "react-router";
-
+import { ImageUtils } from "utils";
 const BookCard = () => {
   const classes = useStyles();
 
@@ -39,7 +39,7 @@ const BookCard = () => {
   return (
     <div className={classes.root}>
       <img
-        src={"https://m.media-amazon.com/images/I/51V0MmBCHLS._SL300_.jpg"}
+        src={ImageUtils.getAbsolutePath(book.thumbnailPath)}
         alt=""
         className={classes.bookCover}
       />
