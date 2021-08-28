@@ -1,4 +1,4 @@
-# book-exchange-app (ASP.Net Core Web API + React)
+# Book Exchange App (ASP.Net Core Web API + React)
 BookExchangeApp is a fully functioning application that allows users to exchange books, earn and buy points, and receive recomendations based on the rated books.
 
 
