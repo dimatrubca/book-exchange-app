@@ -1,6 +1,7 @@
 # book-exchange-app (ASP.Net Core Web API + React)
 BookExchangeApp is a fully functioning application that allows users to exchange books, earn and buy points, and receive recomendations based on the rated books.
 
+
 ## Components
 - src/BookExchange.API - ASP.NET Core Web API (CQRS pattern)
 - src/BookExchange.Application
@@ -13,11 +14,14 @@ BookExchangeApp is a fully functioning application that allows users to exchange
 * Authentication as a service (IdentityServer4).
 * Integration with payment systems (PayPal)
 
+
 ## Basic Functionality
 - Post/request/add book to wishlist
 - Filtered search of books
 - Point system for exchanging books
 - Book recomendation system (content-based filtering)
+
+<img src="https://github.com/dimatrubca/book-exchange-app/blob/master/images/profile_wishlist.png" width="750">
 
 
 ## BookExchange.API
