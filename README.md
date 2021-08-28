@@ -6,6 +6,7 @@ BookExchangeApp is a fully functioning application that allows users to exchange
 - [src/BookExchange.API](#bookexchange-api) - ASP.NET Core Web API (CQRS pattern)
 - [src/BookExchange.Application](#bookexchange-application)
 - [src/BookExchange.Domain](#bookexchange-domain)
+- [src/BookExchange.Infrastructure](#bookexchange-infrastructure) - Entity Framework Core, ElasticSearch
 - [src/BookExchange.IdentityServer](#bookexchange-identityserver) - authentication as a service (IdentityServer4)
 - [src/BookExchange.React](#bookexchange-react) - Client (React with Typescript)
 
