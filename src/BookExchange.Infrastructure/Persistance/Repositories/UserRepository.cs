@@ -33,30 +33,6 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
 
                return booksQuery.CreatePaginatedResponse<Book, BookDto>(null, null, filter, mapper);
           }
-          /*
-          public PagedResponse<PostDto> GetUserRequests(int id, PaginationFilter filter, IMapper mapper)
-          {
-               var user = GetById(id);
-               var postsQuery = _context.Entry(user).Collection(u => u.Requests).Query();
-
-               return postsQuery.CreatePaginatedResponse<Post, PostDto>(null, null, filter, mapper);
-          }
-
-          public PagedResponse<PostDto> GetUserRequested(int id, PaginationFilter filter, IMapper mapper)
-          {
-               var user = GetById(id);
-               var postsQuery = _context.Entry(user).Collection(u => u.RequestedBy).Query().Where(p => p.Status != PostStatus.Received);
-
-               return postsQuery.CreatePaginatedResponse<Post, PostDto>(null, null, filter, mapper);
-          }
-
-          public PagedResponse<PostDto> GetUserReceivedPosts(int id, PaginationFilter filter, IMapper mapper)
-         {
-               var user = GetById(id);
-               var postsQuery = _context.Entry(user).Collection(u => u.RequestedBy).Query().Where(p => p.Status == PostStatus.Received);
-          }
-
-          */
           public UserStatsDto GetUserStats(int id)
           {
                var user = GetById(id);

@@ -41,7 +41,6 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
                return _entitites.Where(predicate).ToList();
           }
 
-          // TODO: test method
           public List<T> GetAllByConditions(List<Expression<Func<T, bool>>> predicates, List<Expression<Func<T, object>>> includes, LogicalOperator predicateLogicalOperator)
           {
                var predicate = predicates.CombineExpresions(predicateLogicalOperator);

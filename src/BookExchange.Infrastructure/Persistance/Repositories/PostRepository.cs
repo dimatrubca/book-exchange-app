@@ -46,16 +46,7 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
 
                return result;
           }
-/*
-          public PagedResponse<PostDto> GetUsersPostRequests(int userId, PaginationFilter filter)
-          {
-               var postsQuery = _entities.Where(x => x.Status == PostStatus.Active)
-                                             .Where(
 
-               var result = postsQuery.CreatePaginatedResponse<Post, PostDto>(null, null, fitler, _mapper);
-          }
-
-          public PagedResponse<PostDto> */
 
      }
 }

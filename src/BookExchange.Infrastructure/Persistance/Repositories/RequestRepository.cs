@@ -22,26 +22,7 @@ namespace BookExchange.Infrastructure.Persistance.Repositories
                _mapper = mapper;
           }
 
-         /* public PagedResponse<PostDto> GetPostRequests(int id, PaginationFilter filter, IMapper mapper)
-          {
-               var posts = _entitites.Include(x => x.Post).ThenInclude(x => x.Book).ThenInclude(x => x.Authors)
-                                        .Include(x => x.Post).ThenInclude(x => x.Book).ThenInclude(x => x.Categories)
-                                        .Where(x => x.Post.PostedById == id)
-                                        .Where(x => x.Status == RequestStatus.Pending);
 
-               return posts.CreatePaginatedResponse<Post, PostDto>(null, null, filter, mapper);
-          }
-
-          public PagedResponse<PostDto> GetRequestedPosts(int id, PaginationFilter filter, IMapper mapper)
-          {
-               var posts = _entitites.Where(x => x.UserId == id && x.Status == RequestStatus.Pending)
-                    .Include(x => x.Post).ThenInclude(x => x.PostedBy)
-                    .Include(x => x.Post).ThenInclude(x => x.Book).ThenInclude(x => x.Authors)
-                    .Include(x => x.Post).ThenInclude(x => x.Book).ThenInclude(x => x.Categories)
-                    .Select(x => x.Post);
-
-               return posts.CreatePaginatedResponse<Post, PostDto>(null, null, filter, mapper);
-          }*/
 
           public PagedResponse<RequestDto> GetRequestsToUser(int userId, PaginationFilter filter)
           {
